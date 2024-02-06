@@ -1,11 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">NeWork</string>
+    <string name="app_name">ВнеРаботы</string>
     <string name="posts">Posts</string>
     <string name="events">Events</string>
     <string name="users">Users</string>
     <string name="authentication">Authentication</string>
     <string name="add_post">Add post</string>
-    <string name="description_post_author_avatar">Avatar name</string>
+    <string name="description_post_author_avatar">Имя аватара</string>
     <string name="description_post_more">Больше</string>
     <string name="description_liked_count">Liked count</string>
     <string name="description_shared">Share</string>
