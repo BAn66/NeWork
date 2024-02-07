@@ -10,4 +10,7 @@
     <string name="description_liked_count">Liked count</string>
     <string name="description_shared">Share</string>
     <string name="description_play">Play</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="notLoginText">Don\'t have an account? Register</string>
 </resources>
