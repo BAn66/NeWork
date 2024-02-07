@@ -4,6 +4,7 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'dagger.hilt.android.plugin'
 apply plugin: 'kotlin-kapt'
 
+
 android {
     namespace 'ru.kostenko.nework'
     compileSdk 34

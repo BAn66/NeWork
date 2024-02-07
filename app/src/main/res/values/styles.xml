@@ -22,4 +22,7 @@
         <item name="iconTint">?attr/colorControlNormal</item>
     </style>
 
+    <style name="Base.Widget.Material3.BottomNavigationView.Nework" parent="Base.Widget.Material3.BottomNavigationView">
+
+    </style>
 </resources>

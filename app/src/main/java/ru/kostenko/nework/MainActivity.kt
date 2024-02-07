@@ -5,10 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,15 +16,13 @@ import ru.kostenko.nework.ui.UsersFragment
 
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var hostFragment: NavHostFragment
-    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -38,13 +33,7 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         val navController = hostFragment.navController
 
-        appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.navigation_posts, R.id.navigation_events, R.id.navigation_users)
-        )
-
-        setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-
         binding.navView.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.navigation_posts -> {
@@ -70,10 +59,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//    override fun onSupportNavigateUp(): Boolean {
-//        return NavigationUI.navigateUp(hostFragment.navController, appBarConfiguration)
-//                || super.onSupportNavigateUp()
-//    }
 
     fun showFragment(fragmentName: String) {
         val fragmentManager: FragmentManager = supportFragmentManager
@@ -84,14 +69,14 @@ class MainActivity : AppCompatActivity() {
 
         // Фрагмент, который в данный момент отображен на экране
         var shownFragment: Fragment? = null
-        if (existingFragments != null) {
+//        if (existingFragments != null) {
             for (curFragment in existingFragments) {
                 if (curFragment.isVisible) {
                     shownFragment = curFragment
                     break
                 }
             }
-        }
+//        }
 
         // Фрагмент, который необходимо отобразить на экране
         var neededFragment: Fragment? = null
