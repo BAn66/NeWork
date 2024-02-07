@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FF6200EE</color>
-    <color name="colorPrimaryDark">#001CAE</color>
-    <color name="colorAccent">#00FFD9</color>
+    <color name="colorPrimary">#FEF7FF</color>
+    <color name="colorPrimaryDark">#6750A4</color>
+    <color name="colorAccent">#CAC4D0</color>
     <color name="colorWhite">#FFFFFF</color>
-    <color name="actionButton">#18FFFF</color>
+    <color name="actionButton">#EADDFF</color>
     <color name="ic_launcher_background">#FFFFFF</color>
     <color name="colorTransparent">#00000000</color>
     <color name="lightSkyBlue">#B0E0E6</color>

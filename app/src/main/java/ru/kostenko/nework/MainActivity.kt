@@ -28,7 +28,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -38,33 +37,31 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         val navController = hostFragment.navController
 
-        appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.navigation_posts, R.id.navigation_events, R.id.navigation_users)
-        )
+//        appBarConfiguration = AppBarConfiguration(
+//            setOf(R.id.navigation_posts, R.id.navigation_events, R.id.navigation_users)
+//        )
 
-        setupActionBarWithNavController(navController, appBarConfiguration)
+//        setupActionBarWithNavController(navController, appBarConfiguration)
+
         navView.setupWithNavController(navController)
 
+        /* Основное меню выбора */
         binding.navView.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.navigation_posts -> {
-//                    findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_posts)
                     showFragment("PostsFragment")
                     true
                 }
 
                 R.id.navigation_events -> {
-//                    findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_events)
                     showFragment("EventsFragment")
                     true
                 }
 
                 R.id.navigation_users -> {
-//                    findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_users)
                     showFragment("UsersFragment")
                     true
                 }
-
                 else -> false
             }
         }
@@ -75,6 +72,7 @@ class MainActivity : AppCompatActivity() {
 //                || super.onSupportNavigateUp()
 //    }
 
+    /** Функция показа определенной активити из нижнего меню*/
     fun showFragment(fragmentName: String) {
         val fragmentManager: FragmentManager = supportFragmentManager
         val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
