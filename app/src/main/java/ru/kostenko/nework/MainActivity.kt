@@ -19,7 +19,7 @@ import ru.kostenko.nework.ui.UsersFragment
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var hostFragment: NavHostFragment
+    private lateinit var navHostFragment: NavHostFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,9 +29,13 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         val navView: BottomNavigationView = binding.navView
 
-        hostFragment =
+
+
+        navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
-        val navController = hostFragment.navController
+        val navController = navHostFragment.navController
+
+
 
         navView.setupWithNavController(navController)
         binding.navView.setOnItemSelectedListener {

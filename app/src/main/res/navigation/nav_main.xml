@@ -11,81 +11,24 @@
         android:label="fragment_posts"
         tools:layout="@layout/fragment_posts" >
         <action
-            android:id="@+id/action_postsFragment_to_eventsFragment"
-            app:destination="@id/eventsFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out" />
-        <action
-            android:id="@+id/action_postsFragment_to_usersFragment"
-            app:destination="@id/usersFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out" />
-        <action
             android:id="@+id/action_postsFragment_to_authFragment"
-            app:destination="@id/authFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out"/>
+            app:destination="@id/authFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/eventsFragment"
         android:name="ru.kostenko.nework.ui.EventsFragment"
-        android:label="EventsFragment" >
-        <action
-            android:id="@+id/action_eventsFragment_to_postsFragment"
-            app:destination="@id/postsFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out" />
-        <action
-            android:id="@+id/action_eventsFragment_to_usersFragment"
-            app:destination="@id/usersFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out" />
-        <action
-            android:id="@+id/action_eventsFragment_to_authFragment"
-            app:destination="@id/authFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out"/>
+        android:label="EventsFragment"
+        tools:layout="@layout/fragment_events">
     </fragment>
 
     <fragment
         android:id="@+id/usersFragment"
         android:name="ru.kostenko.nework.ui.UsersFragment"
-        android:label="UsersFragment" >
-        <action
-            android:id="@+id/action_usersFragment_to_postsFragment"
-            app:destination="@id/postsFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out" />
-        <action
-            android:id="@+id/action_usersFragment_to_eventsFragment"
-            app:destination="@id/eventsFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out" />
-        <action
-            android:id="@+id/action_usersFragment_to_authFragment"
-            app:destination="@id/authFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out"/>
+        android:label="UsersFragment"
+        tools:layout="@layout/fragment_users">
     </fragment>
+
     <fragment
         android:id="@+id/authFragment"
         android:name="ru.kostenko.nework.ui.AuthFragment"
@@ -93,24 +36,6 @@
         tools:layout="@layout/fragment_auth" >
         <action
             android:id="@+id/action_authFragment_to_postsFragment"
-            app:destination="@id/postsFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out"/>
-        <action
-            android:id="@+id/action_authFragment_to_eventsFragment"
-            app:destination="@id/eventsFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out"/>
-        <action
-            android:id="@+id/action_authFragment_to_usersFragment"
-            app:destination="@id/usersFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out"/>
+            app:destination="@id/postsFragment" />
     </fragment>
 </navigation>

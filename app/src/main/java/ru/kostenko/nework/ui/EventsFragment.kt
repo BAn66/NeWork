@@ -30,7 +30,6 @@ class EventsFragment: Fragment() {
                 when (it.itemId) {
                     R.id.authentication -> {
                         Toast.makeText(this.context, "авторизуйся", Toast.LENGTH_SHORT).show()
-                        findNavController().navigate(R.id.action_eventsFragment_to_authFragment)
                         true
                     }
                     else -> false
