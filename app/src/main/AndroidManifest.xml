@@ -15,7 +15,7 @@
         android:usesCleartextTraffic="${usesClearTextTraffic}"
         tools:targetApi="34">
         <activity
-            android:name=".MainActivity"
+            android:name=".AppActivity"
             android:exported="true">
 <!--            <nav-graph android:value="@navigation/nav_main" />-->
 

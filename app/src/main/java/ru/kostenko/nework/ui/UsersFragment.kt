@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import ru.kostenko.nework.R
 import ru.kostenko.nework.databinding.FragmentUsersBinding
 
@@ -23,7 +22,7 @@ class UsersFragment: Fragment() {
             val binding = FragmentUsersBinding.inflate(layoutInflater)
 
             /*Верхнее меню*/
-            toolbar_users = binding.root.findViewById<Toolbar>(R.id.toolbar)
+            toolbar_users = binding.toolbar
             toolbar_users.apply{
                 setTitle(R.string.app_name)
                 inflateMenu(R.menu.auth_menu)

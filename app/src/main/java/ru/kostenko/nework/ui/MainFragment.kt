@@ -21,8 +21,7 @@ class MainFragment : Fragment() {
 
         val navController = requireNotNull(
             childFragmentManager.findFragmentById(R.id.nav_host_fragment_main)
-        )
-            .findNavController()
+        ).findNavController()
 
         binding.navView.setupWithNavController(navController)
 

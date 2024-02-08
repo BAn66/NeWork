@@ -4,11 +4,8 @@ package ru.kostenko.nework
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 
-
-
-
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(R.layout.activity_main)
+class AppActivity : AppCompatActivity(R.layout.activity_app)
 //{
 //    private lateinit var binding: ActivityMainBinding
 ////    private lateinit var navHostFragment: NavHostFragment
