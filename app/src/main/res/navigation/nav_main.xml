@@ -17,6 +17,12 @@
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out"/>
+        <action
+            android:id="@+id/action_postsFragment_to_eventsFragment"
+            app:destination="@id/eventsFragment" />
+        <action
+            android:id="@+id/action_postsFragment_to_usersFragment"
+            app:destination="@id/usersFragment" />
     </fragment>
 
     <fragment
@@ -31,6 +37,12 @@
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out"/>
+        <action
+            android:id="@+id/action_eventsFragment_to_postsFragment"
+            app:destination="@id/postsFragment" />
+        <action
+            android:id="@+id/action_eventsFragment_to_usersFragment"
+            app:destination="@id/usersFragment" />
     </fragment>
 
     <fragment
@@ -45,6 +57,12 @@
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out"/>
+        <action
+            android:id="@+id/action_usersFragment_to_postsFragment"
+            app:destination="@id/postsFragment" />
+        <action
+            android:id="@+id/action_usersFragment_to_eventsFragment"
+            app:destination="@id/eventsFragment" />
     </fragment>
     <fragment
         android:id="@+id/authFragment"

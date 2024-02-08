@@ -2,17 +2,14 @@ package ru.kostenko.nework
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
+
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import ru.kostenko.nework.databinding.ActivityMainBinding
-import ru.kostenko.nework.ui.PostsFragment
-import ru.kostenko.nework.ui.EventsFragment
-import ru.kostenko.nework.ui.UsersFragment
+
 
 
 @AndroidEntryPoint
@@ -27,34 +24,33 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navView: BottomNavigationView = binding.navView
-
-
-
         navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         val navController = navHostFragment.navController
 
+        if (savedInstanceState == null) {
+            findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.postsFragment)
+        }
 
-
+        val navView: BottomNavigationView = binding.navView
         navView.setupWithNavController(navController)
         binding.navView.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.navigation_posts -> {
-//                    findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_posts)
-                    showFragment("PostsFragment")
+                    findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.postsFragment)
+//                    showFragment("PostsFragment")
                     true
                 }
 
                 R.id.navigation_events -> {
-//                    findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_events)
-                    showFragment("EventsFragment")
+                    findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.eventsFragment)
+//                    showFragment("EventsFragment")
                     true
                 }
 
                 R.id.navigation_users -> {
-//                    findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_users)
-                    showFragment("UsersFragment")
+                    findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.usersFragment)
+//                    showFragment("UsersFragment")
                     true
                 }
 
@@ -64,74 +60,74 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     }
 
 
-    fun showFragment(fragmentName: String) {
-        val fragmentManager: FragmentManager = supportFragmentManager
-        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-
-        // Получаем список фрагментов, которые находятся в FragmentManager
-        val existingFragments = fragmentManager.getFragments() as ArrayList<Fragment>
-
-        // Фрагмент, который в данный момент отображен на экране
-        var shownFragment: Fragment? = null
-//        if (existingFragments != null) {
-            for (curFragment in existingFragments) {
-                if (curFragment.isVisible) {
-                    shownFragment = curFragment
-                    break
-                }
-            }
+//    fun showFragment(fragmentName: String) {
+//        val fragmentManager: FragmentManager = supportFragmentManager
+//        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+//
+//        // Получаем список фрагментов, которые находятся в FragmentManager
+//        val existingFragments = fragmentManager.getFragments() as ArrayList<Fragment>
+//
+//        // Фрагмент, который в данный момент отображен на экране
+//        var shownFragment: Fragment? = null
+////        if (existingFragments != null) {
+//            for (curFragment in existingFragments) {
+//                if (curFragment.isVisible) {
+//                    shownFragment = curFragment
+//                    break
+//                }
+//            }
+////        }
+//
+//        // Фрагмент, который необходимо отобразить на экране
+//        var neededFragment: Fragment? = null
+//
+//        // Если в данный момент на экране не отображен ни один фрагмент, либо отображен, но не тот, который требуется показать
+//        if (shownFragment == null || shownFragment.javaClass.simpleName != fragmentName) {
+//
+//            // Проверяем, есть ли фрагмент, который нужно отобразить, в FragmentManager
+//            if (shownFragment != null) neededFragment =
+//                fragmentManager.findFragmentByTag(fragmentName)
+//
+//            // Если нужного фрагмента нет, то создаем его и добавляем в FragmentManager
+//            if (neededFragment == null) {
+//                when (fragmentName) {
+//                    "PostsFragment" -> {
+//                        neededFragment = PostsFragment()
+//                        fragmentTransaction.add(
+//                            R.id.container,
+//                            neededFragment,
+//                            "FragmentOne"
+//                        )
+//                    }
+//
+//                    "EventsFragment" -> {
+//                        neededFragment = EventsFragment()
+//                        fragmentTransaction.add(
+//                            R.id.container,
+//                            neededFragment,
+//                            "FragmentTwo"
+//                        )
+//                    }
+//
+//                    "UsersFragment" -> {
+//                        neededFragment = UsersFragment()
+//                        fragmentTransaction.add(
+//                            R.id.container,
+//                            neededFragment,
+//                            "FragmentThree"
+//                        )
+//                    }
+//                }
+//            }
+//
+//            // Скрываем старый фрагмент
+//            if (shownFragment != null) fragmentTransaction.hide(shownFragment)
+//
+//            // Показываем новый фрагмент
+//            if (neededFragment != null) {
+//                fragmentTransaction.show(neededFragment)
+//            }
+//            fragmentTransaction.commit()
 //        }
-
-        // Фрагмент, который необходимо отобразить на экране
-        var neededFragment: Fragment? = null
-
-        // Если в данный момент на экране не отображен ни один фрагмент, либо отображен, но не тот, который требуется показать
-        if (shownFragment == null || shownFragment.javaClass.simpleName != fragmentName) {
-
-            // Проверяем, есть ли фрагмент, который нужно отобразить, в FragmentManager
-            if (shownFragment != null) neededFragment =
-                fragmentManager.findFragmentByTag(fragmentName)
-
-            // Если нужного фрагмента нет, то создаем его и добавляем в FragmentManager
-            if (neededFragment == null) {
-                when (fragmentName) {
-                    "PostsFragment" -> {
-                        neededFragment = PostsFragment()
-                        fragmentTransaction.add(
-                            R.id.container,
-                            neededFragment,
-                            "FragmentOne"
-                        )
-                    }
-
-                    "EventsFragment" -> {
-                        neededFragment = EventsFragment()
-                        fragmentTransaction.add(
-                            R.id.container,
-                            neededFragment,
-                            "FragmentTwo"
-                        )
-                    }
-
-                    "UsersFragment" -> {
-                        neededFragment = UsersFragment()
-                        fragmentTransaction.add(
-                            R.id.container,
-                            neededFragment,
-                            "FragmentThree"
-                        )
-                    }
-                }
-            }
-
-            // Скрываем старый фрагмент
-            if (shownFragment != null) fragmentTransaction.hide(shownFragment)
-
-            // Показываем новый фрагмент
-            if (neededFragment != null) {
-                fragmentTransaction.show(neededFragment)
-            }
-            fragmentTransaction.commit()
-        }
-    }
+//    }
 }
