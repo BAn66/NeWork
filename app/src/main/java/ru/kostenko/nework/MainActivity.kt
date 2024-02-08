@@ -1,63 +1,61 @@
 package ru.kostenko.nework
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
-import ru.kostenko.nework.databinding.ActivityMainBinding
+
 
 
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(R.layout.activity_main) {
-
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var navHostFragment: NavHostFragment
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
-        val navController = navHostFragment.navController
-
-        if (savedInstanceState == null) {
-            findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.postsFragment)
-        }
-
-        val navView: BottomNavigationView = binding.navView
-        navView.setupWithNavController(navController)
-        binding.navView.setOnItemSelectedListener {
-            when (it.itemId) {
-                R.id.navigation_posts -> {
-                    findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.postsFragment)
-//                    showFragment("PostsFragment")
-                    true
-                }
-
-                R.id.navigation_events -> {
-                    findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.eventsFragment)
-//                    showFragment("EventsFragment")
-                    true
-                }
-
-                R.id.navigation_users -> {
-                    findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.usersFragment)
-//                    showFragment("UsersFragment")
-                    true
-                }
-
-                else -> false
-            }
-        }
-    }
+class MainActivity : AppCompatActivity(R.layout.activity_main)
+//{
+//    private lateinit var binding: ActivityMainBinding
+////    private lateinit var navHostFragment: NavHostFragment
+//
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//
+//        binding = ActivityMainBinding.inflate(layoutInflater)
+//        setContentView(binding.root)
+//
+////        navHostFragment =
+////            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
+////        val navController = navHostFragment.navController
+//
+////        if (savedInstanceState == null) {
+////            findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.postsFragment)
+////        }
+//
+//        val navView: BottomNavigationView = binding.navView
+//        navView.setupWithNavController(findNavController(R.id.nav_host_fragment_activity_main))
+//        binding.navView.setOnItemSelectedListener {
+//            when (it.itemId) {
+//                R.id.navigation_posts -> {
+//                    findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.postsFragment)
+////                    navController.navigate(R.id.postsFragment)
+////                    showFragment("PostsFragment")
+//                    true
+//                }
+//
+//                R.id.navigation_events -> {
+//                    findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.eventsFragment)
+////                    navController.navigate(R.id.eventsFragment)
+////                    showFragment("EventsFragment")
+//                    true
+//                }
+//
+//                R.id.navigation_users -> {
+//                    findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.usersFragment)
+////                    navController.navigate(R.id.usersFragment)
+////                    showFragment("UsersFragment")
+//                    true
+//                }
+//
+//                else -> false
+//            }
+//        }
+//    }
 
 
 //    fun showFragment(fragmentName: String) {
@@ -130,4 +128,4 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 //            fragmentTransaction.commit()
 //        }
 //    }
-}
+
