@@ -21,6 +21,7 @@ android {
             properties.load(rootProject.file("local.properties").newDataInputStream())
         }
         buildConfigField "String", "MAPKIT_API_KEY", "${properties.getProperty("MAPKIT_API_KEY","")}"
+        buildConfigField "String", "REQ_API_KEY", "${properties.getProperty("REQ_API_KEY","")}"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -38,11 +39,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             manifestPlaceholders.usesClearTextTraffic = false
-            buildConfigField "String", "BASE_URL", '"https://netomedia.ru"'
+            buildConfigField "String", "BASE_URL", '"http://94.228.125.136:8080"'
         }
         debug {
             manifestPlaceholders.usesClearTextTraffic = true
-            buildConfigField "String", "BASE_URL", '"http://10.0.2.2:9999"'
+            buildConfigField "String", "BASE_URL", '"http://94.228.125.136:8080"'
 //            buildConfigField "String", "BASE_URL", '"http://192.168.0.2:9999"' //Для телефона
 //            buildConfigField "String", "BASE_URL", '"http://127.0.0.1:9999"' //Для телефона
         }
