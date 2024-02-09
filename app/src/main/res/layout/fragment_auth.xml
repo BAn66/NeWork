@@ -13,64 +13,47 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="16dp"
         android:background="@color/colorPrimary"
         android:orientation="vertical"
-        android:layout_gravity="center_vertical"
-        android:weightSum="1">
+        android:layout_gravity="center_vertical">
 
-
-        <LinearLayout
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <EditText
+            android:layout_margin="8dp">
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editLogin"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:layout_weight="1"
-                android:ems="10"
                 android:hint="@string/login"
-                android:importantForAutofill="no"
-                android:inputType="textPersonName"
-                android:textAlignment="textStart"
-                android:textColor="@color/colorText"
-                android:textColorHint="@color/colorText">
+                />
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <requestFocus />
-            </EditText>
-        </LinearLayout>
-
-        <LinearLayout
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <EditText
+            android:layout_margin="8dp"
+            app:endIconMode="password_toggle"
+            app:helperTextEnabled="true"
+            app:helperText="@string/password_helper_text">
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editPassword"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:autofillHints="16dp"
-                android:ems="10"
                 android:hint="@string/password"
-                android:importantForAutofill="no"
-                android:inputType="textPassword"
-                android:textAlignment="textStart"
-                android:textColor="@color/colorText"
-                android:textColorHint="@color/colorText"
                 />
-
-        </LinearLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/login_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="@string/login" />
+            android:layout_margin="8dp"
+            android:text="@string/login"
+            />
 
         <TextView
             android:layout_width="match_parent"

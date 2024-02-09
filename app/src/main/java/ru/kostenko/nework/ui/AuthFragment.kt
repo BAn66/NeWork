@@ -8,17 +8,24 @@ import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import ru.kostenko.nework.R
 import ru.kostenko.nework.databinding.FragmentAuthBinding
+import ru.kostenko.nework.repossitory.AuthResultCode
 import ru.kostenko.nework.util.AndroidUtils.focusAndShowKeyboard
 import ru.kostenko.nework.util.StringArg
 import ru.kostenko.nework.viewmodel.LoginViewModel
 
+
 @AndroidEntryPoint
-class AuthFragment:Fragment() {
+class AuthFragment : Fragment() {
     private lateinit var toolbar_login: Toolbar
+
     companion object {
         var Bundle.textLogin by StringArg
         var Bundle.textPassword by StringArg
@@ -32,9 +39,8 @@ class AuthFragment:Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentAuthBinding.inflate(layoutInflater)
-
         toolbar_login = binding.toolbar
-        toolbar_login.apply{
+        toolbar_login.apply {
             setTitle(R.string.login)
             setNavigationIcon(R.drawable.arrow_back_24)
             setNavigationOnClickListener { view ->
@@ -58,6 +64,8 @@ class AuthFragment:Fragment() {
         binding.editLogin.focusAndShowKeyboard()
         binding.editPassword.focusAndShowKeyboard()
 
+
+
         binding.loginBtn.setOnClickListener {
             if (binding.editLogin.text.isNullOrBlank() && binding.editPassword.text.isNullOrBlank()) {
                 Toast.makeText(context, R.string.error_blank_auth, Toast.LENGTH_LONG).show()
@@ -66,11 +74,31 @@ class AuthFragment:Fragment() {
             } else if (binding.editPassword.text.isNullOrBlank()) {
                 Toast.makeText(context, R.string.error_blank_password, Toast.LENGTH_SHORT).show()
             } else {
-                viewModel.sendRequest(
-                    binding.editLogin.text.toString(),
-                    binding.editPassword.text.toString()
-                )
-                findNavController().navigate(R.id.action_authFragment_to_mainFragment)
+
+                viewLifecycleOwner.lifecycleScope.launch {
+                    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                        when (viewModel.sendRequest(
+                            binding.editLogin.text.toString(),
+                            binding.editPassword.text.toString()
+                        )) {
+                            AuthResultCode.IncorrectPassword -> Toast.makeText(
+                                context,
+                                "Неправильный логин или пароль",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            AuthResultCode.UserNotFound -> Toast.makeText(
+                                context,
+                                "Пользователь не найден",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            AuthResultCode.Success -> findNavController().navigate(R.id.action_authFragment_to_mainFragment)
+                            else -> Toast.makeText(context, "Unknown Error", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }
+                }
             }
         }
 

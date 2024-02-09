@@ -16,4 +16,5 @@
     <string name="error_blank_auth">Empty login and password fields</string>
     <string name="error_blank_username">Enter Login</string>
     <string name="error_blank_password">Enter Password</string>
+    <string name="password_helper_text">Password cannot be empty</string>
 </resources>

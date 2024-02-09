@@ -20,7 +20,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AppAuth@Inject constructor(
+class AppAuth @Inject constructor(
     @ApplicationContext
     private val context: Context
 )
@@ -67,7 +67,8 @@ class AppAuth@Inject constructor(
                 try {
                     val pushToken = PushToken(token ?: FirebaseMessaging.getInstance().token.await())
                     val entryPoint =
-                        EntryPointAccessors.fromApplication(context, SendPushTokenWorker.AppAuthEntryPoint::class.java) //запускаем воркер для постоянного запроса токена
+//                        EntryPointAccessors.fromApplication(context, SendPushTokenWorker.AppAuthEntryPoint::class.java) //запускаем воркер для постоянного запроса токена
+                    EntryPointAccessors.fromApplication(context, SendPushTokenWorker.AppAuthEntryPoint::class.java)
                     entryPoint.getApiService().sendPushToken(pushToken)
                 } catch (e: Exception) {
                     e.printStackTrace()

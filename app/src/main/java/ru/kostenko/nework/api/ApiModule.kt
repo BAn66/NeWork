@@ -13,8 +13,8 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
-import ru.kostenko.nework.authorization.AppAuth
 import ru.kostenko.nework.BuildConfig
+import ru.kostenko.nework.authorization.AppAuth
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneId
@@ -46,7 +46,9 @@ class ApiModule {
         .addInterceptor { chain ->
             appAuth.authStateFlow.value.token?.let { token ->
                 val newRequest = chain.request().newBuilder()
-                    .addHeader("Authorization", BuildConfig.REQ_API_KEY)
+//                    .addHeader("Authorization", "c1378193-bc0e-42c8-a502-b8d66d189617")
+//                    .addHeader("Authorization", BuildConfig.REQ_API_KEY)
+                    .addHeader("Api-Key", BuildConfig.REQ_API_KEY)
                     .build()
                 return@addInterceptor chain.proceed(newRequest)
             }

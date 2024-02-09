@@ -1,43 +1,66 @@
 package ru.kostenko.nework.repossitory
 
+
 import ru.kostenko.nework.api.ApiService
-import ru.kostenko.nework.dto.Token
+import ru.kostenko.nework.authorization.AppAuth
 import ru.kostenko.nework.error.*
 
 import java.io.IOException
 import javax.inject.Inject
 
 class PostRepositoryImpl @Inject constructor(
-    private val apiService: ApiService
-    //Для отслеживания кодов ошибок
-
-
-
+    private val apiService: ApiService,
+    private val appAuth: AppAuth
 ) : PostRepository {
-    //Для отслеживания кодов ошибок
-    private var responseErrMess: Pair<Int, String> = Pair(0, "")
-    override fun getErrMess(): Pair<Int, String> {
-        TODO("Not yet implemented")
-    }
+//    override suspend fun requestToken(login: String, password: String): Token {
+//        try {
+//            val response = apiService.updateUser(login, password)
+//            statusCode = response.code()
+//            Log.d("APIerrCODE", "requestToken Repository: ${statusCode}")
+//            AuthResult.Success
+//            if (!response.isSuccessful) {
+//                throw ApiError(response.code(), response.message())
+//            }
+//            val body = response.body() ?: throw ApiError(response.code(), response.message())
+//            return body
+//
+//        } catch (e: IOException) {
+//            throw NetworkError
+//
+//        } catch (e: Exception) {
+//            throw UnknownError
+//        }
+//    }
 
-    override suspend fun requestToken(login: String, password: String): Token {
+    override suspend fun auth(login: String, password: String): AuthResultCode {
         try {
             val response = apiService.updateUser(login, password)
-            if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
-            }
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
-            return body
+            return when (response.code()) {
+                404 -> AuthResultCode.UserNotFound
+                400 -> AuthResultCode.IncorrectPassword
+                200 -> {
+                    response.body()?.let {
+                        appAuth.setAuth(id = it.id, token = it.token)
+                    }
+                    AuthResultCode.Success
+                }
 
+                else -> AuthResultCode.UnknownError
+            }
         } catch (e: IOException) {
-            responseErrMess = Pair(NetworkError.code.toInt(), NetworkError.message.toString())
             throw NetworkError
 
         } catch (e: Exception) {
-            responseErrMess = Pair(UnknownError.code.toInt(), UnknownError.message.toString())
             throw UnknownError
         }
     }
 
 
+}
+
+sealed interface AuthResultCode {
+    data object Success : AuthResultCode
+    data object IncorrectPassword : AuthResultCode
+    data object UserNotFound : AuthResultCode
+    data object UnknownError : AuthResultCode
 }
