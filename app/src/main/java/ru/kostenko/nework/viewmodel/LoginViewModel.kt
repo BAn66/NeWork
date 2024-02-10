@@ -33,11 +33,11 @@ class LoginViewModel @Inject constructor(
             throw UnknownError
         }
     }
-    suspend fun sendRequest(login: String, password: String, name: String, avatar: PhotoModel): AuthResultCode {
+    suspend fun sendRequest(login: String, password: String, name: String): AuthResultCode {
         try {
             val photoModel = _photo.value
             if (photoModel != null) {
-                repository.registration(login, password, name, avatar)
+                repository.registration(login, password, name, photoModel)
             }
             return repository.authentication(login, password)
         } catch (e: IOException) {

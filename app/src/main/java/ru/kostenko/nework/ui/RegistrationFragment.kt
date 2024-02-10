@@ -10,8 +10,12 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.net.toFile
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
+import kotlinx.coroutines.launch
 import ru.kostenko.nework.R
 import ru.kostenko.nework.databinding.FragmentRegistrationBinding
 import ru.kostenko.nework.viewmodel.LoginViewModel
@@ -58,7 +62,16 @@ class RegistrationFragment: Fragment() {
         }
 
         binding.loginBtn.setOnClickListener {
-            findNavController().popBackStack()
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.sendRequest(
+                        binding.editLogin.text.toString(),
+                        binding.editPassword.text.toString(),
+                        binding.editName.text.toString()
+                    )
+                    findNavController().popBackStack()
+                }
+            }
         }
 
 
