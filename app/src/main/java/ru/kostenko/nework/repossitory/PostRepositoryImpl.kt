@@ -1,8 +1,11 @@
 package ru.kostenko.nework.repossitory
 
 
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import ru.kostenko.nework.api.ApiService
 import ru.kostenko.nework.authorization.AppAuth
+import ru.kostenko.nework.model.PhotoModel
 import ru.kostenko.nework.error.*
 
 import java.io.IOException
@@ -32,7 +35,7 @@ class PostRepositoryImpl @Inject constructor(
 //        }
 //    }
 
-    override suspend fun auth(login: String, password: String): AuthResultCode {
+    override suspend fun authentication(login: String, password: String): AuthResultCode {
         try {
             val response = apiService.updateUser(login, password)
             return when (response.code()) {
@@ -55,6 +58,30 @@ class PostRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun registration(login: String, password: String, name: String, avatar: PhotoModel): AuthResultCode {
+        try {
+            val part = MultipartBody.Part.createFormData("file", avatar.file.name, avatar.file.asRequestBody())
+            val response = apiService.newUser(login, password, name, part)
+            return when (response.code()) {
+                403 -> AuthResultCode.UserAlreadyRegister
+                415 -> AuthResultCode.WrongFormatMedia
+                400 -> AuthResultCode.UserAlreadyRegister
+                200 -> {
+                    response.body()?.let {
+                        appAuth.setAuth(id = it.id, token = it.token)
+                    }
+                    AuthResultCode.Success
+                }
+                else -> AuthResultCode.UnknownError
+            }
+        } catch (e: IOException) {
+            throw NetworkError
+
+        } catch (e: Exception) {
+            throw UnknownError
+        }
+    }
+
 
 }
 
@@ -62,5 +89,7 @@ sealed interface AuthResultCode {
     data object Success : AuthResultCode
     data object IncorrectPassword : AuthResultCode
     data object UserNotFound : AuthResultCode
+    data object UserAlreadyRegister : AuthResultCode
+    data object WrongFormatMedia: AuthResultCode
     data object UnknownError : AuthResultCode
 }
