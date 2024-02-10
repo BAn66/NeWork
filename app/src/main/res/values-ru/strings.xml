@@ -12,10 +12,12 @@
     <string name="description_shared">Share</string>
     <string name="description_play">Play</string>
     <string name="login">login</string>
+    <string name="registration">Registration</string>
     <string name="password">Password</string>
     <string name="notLoginText">Don\'t have an account? Register</string>
     <string name="error_blank_auth">Empty login and password fields</string>
     <string name="error_blank_username">Enter Login</string>
     <string name="error_blank_password">Enter Password</string>
     <string name="password_helper_text">Password cannot be empty</string>
+    <string name="nameText">Name</string>
 </resources>

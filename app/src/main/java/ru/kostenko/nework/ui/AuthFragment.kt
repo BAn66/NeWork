@@ -102,6 +102,10 @@ class AuthFragment : Fragment() {
             }
         }
 
+        binding.register.setOnClickListener{
+            findNavController().navigate(R.id.action_authFragment_to_registrationFragment)
+        }
+
         return binding.root
     }
 }
