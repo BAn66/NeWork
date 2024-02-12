@@ -20,4 +20,12 @@
     <string name="error_blank_password">Enter Password</string>
     <string name="password_helper_text">Password cannot be empty</string>
     <string name="nameText">Name</string>
+    <string name="error_blank_password_repeat_text">Eneter password repeat</string>
+    <string name="error_blank_pass_notequals_passre">Passwords must match</string>
+    <string name="error_blank_name">Enter your name</string>
+    <string name="wrong_login_or_pass">Wrong login or password</string>
+    <string name="user_not_found">User not found</string>
+    <string name="unknown_error">Unknown_error</string>
+    <string name="user_already_register">User already registered</string>
+    <string name="wrong_format_media">Wrong format media</string>
 </resources>

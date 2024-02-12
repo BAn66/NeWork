@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
 import androidx.core.net.toFile
@@ -18,6 +19,7 @@ import com.github.dhaval2404.imagepicker.ImagePicker
 import kotlinx.coroutines.launch
 import ru.kostenko.nework.R
 import ru.kostenko.nework.databinding.FragmentRegistrationBinding
+import ru.kostenko.nework.repossitory.AuthResultCode
 import ru.kostenko.nework.viewmodel.LoginViewModel
 
 class RegistrationFragment: Fragment() {
@@ -30,6 +32,10 @@ class RegistrationFragment: Fragment() {
                 val uri = it.data?.data ?: return@registerForActivityResult
                 val file = uri.toFile()
                 viewModel.setPhoto(uri, file)
+            } else if (it.resultCode == ImagePicker.RESULT_ERROR) {
+                Toast.makeText(context, ImagePicker.getError(it.data), Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "Task Cancelled", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -51,10 +57,17 @@ class RegistrationFragment: Fragment() {
 
         binding.avatar.setOnClickListener { //Берем фотку через галерею
             ImagePicker.Builder(this)
+                .galleryMimeTypes(
+                    mimeTypes = arrayOf(
+                        "image/png",
+                        "image/jpeg"
+                    )
+                )
                 .crop()
                 .galleryOnly()
                 .maxResultSize(2048, 2048)
                 .createIntent(photoResultContract::launch)
+
         }
 
         viewModel.photo.observe(viewLifecycleOwner) {
@@ -62,19 +75,50 @@ class RegistrationFragment: Fragment() {
         }
 
         binding.loginBtn.setOnClickListener {
-            viewLifecycleOwner.lifecycleScope.launch {
-                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.sendRequest(
-                        binding.editLogin.text.toString(),
-                        binding.editPassword.text.toString(),
-                        binding.editName.text.toString()
-                    )
-                    findNavController().popBackStack()
+            if (binding.editLogin.text.isNullOrBlank() && binding.editPassword.text.isNullOrBlank()) {
+                Toast.makeText(context, R.string.error_blank_auth, Toast.LENGTH_LONG).show()
+            } else if (binding.editLogin.text.isNullOrBlank()) {
+                Toast.makeText(context, R.string.error_blank_username, Toast.LENGTH_SHORT).show()
+            } else if (binding.editName.text.isNullOrBlank()) {
+                Toast.makeText(context, R.string.error_blank_name, Toast.LENGTH_SHORT).show()
+            } else if (binding.editPassword.text.isNullOrBlank()) {
+                Toast.makeText(context, R.string.error_blank_password, Toast.LENGTH_SHORT).show()
+            } else if (binding.editPasswordRepeat.text.isNullOrBlank()) {
+                Toast.makeText(context, R.string.error_blank_password_repeat_text, Toast.LENGTH_SHORT).show()
+            } else if (binding.editPasswordRepeat.text.toString() != binding.editPassword.text.toString()) {
+                Toast.makeText(context, R.string.error_blank_pass_notequals_passre, Toast.LENGTH_SHORT).show()
+            } else {
+
+                viewLifecycleOwner.lifecycleScope.launch {
+                    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                        when (viewModel.sendRequest(
+                            binding.editLogin.text.toString(),
+                            binding.editPassword.text.toString(),
+                            binding.editName.text.toString()
+                        )){
+                            AuthResultCode.UserAlreadyRegister -> Toast.makeText(
+                                context,
+                                R.string.user_already_register,
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            AuthResultCode.WrongFormatMedia -> Toast.makeText(
+                                context,
+                                R.string.wrong_format_media,
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            AuthResultCode.Success -> findNavController().navigate(R.id.action_authFragment_to_mainFragment)
+
+                            else -> Toast.makeText(context, R.string.unknown_error, Toast.LENGTH_SHORT)
+                                .show()
+                        }
+
+                    }
                 }
             }
+
         }
-
-
 
         return  binding.root
 

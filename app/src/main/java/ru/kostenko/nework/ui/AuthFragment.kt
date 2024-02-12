@@ -83,18 +83,18 @@ class AuthFragment : Fragment() {
                         )) {
                             AuthResultCode.IncorrectPassword -> Toast.makeText(
                                 context,
-                                "Неправильный логин или пароль",
+                                R.string.wrong_login_or_pass,
                                 Toast.LENGTH_SHORT
                             ).show()
 
                             AuthResultCode.UserNotFound -> Toast.makeText(
                                 context,
-                                "Пользователь не найден",
+                                R.string.user_not_found,
                                 Toast.LENGTH_SHORT
                             ).show()
 
                             AuthResultCode.Success -> findNavController().navigate(R.id.action_authFragment_to_mainFragment)
-                            else -> Toast.makeText(context, "Unknown Error", Toast.LENGTH_SHORT)
+                            else -> Toast.makeText(context, R.string.unknown_error, Toast.LENGTH_SHORT)
                                 .show()
                         }
                     }
