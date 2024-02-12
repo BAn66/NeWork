@@ -10,14 +10,14 @@ import ru.kostenko.nework.error.NetworkError
 import ru.kostenko.nework.error.UnknownError
 import ru.kostenko.nework.model.PhotoModel
 import ru.kostenko.nework.repository.AuthResultCode
-import ru.kostenko.nework.repository.PostRepositoryImpl
+import ru.kostenko.nework.repository.UserRepositoryImpl
 import java.io.File
 import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val repository: PostRepositoryImpl,
+    private val repository: UserRepositoryImpl,
 ) : ViewModel() {
 
     private val _photo = MutableLiveData<PhotoModel?>(null)  //Для картинок

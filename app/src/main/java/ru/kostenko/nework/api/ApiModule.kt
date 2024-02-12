@@ -43,18 +43,25 @@ class ApiModule {
         appAuth: AppAuth
     ): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(logging)
+        .addInterceptor { chain -> //Добавляем во все сообщения для сервера
+            chain.proceed(
+                chain.request()
+                    .newBuilder()
+                    .addHeader("Api-Key", BuildConfig.REQ_API_KEY)
+                    .build()
+            )
+        }
         .addInterceptor { chain ->
             appAuth.authStateFlow.value.token?.let { token ->
                 val newRequest = chain.request().newBuilder()
-//                    .addHeader("Authorization", BuildConfig.REQ_API_KEY)
-                    .addHeader("Api-Key", BuildConfig.REQ_API_KEY)
-//                    .addHeader("Api-Key","c1378193-bc0e-42c8-a502-b8d66d189617")
+                    .addHeader("Authorization", token)
                     .build()
                 return@addInterceptor chain.proceed(newRequest)
             }
             chain.proceed(chain.request())
         }
         .build()
+
 
     // и ретрофит
     @Singleton

@@ -1,9 +1,9 @@
 package ru.kostenko.nework.dto
 
 data class User(
-    val id: Int = 0,
+    override val id: Long = 0L,
     val login: String = "",
     val name: String = "",
     val avatar: String? = null
-)
+) : FeedItem{}
 
