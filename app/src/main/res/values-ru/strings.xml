@@ -26,6 +26,9 @@
     <string name="wrong_login_or_pass">Wrong login or password</string>
     <string name="user_not_found">User not found</string>
     <string name="unknown_error">Unknown_error</string>
-    <string name="user_already_register">User already registered</string>
+    <string name="user_already_register">Пользователь с таким логином уже зарегистрирован</string>
     <string name="wrong_format_media">Wrong format media</string>
+    <string name="user_avatar">user avatar</string>
+    <string name="user_name">User name</string>
+    <string name="user_login">Nik name</string>
 </resources>

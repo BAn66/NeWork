@@ -9,8 +9,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import ru.kostenko.nework.error.NetworkError
 import ru.kostenko.nework.error.UnknownError
 import ru.kostenko.nework.model.PhotoModel
-import ru.kostenko.nework.repossitory.AuthResultCode
-import ru.kostenko.nework.repossitory.PostRepositoryImpl
+import ru.kostenko.nework.repository.AuthResultCode
+import ru.kostenko.nework.repository.PostRepositoryImpl
 import java.io.File
 import java.io.IOException
 import javax.inject.Inject

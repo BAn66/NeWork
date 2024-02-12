@@ -5,15 +5,18 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Path
 import ru.kostenko.nework.dto.PushToken
 import ru.kostenko.nework.dto.Token
-import java.io.File
+import ru.kostenko.nework.dto.User
+
 
 interface ApiService {
-//    Авторизация
+//    Users
     @POST("users/push-tokens")
     suspend fun sendPushToken(@Body token: PushToken): Response<Unit>
 
@@ -32,4 +35,12 @@ interface ApiService {
         @Part("name") name: String,
         @Part file: MultipartBody.Part
     ):Response<Token> //Запрос на Registration
+
+    @GET("/api/users")
+    suspend fun getUsers(): Response<List<User>>
+
+    @GET("/api/users/{id}")
+    suspend fun getUserById(@Path("id") id: Int): Response<User>
+
+
 }

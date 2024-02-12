@@ -16,7 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import ru.kostenko.nework.R
 import ru.kostenko.nework.databinding.FragmentAuthBinding
-import ru.kostenko.nework.repossitory.AuthResultCode
+import ru.kostenko.nework.repository.AuthResultCode
 import ru.kostenko.nework.util.AndroidUtils.focusAndShowKeyboard
 import ru.kostenko.nework.util.StringArg
 import ru.kostenko.nework.viewmodel.LoginViewModel
@@ -43,7 +43,7 @@ class AuthFragment : Fragment() {
         toolbar_login.apply {
             setTitle(R.string.login)
             setNavigationIcon(R.drawable.arrow_back_24)
-            setNavigationOnClickListener { view ->
+            setNavigationOnClickListener {
                 findNavController().popBackStack()
             }
         }

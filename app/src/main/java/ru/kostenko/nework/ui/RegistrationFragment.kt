@@ -19,7 +19,7 @@ import com.github.dhaval2404.imagepicker.ImagePicker
 import kotlinx.coroutines.launch
 import ru.kostenko.nework.R
 import ru.kostenko.nework.databinding.FragmentRegistrationBinding
-import ru.kostenko.nework.repossitory.AuthResultCode
+import ru.kostenko.nework.repository.AuthResultCode
 import ru.kostenko.nework.viewmodel.LoginViewModel
 
 class RegistrationFragment: Fragment() {
@@ -49,7 +49,7 @@ class RegistrationFragment: Fragment() {
         toolbar_registration.apply {
             setTitle(R.string.registration)
             setNavigationIcon(R.drawable.arrow_back_24)
-            setNavigationOnClickListener { view ->
+            setNavigationOnClickListener {
                 findNavController().navigate(R.id.action_registrationFragment_to_mainFragment)
             }
         }
