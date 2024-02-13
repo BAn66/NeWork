@@ -9,6 +9,7 @@ import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
+import retrofit2.http.Query
 import ru.kostenko.nework.dto.Token
 import ru.kostenko.nework.dto.User
 
@@ -25,9 +26,9 @@ interface ApiService {
     @Multipart
     @POST("users/registration")
     suspend fun newUser(
-        @Part("login") login: String,
-        @Part("pass") pass: String,
-        @Part("name") name: String,
+        @Query("login") login: String,
+        @Query("pass") pass: String,
+        @Query("name") name: String,
         @Part file: MultipartBody.Part
     ):Response<Token> //Запрос на Registration
 
