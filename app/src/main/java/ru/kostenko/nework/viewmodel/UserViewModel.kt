@@ -3,30 +3,62 @@ package ru.kostenko.nework.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import ru.kostenko.nework.api.ApiService
+import ru.kostenko.nework.dto.User
 import ru.kostenko.nework.model.FeedModelState
-import ru.kostenko.nework.repository.UserRepository
+import ru.kostenko.nework.repository.UserRepositoryImpl
 import javax.inject.Inject
 
+@HiltViewModel
 class UserViewModel @Inject constructor(
-    private val userRepository: UserRepository,
-    private val ApiService: ApiService,
+    private val userRepositoryImpl: UserRepositoryImpl,
 ) : ViewModel() {
 
-    private val _dataState = MutableLiveData(FeedModelState()) //Состояние
+    val data: LiveData<List<User>> =
+        userRepositoryImpl.data
+            .asLiveData(Dispatchers.Default)
+
+
+    private val _dataState = MutableLiveData<FeedModelState>()
     val dataState: LiveData<FeedModelState>
         get() = _dataState
 
-fun loadUsers() = viewModelScope.launch{
-    try {
-        _dataState.value = FeedModelState(loading = true)
-        userRepository.getUsers()
-        _dataState.value = FeedModelState()
-    } catch (e: Exception) {
-        _dataState.value = FeedModelState(error = true)
-    }
-}
+    private val _user = MutableLiveData<User>()
+    val user: LiveData<User>
+        get() = _user
 
+    private val _userIds = MutableLiveData<Set<Int>>()
+    val userIds: LiveData<Set<Int>>
+        get() = _userIds
+
+    init {
+        getUsers()
+    }
+
+    private fun getUsers() = viewModelScope.launch {
+        _dataState.postValue(FeedModelState(loading = true))
+        try {
+            userRepositoryImpl.getUsers()
+            _dataState.postValue(FeedModelState())
+        } catch (e: Exception) {
+            _dataState.value = FeedModelState(error = true)
+        }
+    }
+
+    fun getUserById(id: Long) = viewModelScope.launch {
+        _dataState.postValue(FeedModelState(loading = true))
+        try {
+            _user.value = userRepositoryImpl.getUserById(id)
+            _dataState.postValue(FeedModelState())
+        } catch (e: Exception) {
+            _dataState.postValue(FeedModelState(error = true))
+        }
+    }
+
+    fun getUsersIds(set: Set<Int>) =
+        viewModelScope.launch { _userIds.value = set }
 }

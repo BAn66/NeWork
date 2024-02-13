@@ -43,14 +43,6 @@ class ApiModule {
         appAuth: AppAuth
     ): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(logging)
-        .addInterceptor { chain -> //Добавляем во все сообщения для сервера
-            chain.proceed(
-                chain.request()
-                    .newBuilder()
-                    .addHeader("Api-Key", BuildConfig.REQ_API_KEY)
-                    .build()
-            )
-        }
         .addInterceptor { chain ->
             appAuth.authStateFlow.value.token?.let { token ->
                 val newRequest = chain.request().newBuilder()
@@ -59,6 +51,14 @@ class ApiModule {
                 return@addInterceptor chain.proceed(newRequest)
             }
             chain.proceed(chain.request())
+        }
+        .addInterceptor { chain -> //Добавляем во все сообщения для сервера
+            chain.proceed(
+                chain.request()
+                    .newBuilder()
+                    .addHeader("Api-Key", BuildConfig.REQ_API_KEY)
+                    .build()
+            )
         }
         .build()
 

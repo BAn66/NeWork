@@ -21,7 +21,6 @@ import ru.kostenko.nework.util.AndroidUtils.focusAndShowKeyboard
 import ru.kostenko.nework.util.StringArg
 import ru.kostenko.nework.viewmodel.LoginViewModel
 
-
 @AndroidEntryPoint
 class AuthFragment : Fragment() {
     private lateinit var toolbar_login: Toolbar

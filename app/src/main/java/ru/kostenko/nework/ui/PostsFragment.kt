@@ -1,6 +1,5 @@
 package ru.kostenko.nework.ui
 
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import dagger.hilt.android.AndroidEntryPoint
 import ru.kostenko.nework.databinding.FragmentPostsBinding
-
 
 @AndroidEntryPoint
 class PostsFragment : Fragment() {

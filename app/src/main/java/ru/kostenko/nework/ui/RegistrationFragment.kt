@@ -16,12 +16,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import ru.kostenko.nework.R
 import ru.kostenko.nework.databinding.FragmentRegistrationBinding
 import ru.kostenko.nework.repository.AuthResultCode
 import ru.kostenko.nework.viewmodel.LoginViewModel
 
+@AndroidEntryPoint
 class RegistrationFragment: Fragment() {
     private lateinit var toolbar_registration: Toolbar
     private val viewModel: LoginViewModel by activityViewModels()

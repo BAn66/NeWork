@@ -1,17 +1,28 @@
 package ru.kostenko.nework.adapter
 
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.ColorFilter
+import android.graphics.Paint
+import android.graphics.PixelFormat
+import android.graphics.drawable.Drawable
+import android.text.TextPaint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.graphics.ColorUtils
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import ru.kostenko.nework.R
 import ru.kostenko.nework.databinding.CardUserBinding
 import ru.kostenko.nework.dto.User
+import kotlin.properties.Delegates
+import kotlin.random.Random
 
 
 interface OnUsersInteractionListener {
-    fun onOpenProfile(user: User)
+    fun getUserDetals(user: User)
 }
 
 class UserViewHolder(
@@ -23,15 +34,29 @@ class UserViewHolder(
         binding.apply {
             userName.text = user.name
             userLogin.text = user.login
-            Glide.with(avatar)
-                .load(user.avatar)
-                .error(userName.text.substring(0, 1).uppercase())
-                .timeout(10_000)
-                .circleCrop()
-                .into(avatar)
+
+            if (userName.text.length < 1) {
+                Glide.with(avatar)
+                    .load(R.drawable.post_avatar_drawable)
+                    .error(R.drawable.post_avatar_drawable)
+                    .timeout(10_000)
+                    .circleCrop()
+                    .into(avatar)
+            } else {
+                val drawable = TextIconDrawable().apply {
+                    text = user.name.substring(0, 1).uppercase()
+                    textColor = Color.BLACK
+                }
+                Glide.with(avatar)
+                    .load(user.avatar)
+                    .error(drawable)
+                    .timeout(10_000)
+                    .circleCrop()
+                    .into(avatar)
+            }
 
             avatar.setOnClickListener {
-                onUsersInteractionListener.onOpenProfile(user)
+                onUsersInteractionListener.getUserDetals(user)
             }
         }
     }
@@ -60,4 +85,44 @@ class UsersAdapter(
         val item = getItem(position) ?: return
         holder.bind(item)
     }
+}
+
+class TextIconDrawable : Drawable() {
+    private var alpha = 255
+    private var textPaint = TextPaint().apply {
+        textAlign = Paint.Align.CENTER
+//        textSize = this.textSize
+    }
+    var text by Delegates.observable("") { _, _, _ -> invalidateSelf() }
+    var textColor by Delegates.observable(Color.BLACK) { _, _, _ -> invalidateSelf() }
+
+    private fun fitText(width: Int) {
+        textPaint.textSize = 8f
+        val widthAt8 = textPaint.measureText(text)
+        textPaint.textSize = 8f / widthAt8 * (width /2F)
+    }
+
+    override fun draw(canvas: Canvas) {
+        val width = bounds.width()
+        val height = bounds.height()
+
+        fitText(width)
+        textPaint.color = ColorUtils.setAlphaComponent(textColor, alpha)
+//        canvas.drawText(text, width / 2f, height / 2f, textPaint)
+
+        canvas.drawColor(generateRandomColor())
+        canvas.drawText(text, width / 2f, height / 1.30f, textPaint)
+    }
+
+    override fun setAlpha(alpha: Int) {
+        this.alpha = alpha
+    }
+
+    override fun setColorFilter(colorFilter: ColorFilter?) {
+        textPaint.colorFilter = colorFilter
+    }
+
+    override fun getOpacity(): Int = PixelFormat.TRANSLUCENT
+
+    private fun generateRandomColor() = Random.nextInt(0xFF000000.toInt(), 0xFFFFFFFF.toInt())
 }

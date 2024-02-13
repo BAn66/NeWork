@@ -1,21 +1,14 @@
 package ru.kostenko.nework.authorization
 
 import android.content.Context
-import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
-import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 import ru.kostenko.nework.api.ApiService
-import ru.kostenko.nework.dto.PushToken
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -42,7 +35,6 @@ class AppAuth @Inject constructor(
                 putString("token", token)
                 commit()
             }
-            sendPushToken()
         }
 
         @Synchronized
@@ -52,7 +44,6 @@ class AppAuth @Inject constructor(
                 clear()
                 commit()
             }
-            sendPushToken()
         }
 
         @InstallIn(SingletonComponent::class)
@@ -61,20 +52,7 @@ class AppAuth @Inject constructor(
             fun getApiService(): ApiService
         }
 
-        fun sendPushToken(token: String? = null) { //PUSHes // запускается при каком либо изменении авторизации (добавил в методах выше)
-            //отправка токена отсюда
-            CoroutineScope(Dispatchers.Default).launch {
-                try {
-                    val pushToken = PushToken(token ?: FirebaseMessaging.getInstance().token.await())
-                    val entryPoint =
-//                        EntryPointAccessors.fromApplication(context, SendPushTokenWorker.AppAuthEntryPoint::class.java) //запускаем воркер для постоянного запроса токена
-                    EntryPointAccessors.fromApplication(context, SendPushTokenWorker.AppAuthEntryPoint::class.java)
-                    entryPoint.getApiService().sendPushToken(pushToken)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-        }
+
 
         val authStateFlow: StateFlow<AuthState> = _authState.asStateFlow()
 }
