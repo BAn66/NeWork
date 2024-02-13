@@ -1,5 +1,6 @@
 package ru.kostenko.nework.adapter
 
+import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.ColorFilter
@@ -109,9 +110,11 @@ class TextIconDrawable : Drawable() {
         fitText(width)
         textPaint.color = ColorUtils.setAlphaComponent(textColor, alpha)
 //        canvas.drawText(text, width / 2f, height / 2f, textPaint)
-
-        canvas.drawColor(generateRandomColor())
-        canvas.drawText(text, width / 2f, height / 1.30f, textPaint)
+        val color = Color.parseColor("#6750A4")
+//        Color.parseColor("#FFFEF7FF")
+        canvas.drawColor(color)
+//        canvas.drawColor(Color.parseColor("#FFFEF7FF"))
+        canvas.drawText(text, width / 2f, height / 1.35f, textPaint)
     }
 
     override fun setAlpha(alpha: Int) {

@@ -35,7 +35,7 @@ class UsersFragment : Fragment() {
             override fun getUserDetals(user: User) {
                 viewLifecycleOwner.lifecycleScope.launch {
                     viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                        userViewModel.getUserById(user.id).join()
+                        userViewModel.getUserById(user.id).join()
                         Toast.makeText(context, "Переход на экран пользователя", Toast.LENGTH_SHORT)
                             .show()
 //                        findNavController().navigate(R.id.userProfileFragment)
