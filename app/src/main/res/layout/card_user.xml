@@ -5,7 +5,7 @@
     android:id="@+id/card_user"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/layout_margin"
+    android:layout_margin="@dimen/card_margin"
     android:clickable="true"
     android:focusable="true"
     app:cardCornerRadius="@dimen/card_corner_radius"
@@ -14,25 +14,25 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/common_pudding">
+        android:padding="@dimen/common_pudding_8dp">
 
         <androidx.cardview.widget.CardView
-            app:cardCornerRadius="@dimen/posts_avatar_round"
-            app:cardElevation="0dp"
             android:id="@+id/avatar_card_view"
+            android:layout_marginStart="@dimen/common_pudding_8dp"
             android:layout_width="@dimen/posts_avatar_size"
             android:layout_height="@dimen/posts_avatar_size"
+            app:cardCornerRadius="@dimen/posts_avatar_round"
+            app:cardElevation="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/avatar"
-                android:layout_width="@dimen/posts_avatar_size"
-                android:layout_height="@dimen/posts_avatar_size"
-                android:scaleType="centerCrop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:contentDescription="@string/user_avatar"
-
+                android:scaleType="centerCrop"
                 tools:src="@mipmap/ic_launcher" />
 
         </androidx.cardview.widget.CardView>

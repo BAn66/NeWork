@@ -46,7 +46,7 @@ class UserViewHolder(
             } else {
                 val drawable = TextIconDrawable().apply {
                     text = user.name.substring(0, 1).uppercase()
-                    textColor = Color.BLACK
+                    textColor = Color.WHITE
                 }
                 Glide.with(avatar)
                     .load(user.avatar)
@@ -95,12 +95,12 @@ class TextIconDrawable : Drawable() {
 //        textSize = this.textSize
     }
     var text by Delegates.observable("") { _, _, _ -> invalidateSelf() }
-    var textColor by Delegates.observable(Color.BLACK) { _, _, _ -> invalidateSelf() }
+    var textColor by Delegates.observable(Color.WHITE) { _, _, _ -> invalidateSelf() }
 
     private fun fitText(width: Int) {
-        textPaint.textSize = 8f
-        val widthAt8 = textPaint.measureText(text)
-        textPaint.textSize = 8f / widthAt8 * (width /2F)
+        textPaint.textSize = 16f
+        val widthAt16 = textPaint.measureText(text)
+        textPaint.textSize = 16f / widthAt16 * (width /4F)
     }
 
     override fun draw(canvas: Canvas) {
@@ -114,7 +114,7 @@ class TextIconDrawable : Drawable() {
 //        Color.parseColor("#FFFEF7FF")
         canvas.drawColor(color)
 //        canvas.drawColor(Color.parseColor("#FFFEF7FF"))
-        canvas.drawText(text, width / 2f, height / 1.35f, textPaint)
+        canvas.drawText(text, width / 2f, height / 1.5f, textPaint)
     }
 
     override fun setAlpha(alpha: Int) {
