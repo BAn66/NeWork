@@ -17,14 +17,13 @@ class Converters {
         else data.split("-").map { it.toInt() }.toSet()
 
     @TypeConverter
-    fun fromString(value: String?): ArrayList<UserPreview> {
-        val listType = object : TypeToken<ArrayList<String?>?>() {}.type
-        val users: ArrayList<UserPreview> = Gson().fromJson(value, listType)
-        return users
+    fun fromString(value: String?): ArrayList<UserPreview>? {
+        val listType = object : TypeToken<ArrayList<UserPreview>?>() {}.type
+        return Gson().fromJson(value, listType)
     }
 
     @TypeConverter
-    fun fromArrayList(list: ArrayList<UserPreview?>?): String? {
+    fun fromArrayList(list: ArrayList<UserPreview>?): String? {
         val gson = Gson()
         return gson.toJson(list)
     }

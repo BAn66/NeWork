@@ -1,7 +1,7 @@
 package ru.kostenko.nework.dto
 
 data class UserPreview (
-    val name: String,
-    val avatar:String
+    val idUser: Int,
+    val nameAvatar: Pair<String, String>,
 ){
 }

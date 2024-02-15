@@ -106,13 +106,13 @@ data class CoordsEntity(
 
 @Entity
 data class UsersPreviewEntity(
-    val name: String,
-    val avatar: String
+    val idUser: Int,
+    val nameAvatar: Pair<String, String>
 ){
-    fun toDto() = UserPreview(name, avatar)
+    fun toDto() = UserPreview(idUser, nameAvatar)
     companion object {
         fun fromDto(dto: UserPreview?): UsersPreviewEntity? {
-            return if (dto != null) UsersPreviewEntity(dto.name, dto.avatar) else null
+            return if (dto != null) UsersPreviewEntity(dto.idUser, dto.nameAvatar) else null
         }
     }
 }
