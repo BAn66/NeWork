@@ -22,16 +22,16 @@ class AppAuth @Inject constructor(
 
         private val _authState = MutableStateFlow<AuthState>(
             AuthState(
-                prefs.getLong("id", 0L),
+                prefs.getInt("id", 0),
                 prefs.getString("token", null)
             )
         )
 
         @Synchronized
-        fun setAuth(id: Long, token: String) {
+        fun setAuth(id: Int, token: String) {
             _authState.value = AuthState(id, token)
             with(prefs.edit()) {//запись в префс айди пользователя и токена для авторизации
-                putLong("id", id)
+                putLong("id", id.toLong())
                 putString("token", token)
                 commit()
             }
@@ -57,4 +57,4 @@ class AppAuth @Inject constructor(
         val authStateFlow: StateFlow<AuthState> = _authState.asStateFlow()
 }
 
-data class AuthState(val id: Long = 0L, val token: String? = null)
+data class AuthState(val id: Int = 0, val token: String? = null)

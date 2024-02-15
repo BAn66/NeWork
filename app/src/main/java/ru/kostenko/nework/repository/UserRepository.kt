@@ -9,5 +9,5 @@ interface UserRepository {
     suspend fun authentication(login: String, password: String): AuthResultCode
     suspend fun registration(login: String, password: String, name: String, avatar: PhotoModel): AuthResultCode
     suspend fun getUsers()
-    suspend fun getUserById(id: Long): User
+    suspend fun getUserById(id: Int): User
 }

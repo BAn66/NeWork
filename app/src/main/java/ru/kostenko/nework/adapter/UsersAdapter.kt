@@ -56,7 +56,7 @@ class UserViewHolder(
                     .into(avatar)
             }
 
-            avatar.setOnClickListener {
+            cardUser.setOnClickListener {
                 onUsersInteractionListener.getUserDetals(user)
             }
         }

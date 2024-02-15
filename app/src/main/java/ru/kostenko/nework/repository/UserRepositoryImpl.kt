@@ -93,7 +93,7 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getUserById(id: Long): User {
+    override suspend fun getUserById(id: Int): User {
         try {
             val response = apiService.getUserById(id.toInt())
             if (!response.isSuccessful) {

@@ -7,7 +7,7 @@ import ru.kostenko.nework.dto.User
 @Entity
 class UserEntity (
     @PrimaryKey(autoGenerate = true)
-    val id: Long,
+    val id: Int,
     val login: String,
     val name: String,
     val avatar: String? = null

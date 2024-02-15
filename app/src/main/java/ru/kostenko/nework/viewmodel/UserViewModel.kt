@@ -49,7 +49,7 @@ class UserViewModel @Inject constructor(
         }
     }
 
-    fun getUserById(id: Long) = viewModelScope.launch {
+    fun getUserById(id: Int) = viewModelScope.launch {
         _dataState.postValue(FeedModelState(loading = true))
         try {
             _user.value = userRepositoryImpl.getUserById(id)
