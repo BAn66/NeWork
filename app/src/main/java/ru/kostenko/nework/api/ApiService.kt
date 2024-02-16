@@ -78,4 +78,7 @@ interface ApiService {
     @POST("media")
     suspend fun saveMediaOnServer(@Part part: MultipartBody.Part): Response<Media>
 
+    //EVENTS
+
+
 }
