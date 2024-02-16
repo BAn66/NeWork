@@ -11,7 +11,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -21,12 +20,9 @@ import ru.kostenko.nework.dto.AttachmentType
 import ru.kostenko.nework.dto.FeedItem
 import ru.kostenko.nework.dto.MediaModel
 import ru.kostenko.nework.dto.Post
-import ru.kostenko.nework.error.UnknownError
 import ru.kostenko.nework.model.FeedModelState
-import ru.kostenko.nework.repository.PostRepository
 import ru.kostenko.nework.repository.PostRepositoryImpl
 import ru.kostenko.nework.util.SingleLiveEvent
-import java.io.File
 import java.io.InputStream
 import java.time.OffsetDateTime
 import javax.inject.Inject
@@ -47,7 +43,7 @@ private val empty = Post(
     ownedByMe = false,
     published = "",
     attachment = null,
-    users = arrayListOf()
+    users = mapOf()
 )
 
 @HiltViewModel

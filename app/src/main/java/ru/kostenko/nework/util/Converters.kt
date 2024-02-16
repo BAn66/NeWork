@@ -3,8 +3,6 @@ package ru.kostenko.nework.util
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import ru.kostenko.nework.dto.UserPreview
-import java.lang.reflect.Type
 
 
 class Converters {
@@ -17,26 +15,14 @@ class Converters {
         else data.split("-").map { it.toInt() }.toSet()
 
     @TypeConverter
-    fun fromString(value: String?): ArrayList<UserPreview>? {
-        val listType = object : TypeToken<ArrayList<UserPreview>?>() {}.type
-        return Gson().fromJson(value, listType)
+    fun fromString(value: String?): Map<Long, Pair<String, String>>? {
+        val mapType = object : TypeToken<Map<Long, Pair<String, String>>?>() {}.type
+        return Gson().fromJson(value, mapType)
     }
 
     @TypeConverter
-    fun fromArrayList(list: ArrayList<UserPreview>?): String? {
+    fun fromMap(map: Map<Long, Pair<String, String>>?): String? {
         val gson = Gson()
-        return gson.toJson(list)
+        return gson.toJson(map)
     }
-
-//    @TypeConverter
-//    fun toUserPreview(value: String?): UserPreview? {
-//        val listType: Type? = object : TypeToken<ArrayList<String?>?>() {}.type
-//        return Gson().fromJson(value, listType)
-//    }
-//
-//    @TypeConverter
-//    fun fromUserPreview(userPreview: UserPreview?): String? {
-//        val gson = Gson()
-//        return gson.toJson(userPreview)
-//    }
 }

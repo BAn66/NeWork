@@ -7,7 +7,6 @@ import ru.kostenko.nework.dto.Attachment
 import ru.kostenko.nework.dto.AttachmentType
 import ru.kostenko.nework.dto.Coords
 import ru.kostenko.nework.dto.Post
-import ru.kostenko.nework.dto.UserPreview
 
 
 @Entity
@@ -28,7 +27,7 @@ data class PostEntity(
     val likeOwnerIds:  Set<Int> = emptySet(),
     val likedByMe: Boolean = false,
     val ownedByMe: Boolean = false,
-    val users: ArrayList<UserPreview> = arrayListOf(),
+    val users: Map<Long, Pair<String, String>>  = mapOf(),
     @Embedded
     val attachment: AttachmentEntity? = null,
 ) {
@@ -102,21 +101,6 @@ data class CoordsEntity(
         }
     }
 }
-
-
-@Entity
-data class UsersPreviewEntity(
-    val idUser: Int,
-    val nameAvatar: Pair<String, String>
-){
-    fun toDto() = UserPreview(idUser, nameAvatar)
-    companion object {
-        fun fromDto(dto: UserPreview?): UsersPreviewEntity? {
-            return if (dto != null) UsersPreviewEntity(dto.idUser, dto.nameAvatar) else null
-        }
-    }
-}
-
 
 fun List<PostEntity>.toDto() = map { it.toDto() }
 fun List<Post>.toEntity() = map { PostEntity.fromDto(it) }

@@ -14,22 +14,17 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import ru.kostenko.nework.R
 import ru.kostenko.nework.adapter.MediaLifecycleObserver
 import ru.kostenko.nework.adapter.OnPostInteractionListener
 import ru.kostenko.nework.adapter.PostsAdapter
-//import ru.kostenko.nework.adapter.OnInteractionListener
-//import ru.kostenko.nework.adapter.PostsAdapter
 import ru.kostenko.nework.authorization.AppAuth
 import ru.kostenko.nework.databinding.FragmentPostsBinding
 import ru.kostenko.nework.dto.Post
 import ru.kostenko.nework.viewmodel.PostViewModel
-//import ru.kostenko.nework.viewmodel.PostViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -44,10 +39,11 @@ class PostsFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         val binding = FragmentPostsBinding.inflate(layoutInflater)
+        //TODO Сделать внизу поста цепочку аватаров лайкнувших
 
 //        работа с постом
         val adapter = PostsAdapter(object : OnPostInteractionListener {
-            override fun like(post: Post) {
+            override fun like(post: Post) { //TODO при лайке не авторизованным пользователем необходимо переходить на экран логина
                 postViewModel.likeById(post.id, post.likedByMe)
             }
 

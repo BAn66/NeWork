@@ -4,25 +4,22 @@ import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.annotation.SuppressLint
 import android.media.MediaPlayer
-import android.text.format.DateUtils.formatDateTime
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.BounceInterpolator
-import android.widget.ImageView
+import android.widget.MediaController
 import android.widget.PopupMenu
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import ru.kostenko.nework.AppActivity
-import ru.kostenko.nework.BuildConfig
 import ru.kostenko.nework.R
 import ru.kostenko.nework.databinding.CardPostBinding
 import ru.kostenko.nework.dto.AttachmentType
@@ -113,6 +110,21 @@ class PostViewHolder(
 //                    post.authorJob
 //                )
 //            } else author.text = post.author
+
+            play.setOnClickListener {
+                    videoContent.apply{
+                        setMediaController(MediaController( context))
+                        setVideoURI(
+                            Uri.parse(post.attachment!!.url)
+                        )
+                        setOnPreparedListener {
+                            start()
+                        }
+                        setOnCompletionListener {
+                            stopPlayback()
+                        }
+                    }
+                }
 
 
             playButton.setOnClickListener {

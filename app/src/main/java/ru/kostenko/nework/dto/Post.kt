@@ -1,7 +1,5 @@
 package ru.kostenko.nework.dto
 
-import java.time.OffsetDateTime
-
 data class Post(
     override val id: Int,
     val author: String = "",
@@ -17,7 +15,7 @@ data class Post(
     val likeOwnerIds: Set<Int> = emptySet(),
     val likedByMe: Boolean = false,
     val ownedByMe: Boolean = false,
-    val users: ArrayList<UserPreview>  = arrayListOf(),
+    val users: Map<Long, Pair<String, String>>  = mapOf(),
     val attachment: Attachment? = null,
 
     ): FeedItem
