@@ -20,5 +20,5 @@
     <dimen name="question">16sp</dimen>
     <dimen name="job_name">16sp</dimen>
     <dimen name="username_size">24sp</dimen>
-    <dimen name="card_margin">4dp</dimen>
+    <dimen name="card_margin">8dp</dimen>
 </resources>
