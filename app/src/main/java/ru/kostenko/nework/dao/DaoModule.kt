@@ -5,6 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import ru.kostenko.nework.db.AppDb
+import ru.netologia.nmedia.dao.EventDao
 import ru.netologia.nmedia.dao.PostDao
 
 @InstallIn(SingletonComponent::class)
@@ -17,5 +18,8 @@ object DaoModule {
     fun providePostDao(appDb: AppDb): PostDao = appDb.postDao()
 
     @Provides
-    fun providePostRemoteKeyDao(appDb: AppDb): PostRemoteKeyDao = appDb.postRemoteKeyDao()
+    fun providePostRemoteKeyDao(appDb: AppDb): RemoteKeyDao = appDb.postRemoteKeyDao()
+
+    @Provides
+    fun provideEventDao(appDb: AppDb): EventDao = appDb.eventDao()
 }

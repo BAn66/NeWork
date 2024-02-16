@@ -44,15 +44,15 @@ class PostsFragment : Fragment() {
 //        работа с постом
         val adapter = PostsAdapter(object : OnPostInteractionListener {
             override fun like(post: Post) { //TODO при лайке не авторизованным пользователем необходимо переходить на экран логина
-                postViewModel.likeById(post.id, post.likedByMe)
+                postViewModel.likePostById(post.id, post.likedByMe)
             }
 
             override fun remove(post: Post) {
-                postViewModel.removeById(post.id)
+                postViewModel.removePostById(post.id)
             }
 
             override fun edit(post: Post) {
-                postViewModel.edit(post)
+                postViewModel.editPost(post)
             }
 
             override fun openPost(post: Post) {

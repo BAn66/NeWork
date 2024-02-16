@@ -17,7 +17,7 @@ data class EventEntity(
     val authorJob: String? = "",
     val authorAvatar: String? = null,
     val content: String = "",
-    val datatime: String = "",
+    val datetime: String = "",
     val published: String = "",
     @Embedded
     val coords: CoordsEntity? = null,
@@ -41,7 +41,7 @@ data class EventEntity(
         authorJob,
         authorAvatar,
         content,
-        datatime,
+        datetime,
         published,
         coords?.toDto(),
         type,

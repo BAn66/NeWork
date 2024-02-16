@@ -73,7 +73,7 @@ class PostViewHolder(
                 .into(avatar)
 
             if (post.attachment != null) {
-                when (post.attachment.type) {
+                when (post.attachment.attachmentType) {
                     AttachmentType.IMAGE -> imageAttach.visibility = View.VISIBLE
                     AttachmentType.AUDIO -> audioGroup.visibility = View.VISIBLE
                     AttachmentType.VIDEO -> videoGroup.visibility = View.VISIBLE
@@ -85,13 +85,13 @@ class PostViewHolder(
             }
 
             imageAttach.visibility =
-                if (post.attachment != null && post.attachment.type == AttachmentType.IMAGE) View.VISIBLE else View.GONE
+                if (post.attachment != null && post.attachment.attachmentType == AttachmentType.IMAGE) View.VISIBLE else View.GONE
 
             audioGroup.visibility =
-                if (post.attachment != null && post.attachment.type == AttachmentType.AUDIO) View.VISIBLE else View.GONE
+                if (post.attachment != null && post.attachment.attachmentType == AttachmentType.AUDIO) View.VISIBLE else View.GONE
 
             videoGroup.visibility =
-                if (post.attachment != null && post.attachment.type == AttachmentType.VIDEO) View.VISIBLE else View.GONE
+                if (post.attachment != null && post.attachment.attachmentType == AttachmentType.VIDEO) View.VISIBLE else View.GONE
 
             post.attachment?.apply {
                 imageAttach.contentDescription = this.url
