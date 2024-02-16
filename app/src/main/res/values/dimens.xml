@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="common_pudding">16dp</dimen>
-    <dimen name="avatar_size">48dp</dimen>
-    <dimen name="count_pudding">8dp</dimen>
-    <dimen name="fab_margin">4dp</dimen>
-    <dimen name="activity_vertical_margin">16</dimen>
-    <dimen name="activity_horizontal_margin">16</dimen>
+    <dimen name="common_pudding_8dp">8dp</dimen>
+    <dimen name="posts_avatar_round">19dp</dimen>
+    <dimen name="posts_avatar_size">40dp</dimen>
+    <dimen name="profile_avatar_size">80dp</dimen>
+    <dimen name="register_avatar_size">64dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="common_margin">16dp</dimen>
+    <dimen name="elevation">8dp</dimen>
+    <dimen name="layout_margin">8dp</dimen>
+    <dimen name="attachment_spacing">12dp</dimen>
+    <dimen name="checkbox_padding_start">8dp</dimen>
+    <dimen name="icon_button_padding">12dp</dimen>
+    <dimen name="icon_button_min_size">48dp</dimen>
+    <dimen name="button_corner_radius">24dp</dimen>
+    <dimen name="card_corner_radius">8dp</dimen>
+    <dimen name="title">32sp</dimen>
+    <dimen name="question">16sp</dimen>
+    <dimen name="job_name">16sp</dimen>
+    <dimen name="username_size">24sp</dimen>
+    <dimen name="card_margin">8dp</dimen>
 </resources>

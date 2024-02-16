@@ -24,7 +24,7 @@ import javax.inject.Singleton
 @Module
 class ApiModule {
     companion object {
-        private const val BASE_URL = "${BuildConfig.BASE_URL}/"
+        private const val BASE_URL = "${BuildConfig.BASE_URL}/api/"
     }
     @Singleton
     @Provides
@@ -46,15 +46,22 @@ class ApiModule {
         .addInterceptor { chain ->
             appAuth.authStateFlow.value.token?.let { token ->
                 val newRequest = chain.request().newBuilder()
-//                    .addHeader("Authorization", "c1378193-bc0e-42c8-a502-b8d66d189617")
-//                    .addHeader("Authorization", BuildConfig.REQ_API_KEY)
-                    .addHeader("Api-Key", BuildConfig.REQ_API_KEY)
+                    .addHeader("Authorization", token)
                     .build()
                 return@addInterceptor chain.proceed(newRequest)
             }
             chain.proceed(chain.request())
         }
+        .addInterceptor { chain -> //Добавляем во все сообщения для сервера
+            chain.proceed(
+                chain.request()
+                    .newBuilder()
+                    .addHeader("Api-Key", BuildConfig.REQ_API_KEY)
+                    .build()
+            )
+        }
         .build()
+
 
     // и ретрофит
     @Singleton

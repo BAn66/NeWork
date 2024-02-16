@@ -11,10 +11,25 @@
     <string name="description_shared">Share</string>
     <string name="description_play">Play</string>
     <string name="login">Login</string>
+    <string name="registration">Registration</string>
     <string name="password">Password</string>
     <string name="notLoginText">Don\'t have an account? Register</string>
     <string name="error_blank_auth">Empty login and password fields</string>
     <string name="error_blank_username">Enter Login</string>
     <string name="error_blank_password">Enter Password</string>
     <string name="password_helper_text">Password cannot be empty</string>
+    <string name="nameText">Name</string>
+    <string name="error_blank_password_repeat_text">Eneter password repeat</string>
+    <string name="error_blank_pass_notequals_passre">Passwords must match</string>
+    <string name="error_blank_name">Enter your name</string>
+    <string name="wrong_login_or_pass">Wrong login or password</string>
+    <string name="user_not_found">User not found</string>
+    <string name="unknown_error">Unknown_error</string>
+    <string name="user_already_register">User already registered</string>
+    <string name="wrong_format_media">Wrong format media</string>
+    <string name="user_avatar">user avatar</string>
+    <string name="user_name">User name</string>
+    <string name="user_login">Nik name</string>
+    <string name="description_edit">Edit</string>
+    <string name="description_remove">Edit</string>
 </resources>
