@@ -12,6 +12,7 @@ import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
+import ru.kostenko.nework.dto.Event
 import ru.kostenko.nework.dto.Media
 import ru.kostenko.nework.dto.Post
 import ru.kostenko.nework.dto.Token
@@ -80,5 +81,40 @@ interface ApiService {
 
     //EVENTS
 
+    @GET("events")
+    suspend fun getAllEvents(): Response<List<Event>>
+
+    @POST("events")
+    suspend fun saveEvent(@Body event: Event): Response<Event>
+
+    @POST("events/{id}/participants")
+    suspend fun saveEventParticipants(@Path("id") id: Int): Response<Event>
+
+    @DELETE("events/{id}/participants")
+    suspend fun deleteEventParticipants(@Path("id") id: Int): Response<Event>
+
+    @POST("events/{id}/likes")
+    suspend fun likeEventById(@Path("id") id: Int): Response<Event>
+
+    @DELETE("events/{id}/likes")
+    suspend fun dislikeEventById(@Path("id") id: Int): Response<Event>
+
+    @GET("events/{id}/newer")
+    suspend fun getNewerEvents(@Path("id") id: Int): Response<List<Event>>
+
+    @GET("events/{id}/before") //Загружает посты до
+    suspend fun getBeforeEvent(@Path("id") id: Int, @Query("count") count: Int): Response<List<Event>>
+
+    @GET("events/{id}/after") //Загружает посты после
+    suspend fun getAfterEvent(@Path("id") id: Int, @Query("count") count: Int): Response<List<Event>>
+
+    @GET("events/{id}")
+    suspend fun getEventById(@Path("id") id: Int): Response<Event>
+
+    @DELETE("events/{id}")
+    suspend fun removeEventById(@Path("id") id: Int): Response<Unit>
+
+    @GET("events/latest")
+    suspend fun getLatestEvents(@Query("count") count: Int): Response<List<Event>>
 
 }

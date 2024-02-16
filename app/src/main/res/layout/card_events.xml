@@ -74,6 +74,37 @@
             app:barrierDirection="bottom"
             app:constraint_referenced_ids="published,avatar,author, menu" />
 
+        <TextView
+            android:id="@+id/type_event"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/common_margin"
+            android:layout_marginTop="@dimen/common_margin"
+            android:layout_marginBottom="0dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/date_time"
+            app:layout_constraintTop_toBottomOf="@id/barrier_audio"
+            tools:text="Online" />
+
+        <TextView
+            android:id="@+id/date_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/common_margin"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="@dimen/common_margin"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@id/barrier_event"
+            app:layout_constraintTop_toBottomOf="@id/type_event"
+            tools:text="@sample/posts.json/data/published" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier_event"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="date_time" />
 
         <TextView
             android:id="@+id/content"
@@ -81,7 +112,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/common_margin"
             android:autoLink="all"
-            app:layout_constraintTop_toBottomOf="@id/barrier_audio"
+            app:layout_constraintTop_toBottomOf="@id/barrier_event"
             tools:text="@sample/posts.json/data/content" />
 
         <androidx.constraintlayout.widget.Barrier

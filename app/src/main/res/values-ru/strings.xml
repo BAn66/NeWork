@@ -33,4 +33,7 @@
     <string name="user_login">Nik name</string>
     <string name="description_edit">Edit</string>
     <string name="description_remove">Edit</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="stop">Stop</string>
 </resources>
