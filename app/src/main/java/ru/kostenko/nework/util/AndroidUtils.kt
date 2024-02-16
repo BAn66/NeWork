@@ -45,4 +45,24 @@ object AndroidUtils {
                 })
         }
     }
+
+    fun eraseZero(number: Long): String {
+        var s = ""
+
+        when (number) {
+            in 0..999 -> s = number.toString()
+            in 1000..9999 -> s =
+                (number.toDouble() / 1000).toString().substring(0, number.toString().length - 1)
+                    .replace(".0", "") + "K"
+
+            in 10000..999999 -> s =
+                number.toString().substring(0, number.toString().length - 3) + "K"
+
+            in 1000000..Int.MAX_VALUE -> s =
+                (number.toDouble() / 1000000).toString().substring(0, number.toString().length - 4)
+                    .replace(".0", "") + "M"
+        }
+        return s
+    }
 }
+
