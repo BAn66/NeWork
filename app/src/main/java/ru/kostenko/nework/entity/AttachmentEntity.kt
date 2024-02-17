@@ -5,9 +5,9 @@ import ru.kostenko.nework.dto.AttachmentType
 
 data class AttachmentEntity(
     val url: String,
-    val attachmentType: AttachmentType,
+    val type: AttachmentType,
 ) {
-    fun toDto() = Attachment(url, attachmentType)
+    fun toDto() = Attachment(url, type)
 
     companion object {
         fun fromDto(dto: Attachment?) = dto?.let {
