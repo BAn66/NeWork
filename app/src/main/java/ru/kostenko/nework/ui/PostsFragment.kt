@@ -90,6 +90,7 @@ class PostsFragment : Fragment() {
 
         //        Работа редактирования через фрагменты (конкретно все в фрагменте NewPost)
         postViewModel.edited.observe(viewLifecycleOwner) { it ->// Начало редактирования
+//            Toast.makeText(this.context, "Переход на карточку поста", Toast.LENGTH_LONG).show()
             val resultId = it.id
             setFragmentResult("requestIdForNewPostFragment", bundleOf("id" to resultId))
             if (it.id != 0) {
