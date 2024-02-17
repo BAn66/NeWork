@@ -29,6 +29,8 @@ data class Event(
 enum class EventType(val str: String){
     OFFLINE("Offline"),
     ONLINE("Online")
+//OFFLINE(R.string.offline as String),
+//        ONLINE(R.string.online as String);
 }
 
 class DiffCallback : DiffUtil.ItemCallback<FeedItem>() {
