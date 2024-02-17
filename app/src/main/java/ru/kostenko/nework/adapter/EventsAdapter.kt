@@ -55,7 +55,7 @@ class EventsAdapter(
         fun bind(event: Event) {
             binding.apply {
                 author.text = event.author
-                published.text = event.published.toString()
+                published.text = event.published
                 content.text = event.content
                 typeEvent.text =event.type.str
                 dateTime.text = event.datetime
@@ -69,7 +69,7 @@ class EventsAdapter(
                     .into(avatar)
 
                 if (event.attachment != null) {
-                    when (event.attachment.attachmentType) {
+                    when (event.attachment.type) {
                         AttachmentType.IMAGE -> imageAttach.visibility = View.VISIBLE
                         AttachmentType.AUDIO -> audioGroup.visibility = View.VISIBLE
                         AttachmentType.VIDEO -> videoGroup.visibility = View.VISIBLE
@@ -81,13 +81,13 @@ class EventsAdapter(
                 }
 
                 imageAttach.visibility =
-                    if (event.attachment != null && event.attachment.attachmentType == AttachmentType.IMAGE) View.VISIBLE else View.GONE
+                    if (event.attachment != null && event.attachment.type == AttachmentType.IMAGE) View.VISIBLE else View.GONE
 
                 audioGroup.visibility =
-                    if (event.attachment != null && event.attachment.attachmentType == AttachmentType.AUDIO) View.VISIBLE else View.GONE
+                    if (event.attachment != null && event.attachment.type == AttachmentType.AUDIO) View.VISIBLE else View.GONE
 
                 videoGroup.visibility =
-                    if (event.attachment != null && event.attachment.attachmentType == AttachmentType.VIDEO) View.VISIBLE else View.GONE
+                    if (event.attachment != null && event.attachment.type == AttachmentType.VIDEO) View.VISIBLE else View.GONE
 
                 event.attachment?.apply {
                     imageAttach.contentDescription = this.url

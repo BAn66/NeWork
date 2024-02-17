@@ -19,15 +19,11 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.kostenko.nework.adapter.EventsAdapter
 import ru.kostenko.nework.adapter.OnEventInteractionListener
-import ru.kostenko.nework.adapter.OnPostInteractionListener
-import ru.kostenko.nework.adapter.PostsAdapter
 import ru.kostenko.nework.authorization.AppAuth
 import ru.kostenko.nework.databinding.FragmentEventsBinding
 import ru.kostenko.nework.dto.Event
-import ru.kostenko.nework.dto.Post
 import ru.kostenko.nework.util.MediaLifecycleObserver
 import ru.kostenko.nework.viewmodel.EventViewModel
-import ru.kostenko.nework.viewmodel.PostViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -83,7 +79,6 @@ class EventsFragment: Fragment() {
 
         //        Работа редактирования через фрагменты (конкретно все в фрагменте NewPost)
         eventViewModel.edited.observe(viewLifecycleOwner) { it ->// Начало редактирования
-            Toast.makeText(this.context, "Переход на карточку события", Toast.LENGTH_LONG).show()
             val resultId = it.id
             setFragmentResult("requestIdForNewPostFragment", bundleOf("id" to resultId))
             if (it.id != 0) {

@@ -11,7 +11,7 @@ data class AttachmentEntity(
 
     companion object {
         fun fromDto(dto: Attachment?) = dto?.let {
-            AttachmentEntity(dto.url,dto.attachmentType)
+            AttachmentEntity(dto.url,dto.type)
         }
     }
 }
