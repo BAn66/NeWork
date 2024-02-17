@@ -61,7 +61,7 @@ class PostRepositoryImpl @Inject constructor(
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            response.body() ?: throw ApiError(response.code(), response.message())
             // исключение не брошено меняем отметку о записи на сервере на тру
 
         } catch (e: IOException) {

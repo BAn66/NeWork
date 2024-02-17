@@ -57,6 +57,8 @@ class EventsAdapter(
                 author.text = event.author
                 published.text = event.published.toString()
                 content.text = event.content
+                typeEvent.text =event.type.str
+                dateTime.text = event.datetime
 
                 Glide.with(avatar)
                     .load(event.authorAvatar)

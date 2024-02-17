@@ -3,6 +3,9 @@ package ru.kostenko.nework.entity
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import ru.kostenko.nework.dto.Attachment
+import ru.kostenko.nework.dto.AttachmentType
+import ru.kostenko.nework.dto.Coords
 import ru.kostenko.nework.dto.Event
 import ru.kostenko.nework.dto.EventType
 
@@ -78,6 +81,9 @@ data class EventEntity(
             )
     }
 }
+
+
+
 
 
 fun List<EventEntity>.toDto() = map { it.toDto() }

@@ -2,6 +2,7 @@ package ru.kostenko.nework.dto
 
 import android.annotation.SuppressLint
 import androidx.recyclerview.widget.DiffUtil
+import ru.kostenko.nework.R
 
 data class Event(
     override val id: Int,
@@ -25,9 +26,9 @@ data class Event(
     val ownedByMe: Boolean = false,
     ): FeedItem
 
-enum class EventType{
-    OFFLINE,
-    ONLINE
+enum class EventType(val str: String){
+    OFFLINE(R.string.offline.toString()),
+    ONLINE(R.string.online.toString())
 }
 
 class DiffCallback : DiffUtil.ItemCallback<FeedItem>() {

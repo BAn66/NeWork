@@ -3,9 +3,6 @@ package ru.kostenko.nework.entity
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import ru.kostenko.nework.dto.Attachment
-import ru.kostenko.nework.dto.AttachmentType
-import ru.kostenko.nework.dto.Coords
 import ru.kostenko.nework.dto.Post
 
 
@@ -74,8 +71,33 @@ data class PostEntity(
     }
 }
 
-
-
+//@Entity
+//data class PostAttachmentEntity(
+//    val url: String,
+//    val attachmentType: AttachmentType
+//) {
+//    fun toDto() = Attachment(url, attachmentType)
+//
+//    companion object {
+//        fun fromDto(dto: Attachment?): PostAttachmentEntity? {
+//            return if (dto != null) PostAttachmentEntity(dto.url, dto.attachmentType) else null
+//        }
+//    }
+//}
+//
+//@Entity
+//data class PostCoordsEntity(
+//    val coordslat: Int = 0,
+//    val coordslong: Int = 0,
+//) {
+//    fun toDto() = Coords(coordslat, coordslong)
+//
+//    companion object {
+//        fun fromDto(dto: Coords?): PostCoordsEntity? {
+//            return if (dto != null) PostCoordsEntity(dto.latC, dto.longC) else null
+//        }
+//    }
+//}
 
 
 fun List<PostEntity>.toDto() = map { it.toDto() }
