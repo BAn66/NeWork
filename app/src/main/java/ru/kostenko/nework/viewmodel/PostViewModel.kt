@@ -86,6 +86,8 @@ class PostViewModel @Inject constructor(
         loadPosts()
     }
 
+    val authorId = appAuth.authStateFlow.value.id
+
     fun loadPosts() = viewModelScope.launch { //Загружаем посты c помщью коротюнов и вьюмоделскоуп
         try {
             _dataState.value = FeedModelState(loading = true)
@@ -98,13 +100,14 @@ class PostViewModel @Inject constructor(
     fun changePostAndSave(content: String) {
         val text: String = content.trim()
         //функция изменения и сохранения в репозитории
+
         edited.value?.let {
+            viewModelScope.launch {
             val postCopy = it.copy(
-                author = "me",
+                author = repository.getUserById(authorId).name,
                 content = text,
                 published = OffsetDateTime.now().toString(),
             )
-            viewModelScope.launch {
                 try {
                     val mediaModel = _media.value
                     if (mediaModel == null && it.content != text) {

@@ -14,10 +14,12 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import ru.kostenko.nework.R
 import ru.kostenko.nework.adapter.OnPostInteractionListener
 import ru.kostenko.nework.adapter.PostsAdapter
 import ru.kostenko.nework.authorization.AppAuth
@@ -99,7 +101,6 @@ class PostsFragment : Fragment() {
         }
 
         binding.addPost.setOnClickListener {
-            Toast.makeText(this.context, "Добавь пост", Toast.LENGTH_LONG).show()
             setFragmentResultListener("requestTmpContent") { key, bundle ->
                 val tmpContent = bundle.getString("tmpContent")
                 setFragmentResult(
@@ -107,7 +108,11 @@ class PostsFragment : Fragment() {
                     bundleOf("savedTmpContent" to tmpContent)
                 )
             }
-//            findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
+//            if (appAuth.authStateFlow.value.id != 0)
+//            findNavController().navigate(R.id.action_mainFragment_to_newPostFragment)
+//            else
+//                Toast.makeText(this.context, "Войди в учетку", Toast.LENGTH_LONG).show()
+////                findNavController().navigate(R.id.action_postsFragment_to_authFragment2)
         }
         return binding.root
     }
