@@ -3,9 +3,6 @@ package ru.kostenko.nework.entity
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import ru.kostenko.nework.dto.Attachment
-import ru.kostenko.nework.dto.AttachmentType
-import ru.kostenko.nework.dto.Coords
 import ru.kostenko.nework.dto.Post
 
 
@@ -74,33 +71,34 @@ data class PostEntity(
     }
 }
 
-@Entity
-data class AttachmentEntity(
-    val url: String,
-    val type: AttachmentType,
-) {
-    fun toDto() = Attachment(url, type)
+//@Entity
+//data class PostAttachmentEntity(
+//    val url: String,
+//    val attachmentType: AttachmentType
+//) {
+//    fun toDto() = Attachment(url, attachmentType)
+//
+//    companion object {
+//        fun fromDto(dto: Attachment?): PostAttachmentEntity? {
+//            return if (dto != null) PostAttachmentEntity(dto.url, dto.attachmentType) else null
+//        }
+//    }
+//}
+//
+//@Entity
+//data class PostCoordsEntity(
+//    val coordslat: Int = 0,
+//    val coordslong: Int = 0,
+//) {
+//    fun toDto() = Coords(coordslat, coordslong)
+//
+//    companion object {
+//        fun fromDto(dto: Coords?): PostCoordsEntity? {
+//            return if (dto != null) PostCoordsEntity(dto.latC, dto.longC) else null
+//        }
+//    }
+//}
 
-    companion object {
-        fun fromDto(dto: Attachment?): AttachmentEntity? {
-            return if (dto != null) AttachmentEntity(dto.url, dto.type) else null
-        }
-    }
-}
-
-@Entity
-data class CoordsEntity(
-    val coordslat: Int = 0,
-    val coordslong: Int = 0,
-) {
-    fun toDto() = Coords(coordslat, coordslong)
-
-    companion object {
-        fun fromDto(dto: Coords?): CoordsEntity? {
-            return if (dto != null) CoordsEntity(dto.latC, dto.longC) else null
-        }
-    }
-}
 
 fun List<PostEntity>.toDto() = map { it.toDto() }
 fun List<Post>.toEntity() = map { PostEntity.fromDto(it) }

@@ -3,7 +3,6 @@ package ru.kostenko.nework.adapter
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.annotation.SuppressLint
-import android.media.MediaPlayer
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -12,19 +11,18 @@ import android.view.animation.BounceInterpolator
 import android.widget.MediaController
 import android.widget.PopupMenu
 import androidx.core.view.isVisible
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleOwner
 import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ru.kostenko.nework.R
 import ru.kostenko.nework.databinding.CardPostBinding
 import ru.kostenko.nework.dto.AttachmentType
+import ru.kostenko.nework.dto.DiffCallback
 import ru.kostenko.nework.dto.FeedItem
 import ru.kostenko.nework.dto.Post
+import ru.kostenko.nework.util.AndroidUtils.eraseZero
+import ru.kostenko.nework.util.MediaLifecycleObserver
 
 interface OnPostInteractionListener {
     fun like(post: Post)
@@ -36,8 +34,8 @@ interface OnPostInteractionListener {
 
 class PostsAdapter(
     private val onPostIteractionLister: OnPostInteractionListener,
-    private val observer :MediaLifecycleObserver
-) : PagingDataAdapter<FeedItem, PostViewHolder>(PostDiffCallback()) {
+    private val observer : MediaLifecycleObserver
+) : PagingDataAdapter<FeedItem, PostViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val binding =
@@ -201,60 +199,4 @@ class PostViewHolder(
     }
 }
 
-class PostDiffCallback : DiffUtil.ItemCallback<FeedItem>() {
-    override fun areItemsTheSame(oldItem: FeedItem, newItem: FeedItem): Boolean {
-        if (oldItem::class != newItem::class)
-            return false
-        return oldItem.id == newItem.id
-    }
 
-    @SuppressLint("DiffUtilEquals")
-    override fun areContentsTheSame(oldItem: FeedItem, newItem: FeedItem): Boolean {
-        return newItem == oldItem
-    }
-}
-
-private fun eraseZero(number: Long): String {
-    var s = ""
-
-    when (number) {
-        in 0..999 -> s = number.toString()
-        in 1000..9999 -> s =
-            (number.toDouble() / 1000).toString().substring(0, number.toString().length - 1)
-                .replace(".0", "") + "K"
-
-        in 10000..999999 -> s =
-            number.toString().substring(0, number.toString().length - 3) + "K"
-
-        in 1000000..Int.MAX_VALUE -> s =
-            (number.toDouble() / 1000000).toString().substring(0, number.toString().length - 4)
-                .replace(".0", "") + "M"
-    }
-    return s
-}
-
-class MediaLifecycleObserver :
-    LifecycleEventObserver { //Отслеживает события жизенного цикла в приложении
-
-    var mediaPlayer: MediaPlayer? = MediaPlayer()
-
-    fun play(){
-        mediaPlayer?.setOnPreparedListener{
-            it.start()
-        }
-        mediaPlayer?.prepareAsync()
-    }
-
-    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-        when (event) {
-            Lifecycle.Event.ON_PAUSE -> mediaPlayer?.pause()
-            Lifecycle.Event.ON_STOP -> {
-                mediaPlayer?.release()
-                mediaPlayer = null
-            }
-            Lifecycle.Event.ON_DESTROY -> source.lifecycle.removeObserver(this)
-            else -> Unit
-        }
-
-    }
-}

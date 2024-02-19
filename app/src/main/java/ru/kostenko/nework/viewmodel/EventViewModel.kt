@@ -17,55 +17,56 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import ru.kostenko.nework.authorization.AppAuth
 import ru.kostenko.nework.dto.AttachmentType
+import ru.kostenko.nework.dto.Event
+import ru.kostenko.nework.dto.EventType
 import ru.kostenko.nework.dto.FeedItem
 import ru.kostenko.nework.dto.MediaModel
-import ru.kostenko.nework.dto.Post
 import ru.kostenko.nework.model.FeedModelState
-import ru.kostenko.nework.repository.PostRepositoryImpl
+import ru.kostenko.nework.repository.EventRepositoryImpl
 import ru.kostenko.nework.util.SingleLiveEvent
 import java.io.InputStream
 import java.time.OffsetDateTime
 import javax.inject.Inject
 
-private val empty = Post(
+private val empty = Event(
     id = 0,
-    author = "",
-    authorAvatar = null,
     authorId = 0,
+    author = "",
     authorJob = "",
+    authorAvatar = null,
     content = "",
-    coords = null,
-    likedByMe = false,
-    link = null,
-    mentionIds = emptySet(),
-    mentionedMe = false,
-    likeOwnerIds = emptySet(),
-    ownedByMe = false,
+    datetime = "",
     published = "",
+    coords = null,
+    type = EventType.OFFLINE,
+    likeOwnerIds = emptySet(),
+    likedByMe = false,
+    speakerIds = emptySet(),
+    participantsIds = emptySet(),
+    participatedByMe = false,
     attachment = null,
-    users = mapOf()
+    link = null,
+    users = mapOf(),
+    ownedByMe = false,
 )
 
 @HiltViewModel
-class PostViewModel @Inject constructor(
-    private val repository: PostRepositoryImpl,
+class EventViewModel @Inject constructor(
+    private val repository: EventRepositoryImpl,
     appAuth: AppAuth
 ) : ViewModel() {
-
     @OptIn(ExperimentalCoroutinesApi::class)
     val data: Flow<PagingData<FeedItem>> = appAuth
         .authStateFlow.flatMapLatest { (myId, _) ->
-            repository.dataPosts.map { pagingData ->
-                pagingData.map { post ->
-                    if (post is Post) {
-//                        maxId.value = maxOf(post.id, maxId.value)// сравнение текущего макс.ид и ид в паггинге
-                        post.copy(ownedByMe = post.authorId == myId)
+            repository.dataEvents.map { pagingData ->
+                pagingData.map { event ->
+                    if (event is Event) {
+                        event.copy(ownedByMe = event.authorId == myId)
                     } else {
-                        post
+                        event
                     }
                 }
             }
-//                .catch { throw Exception() }
         }.flowOn(Dispatchers.Default)
 
     private val _media = MutableLiveData<MediaModel?>(null)  //Для картинок, видео, аудио
@@ -78,15 +79,15 @@ class PostViewModel @Inject constructor(
 
     val edited = MutableLiveData(empty)
 
-    private val _postCreated = SingleLiveEvent<Unit>()
-    val postCreated: LiveData<Unit>
-        get() = _postCreated
+    private val _eventCreated = SingleLiveEvent<Unit>()
+    val eventCreated: LiveData<Unit>
+        get() = _eventCreated
 
     init {
-        loadPosts()
+        loadEvents()
     }
 
-    fun loadPosts() = viewModelScope.launch { //Загружаем посты c помщью коротюнов и вьюмоделскоуп
+    fun loadEvents() = viewModelScope.launch { //Загружаем события c помщью коротюнов и вьюмоделскоуп
         try {
             _dataState.value = FeedModelState(loading = true)
             _dataState.value = FeedModelState()
@@ -95,26 +96,29 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    fun changePostAndSave(content: String) {
+    fun changeEventAndSave(content: String, dateTime: OffsetDateTime, type: EventType) {
         val text: String = content.trim()
         //функция изменения и сохранения в репозитории
         edited.value?.let {
-            val postCopy = it.copy(
+            val eventCopy = it.copy(
                 author = "me",
                 content = text,
                 published = OffsetDateTime.now().toString(),
+                datetime = dateTime.toLocalDate().toString(),
+                type = type
+            //TODO Проверить везде как даты вводятся и отображаются
             )
             viewModelScope.launch {
                 try {
                     val mediaModel = _media.value
                     if (mediaModel == null && it.content != text) {
-                        repository.savePost(postCopy)
+                        repository.saveEvent(eventCopy)
 
                     } else if (mediaModel != null && it.content != text) {
-                        repository.savePostWithAttachment(postCopy, mediaModel)
+                        repository.saveEventWithAttachment(eventCopy, mediaModel)
                     }
                     _dataState.value = FeedModelState()
-                    _postCreated.value = Unit
+                    _eventCreated.value = Unit
                 } catch (e: Exception) {
                     _dataState.value = FeedModelState(error = true)
                 }
@@ -127,10 +131,10 @@ class PostViewModel @Inject constructor(
         edited.value = empty
     }
 
-    fun likePostById(id: Int, likedByMe: Boolean) {
+    fun removeEventById(id: Int) {
         viewModelScope.launch {
             try {
-                repository.likePostById(id, likedByMe)
+                repository.removeEventById(id)
                 _dataState.value = FeedModelState()
             } catch (e: Exception) {
                 _dataState.value = FeedModelState(error = true)
@@ -138,10 +142,10 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    fun removePostById(id: Int) {
+    fun likeEventById(id: Int, likedByMe: Boolean) {
         viewModelScope.launch {
             try {
-                repository.removePostById(id)
+                repository.likeEventById(id, likedByMe)
                 _dataState.value = FeedModelState()
             } catch (e: Exception) {
                 _dataState.value = FeedModelState(error = true)
@@ -149,8 +153,8 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    fun editPost(post: Post) {
-        edited.value = post
+    fun editEvent(event: Event) {
+        edited.value = event
     }
 
     fun setMedia(
@@ -162,4 +166,5 @@ class PostViewModel @Inject constructor(
     fun clearMedia() {
         _media.value = null
     }
+
 }

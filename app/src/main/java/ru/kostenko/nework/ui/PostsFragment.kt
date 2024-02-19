@@ -18,12 +18,12 @@ import androidx.paging.LoadState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import ru.kostenko.nework.adapter.MediaLifecycleObserver
 import ru.kostenko.nework.adapter.OnPostInteractionListener
 import ru.kostenko.nework.adapter.PostsAdapter
 import ru.kostenko.nework.authorization.AppAuth
 import ru.kostenko.nework.databinding.FragmentPostsBinding
 import ru.kostenko.nework.dto.Post
+import ru.kostenko.nework.util.MediaLifecycleObserver
 import ru.kostenko.nework.viewmodel.PostViewModel
 import javax.inject.Inject
 
@@ -39,20 +39,18 @@ class PostsFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         val binding = FragmentPostsBinding.inflate(layoutInflater)
-        //TODO Сделать внизу поста цепочку аватаров лайкнувших
 
-//        работа с постом
         val adapter = PostsAdapter(object : OnPostInteractionListener {
             override fun like(post: Post) { //TODO при лайке не авторизованным пользователем необходимо переходить на экран логина
-                postViewModel.likeById(post.id, post.likedByMe)
+                postViewModel.likePostById(post.id, post.likedByMe)
             }
 
             override fun remove(post: Post) {
-                postViewModel.removeById(post.id)
+                postViewModel.removePostById(post.id)
             }
 
             override fun edit(post: Post) {
-                postViewModel.edit(post)
+                postViewModel.editPost(post)
             }
 
             override fun openPost(post: Post) {
@@ -92,6 +90,7 @@ class PostsFragment : Fragment() {
 
         //        Работа редактирования через фрагменты (конкретно все в фрагменте NewPost)
         postViewModel.edited.observe(viewLifecycleOwner) { it ->// Начало редактирования
+//            Toast.makeText(this.context, "Переход на карточку поста", Toast.LENGTH_LONG).show()
             val resultId = it.id
             setFragmentResult("requestIdForNewPostFragment", bundleOf("id" to resultId))
             if (it.id != 0) {
