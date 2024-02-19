@@ -3,15 +3,11 @@ package ru.kostenko.nework.ui
 import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
 import androidx.core.net.toFile
-import androidx.core.view.MenuProvider
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -25,15 +21,12 @@ import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.launch
 import ru.kostenko.nework.R
-import ru.kostenko.nework.databinding.FragmentAuthBinding
 import ru.kostenko.nework.databinding.FragmentNewPostBinding
-import ru.kostenko.nework.dto.Post
+import ru.kostenko.nework.dto.AttachmentType
 import ru.kostenko.nework.util.StringArg
 import ru.kostenko.nework.viewmodel.PostViewModel
-import java.util.Collections.copy
 
 @AndroidEntryPoint
 class NewPostFragment : Fragment() {
@@ -43,12 +36,12 @@ class NewPostFragment : Fragment() {
     }
     private lateinit var toolbar_login: Toolbar
     private val viewModel: PostViewModel by activityViewModels()
-    private val mediaResultContract =
+    private val photoResultContract =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { // Контракт для картинок
             if (it.resultCode == Activity.RESULT_OK) {
                 val uri = it.data?.data ?: return@registerForActivityResult
-                val file = uri.toFile()
-//                viewModel.setMedia(uri, file)
+                val file = uri.toFile().inputStream()
+                viewModel.setMedia(uri, file, AttachmentType.IMAGE)
             }
         }
 
@@ -64,26 +57,10 @@ class NewPostFragment : Fragment() {
         toolbar_login.apply {
             setTitle(R.string.newpost)
             setNavigationIcon(R.drawable.arrow_back_24)
-            setNavigationOnClickListener {
-                findNavController().popBackStack()
-            }
-        }
-
-        //кнопка сохранения
-        var showMenu = false
-        requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                showMenu = true
-                menuInflater.inflate(R.menu.save_feed_item, menu)
-
-            }
-
-            override fun onPrepareMenu(menu: Menu) {
-                menu.findItem(R.id.save).isVisible = showMenu
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean =
-                when (menuItem.itemId) {
+            setNavigationOnClickListener { findNavController().popBackStack()}
+            inflateMenu(R.menu.save_feed_item)
+            setOnMenuItemClickListener {
+                when (it.itemId) {
                     R.id.save -> {
                         if (!binding.editTextNewPost.text.isNotBlank()
                         ) {
@@ -96,16 +73,14 @@ class NewPostFragment : Fragment() {
                         } else {
                             val content = binding.editTextNewPost.text.toString()
                             viewModel.changePostAndSave(content)
-                            showMenu = false
                             activity?.invalidateOptionsMenu()
                         }
                         true
                     }
                     else -> false
                 }
-
-            override fun onMenuClosed(menu: Menu) {}
-        }, viewLifecycleOwner)
+            }
+        }
 
         //        Для загрузки черновика
         setFragmentResultListener("requestSavedTmpContent") { key, bundle ->
@@ -126,18 +101,17 @@ class NewPostFragment : Fragment() {
                                 viewModel.editPost(resultPost)
                                 binding.editTextNewPost.setText(resultPost.content)
                             }
-                            //todo добавить загрузку картинки при редактировании картинки
                         }
                     }
                 }
             }
         }
 
-        viewModel.postCreated.observe(viewLifecycleOwner) { //Работа с SingleLiveEvent: Остаемся на экране редактирования пока не придет ответ с сервера
-            viewModel.loadPosts()// не забываем обновить значения вью модели (запрос с сервера и загрузка к нам)
-            findNavController().popBackStack(R.id.postsFragment, false)
-
-        }
+//        viewModel.postCreated.observe(viewLifecycleOwner) { //Работа с SingleLiveEvent: Остаемся на экране редактирования пока не придет ответ с сервера
+//            viewModel.loadPosts()// не забываем обновить значения вью модели (запрос с сервера и загрузка к нам)
+//            findNavController().popBackStack(R.id.postsFragment, false)
+//
+//        }
 
         //Кнопка очистки фото
         binding.remove.setOnClickListener {
@@ -149,8 +123,9 @@ class NewPostFragment : Fragment() {
                 .crop()
                 .galleryOnly()
                 .maxResultSize(2048, 2048)
-                .createIntent(mediaResultContract::launch)
+                .createIntent(photoResultContract::launch)
         }
+
         viewModel.media.observe(viewLifecycleOwner) {
             if (it == null) {
                 binding.imageContainer.isGone = true

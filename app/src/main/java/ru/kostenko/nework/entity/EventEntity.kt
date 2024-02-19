@@ -3,9 +3,6 @@ package ru.kostenko.nework.entity
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import ru.kostenko.nework.dto.Attachment
-import ru.kostenko.nework.dto.AttachmentType
-import ru.kostenko.nework.dto.Coords
 import ru.kostenko.nework.dto.Event
 import ru.kostenko.nework.dto.EventType
 
@@ -34,7 +31,7 @@ data class EventEntity(
     val attachment: AttachmentEntity? = null,
     val link: String? = null,
     val users: Map<Long, Pair<String, String>> = mapOf(),
-    val ownedByMe: Boolean = false,
+
 
     ) {
     fun toDto() = Event(

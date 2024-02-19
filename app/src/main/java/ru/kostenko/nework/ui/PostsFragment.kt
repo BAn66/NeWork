@@ -26,6 +26,7 @@ import ru.kostenko.nework.authorization.AppAuth
 import ru.kostenko.nework.databinding.FragmentPostsBinding
 import ru.kostenko.nework.dto.Post
 import ru.kostenko.nework.util.MediaLifecycleObserver
+import ru.kostenko.nework.viewmodel.AuthViewModel
 import ru.kostenko.nework.viewmodel.PostViewModel
 import javax.inject.Inject
 
@@ -34,6 +35,7 @@ class PostsFragment : Fragment() {
     @Inject//Внедряем зависимость для авторизации
     lateinit var appAuth: AppAuth
     private val postViewModel: PostViewModel by activityViewModels()
+    private val authViewModel: AuthViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -108,11 +110,12 @@ class PostsFragment : Fragment() {
                     bundleOf("savedTmpContent" to tmpContent)
                 )
             }
-//            if (appAuth.authStateFlow.value.id != 0)
-//            findNavController().navigate(R.id.action_mainFragment_to_newPostFragment)
-//            else
-//                Toast.makeText(this.context, "Войди в учетку", Toast.LENGTH_LONG).show()
-////                findNavController().navigate(R.id.action_postsFragment_to_authFragment2)
+            if (authViewModel.authenticated)
+           requireParentFragment().requireParentFragment()
+                .findNavController().navigate(R.id.action_mainFragment_to_newPostFragment)
+            else
+                Toast.makeText(this.context, "Войди в учетку", Toast.LENGTH_LONG).show()
+
         }
         return binding.root
     }
