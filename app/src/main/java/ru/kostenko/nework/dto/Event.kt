@@ -1,9 +1,5 @@
 package ru.kostenko.nework.dto
 
-import android.annotation.SuppressLint
-import androidx.recyclerview.widget.DiffUtil
-import ru.kostenko.nework.R
-
 data class Event(
     override val id: Int,
     val authorId: Int = 0,
@@ -27,21 +23,10 @@ data class Event(
     ): FeedItem
 
 enum class EventType(val str: String){
-    OFFLINE(R.string.offline.toString()),
-    ONLINE(R.string.online.toString())
+    OFFLINE("Offline"),
+    ONLINE("Online")
 }
 
-class DiffCallback : DiffUtil.ItemCallback<FeedItem>() {
-    override fun areItemsTheSame(oldItem: FeedItem, newItem: FeedItem): Boolean {
-        if (oldItem::class != newItem::class)
-            return false
-        return oldItem.id == newItem.id
-    }
 
-    @SuppressLint("DiffUtilEquals")
-    override fun areContentsTheSame(oldItem: FeedItem, newItem: FeedItem): Boolean {
-        return newItem == oldItem
-    }
-}
 
 
