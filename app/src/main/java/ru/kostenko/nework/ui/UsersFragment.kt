@@ -1,17 +1,17 @@
 package ru.kostenko.nework.ui
 
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import ru.kostenko.nework.R
 import ru.kostenko.nework.adapter.OnUsersInteractionListener
 import ru.kostenko.nework.adapter.UsersAdapter
 import ru.kostenko.nework.databinding.FragmentUsersBinding
@@ -32,24 +32,21 @@ class UsersFragment : Fragment() {
 
         val adapter = UsersAdapter(object : OnUsersInteractionListener {
 
-            override fun getUserDetals(user: User) {
-                viewLifecycleOwner.lifecycleScope.launch {
-                    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                        userViewModel.getUserById(user.id).join()
-                        Toast.makeText(context, "Переход на экран пользователя", Toast.LENGTH_SHORT)
-                            .show()
-//                        findNavController().navigate(R.id.userProfileFragment)
-                    }
+            override fun getUserDetails(user: User) {
+                lifecycleScope.launch {
+                    userViewModel.getUserById(user.id).join()
+                    requireParentFragment().requireParentFragment().findNavController()
+                        .navigate(R.id.action_mainFragment_to_userDetailsFragment)
                 }
             }
 
         })
 
         binding.userList.adapter = adapter
-
         userViewModel.data.observe(viewLifecycleOwner) { users ->
             adapter.submitList(users)
         }
+
         return binding.root
     }
 }

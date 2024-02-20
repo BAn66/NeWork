@@ -21,6 +21,9 @@
         <action
             android:id="@+id/action_mainFragment_to_registrationFragment"
             app:destination="@id/registrationFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_userDetailsFragment"
+            app:destination="@id/userDetailsFragment" />
     </fragment>
 
     <fragment
@@ -62,4 +65,13 @@
         android:name="ru.kostenko.nework.ui.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/userDetailsFragment"
+        android:name="ru.kostenko.nework.ui.UserDetailsFragment"
+        android:label="fragment_user_details"
+        tools:layout="@layout/fragment_user_details" >
+        <action
+            android:id="@+id/action_userDetailsFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
 </navigation>

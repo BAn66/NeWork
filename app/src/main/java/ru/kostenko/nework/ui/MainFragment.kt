@@ -44,7 +44,6 @@ class MainFragment : Fragment() {
                 when (it.itemId) {
                     R.id.authentication -> {
                         if(authViewModel.authenticated) {
-//                            Toast.makeText(this.context, "Переход на страницу профиля", Toast.LENGTH_LONG).show()
                             requireParentFragment()
                                 .findNavController()
                                 .navigate(R.id.action_mainFragment_to_profileFragment)
