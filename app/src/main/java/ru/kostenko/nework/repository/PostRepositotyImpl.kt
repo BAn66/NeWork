@@ -142,7 +142,7 @@ class PostRepositoryImpl @Inject constructor(
 
     suspend fun getUserById(id: Int): User {
         try {
-            val response = apiService.getUserById(id.toInt())
+            val response = apiService.getUserById(id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
@@ -152,7 +152,7 @@ class PostRepositoryImpl @Inject constructor(
             throw NetworkError
 
         } catch (e: Exception) {
-            throw UnknownError
+            throw Exception(e)
         }
     }
 

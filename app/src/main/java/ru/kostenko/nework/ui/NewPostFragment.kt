@@ -74,6 +74,7 @@ class NewPostFragment : Fragment() {
                             val content = binding.editTextNewPost.text.toString()
                             viewModel.changePostAndSave(content)
                             activity?.invalidateOptionsMenu()
+                            findNavController().popBackStack()
                         }
                         true
                     }
