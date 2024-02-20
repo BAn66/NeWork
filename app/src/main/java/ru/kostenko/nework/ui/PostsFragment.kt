@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.os.bundleOf
 
 import androidx.fragment.app.Fragment
@@ -98,7 +97,8 @@ class PostsFragment : Fragment() {
             val resultId = it.id
             setFragmentResult("requestIdForNewPostFragment", bundleOf("id" to resultId))
             if (it.id != 0) {
-//                findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
+                requireParentFragment().requireParentFragment()
+                    .findNavController().navigate(R.id.action_mainFragment_to_newPostFragment)
             }
         }
 
@@ -114,7 +114,13 @@ class PostsFragment : Fragment() {
            requireParentFragment().requireParentFragment()
                 .findNavController().navigate(R.id.action_mainFragment_to_newPostFragment)
             else
-                Toast.makeText(this.context, "Войди в учетку", Toast.LENGTH_LONG).show()
+//                requireParentFragment().requireParentFragment()
+//                    .findNavController().navigate(R.id.action_mainFragment_to_authFragment)
+            {
+                val authDialogFragment = AuthDialogFragment()
+                val manager = activity?.supportFragmentManager
+                manager?.let { fragmentManager -> authDialogFragment.show(fragmentManager, "myDialog") }
+            }
 
         }
         return binding.root
