@@ -44,4 +44,8 @@
     <string name="error_empty_content">"The content field cannot be empty "</string>
     <string name="profile">Profile</string>
     <string name="VideoHolder">Video holder</string>
+    <string name="wall">Wall</string>
+    <string name="jobs">Jobs</string>
+    <string name="firm_name">Firm`s name</string>
+    <string name="office_post_name">Office position</string>
 </resources>
