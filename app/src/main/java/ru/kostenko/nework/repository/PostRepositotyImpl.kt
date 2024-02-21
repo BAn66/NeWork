@@ -35,7 +35,6 @@ class PostRepositoryImpl @Inject constructor(
 ) : PostRepository {
     @OptIn(ExperimentalPagingApi::class)
     override val dataPosts: Flow<PagingData<FeedItem>> = Pager(
-
         config = PagingConfig(pageSize = 10, enablePlaceholders = true),
         pagingSourceFactory = { postDao.getPagingSource() },
         remoteMediator = PostRemoteMediator(
@@ -155,6 +154,4 @@ class PostRepositoryImpl @Inject constructor(
             throw Exception(e)
         }
     }
-
-
 }

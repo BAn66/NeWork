@@ -7,7 +7,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
 import ru.kostenko.nework.R
 
-class AuthDialogFragment: DialogFragment() {
+class AuthDialogFragmentFromPosts: DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)

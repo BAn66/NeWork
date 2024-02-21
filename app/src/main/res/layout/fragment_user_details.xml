@@ -28,14 +28,15 @@
     <ImageView
         android:id="@+id/user_photo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
+        android:layout_height="258dp"
+
         android:contentDescription="@string/VideoHolder"
         tools:src="@tools:sample/avatars[2]" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/nav_user_view"
@@ -57,5 +58,5 @@
             app:layout_constraintTop_toBottomOf="@+id/nav_user_view"
             app:navGraph="@navigation/user_details_navigation" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </LinearLayout>

@@ -73,5 +73,11 @@
         <action
             android:id="@+id/action_userDetailsFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_userDetailsFragment_to_authFragment"
+            app:destination="@id/authFragment" />
+        <action
+            android:id="@+id/action_userDetailsFragment_to_registrationFragment"
+            app:destination="@id/registrationFragment" />
     </fragment>
 </navigation>

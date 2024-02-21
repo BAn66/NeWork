@@ -58,21 +58,10 @@ class PostsFragment : Fragment() {
 
             override fun openPost(post: Post) {
                 val resultId = post.id
-//                setFragmentResult("requestIdForPostFragment", bundleOf("id" to resultId))
-//                findNavController().navigate(R.id.action_feedFragment_to_postFragment)
-
             }
         }, MediaLifecycleObserver())
 
         binding.list.adapter = adapter
-//            .withLoadStateHeaderAndFooter(
-//                footer = PostLoadingStateAdapter {
-//                    adapter.retry()
-//                },
-//                header = PostLoadingStateAdapter {
-//                    adapter.retry()
-//                }
-//            )
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -85,8 +74,6 @@ class PostsFragment : Fragment() {
                 adapter.loadStateFlow.collectLatest { state ->
                     binding.swiperefresh.isRefreshing =
                         state.refresh is LoadState.Loading
-//                                || state.prepend is LoadState.Loading ||
-//                                state.append is LoadState.Loading
                 }
             }
         }
@@ -114,12 +101,10 @@ class PostsFragment : Fragment() {
            requireParentFragment().requireParentFragment()
                 .findNavController().navigate(R.id.action_mainFragment_to_newPostFragment)
             else
-//                requireParentFragment().requireParentFragment()
-//                    .findNavController().navigate(R.id.action_mainFragment_to_authFragment)
             {
-                val authDialogFragment = AuthDialogFragment()
+                val authDialogFragmentFromPosts = AuthDialogFragmentFromPosts()
                 val manager = activity?.supportFragmentManager
-                manager?.let { fragmentManager -> authDialogFragment.show(fragmentManager, "myDialog") }
+                manager?.let { fragmentManager -> authDialogFragmentFromPosts.show(fragmentManager, "myDialog") }
             }
 
         }
