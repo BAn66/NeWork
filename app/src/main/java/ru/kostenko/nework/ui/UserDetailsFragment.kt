@@ -14,16 +14,18 @@ import dagger.hilt.android.AndroidEntryPoint
 import ru.kostenko.nework.R
 import ru.kostenko.nework.authorization.AppAuth
 import ru.kostenko.nework.databinding.FragmentUserDetailsBinding
+import ru.kostenko.nework.viewmodel.JobsViewModel
 import ru.kostenko.nework.viewmodel.UserViewModel
 import ru.kostenko.nework.viewmodel.WallViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class UserDetailsFragment: Fragment() {
+class UserDetailsFragment : Fragment() {
     @Inject//Внедряем зависимость для авторизации
     lateinit var appAuth: AppAuth
     private val userViewModel: UserViewModel by activityViewModels()
     private val wallViewModel: WallViewModel by activityViewModels()
+    private val jobsViewModel: JobsViewModel by activityViewModels()
     private lateinit var toolbar: Toolbar
 
     override fun onCreateView(
@@ -33,6 +35,7 @@ class UserDetailsFragment: Fragment() {
     ): View {
         val binding = FragmentUserDetailsBinding.inflate(inflater, container, false)
         wallViewModel.clearWall()
+        jobsViewModel.clearJobs()
         //Навигация через табы
         val navController = requireNotNull(
             childFragmentManager.findFragmentById(R.id.nav_user_fragment_main)

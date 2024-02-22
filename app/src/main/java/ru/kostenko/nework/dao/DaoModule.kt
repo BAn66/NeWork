@@ -25,4 +25,7 @@ object DaoModule {
 
     @Provides
     fun provideWallDao(appDb: AppDb): WallDao = appDb.wallDao()
+
+    @Provides
+    fun provideJobs(appDb: AppDb): JobDao = appDb.jobDao()
 }

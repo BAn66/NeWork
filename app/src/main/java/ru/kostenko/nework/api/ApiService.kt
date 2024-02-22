@@ -13,6 +13,7 @@ import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 import ru.kostenko.nework.dto.Event
+import ru.kostenko.nework.dto.Job
 import ru.kostenko.nework.dto.Media
 import ru.kostenko.nework.dto.Post
 import ru.kostenko.nework.dto.Token
@@ -141,4 +142,17 @@ interface ApiService {
 
     @GET("{authorId}/wall/latest")
     suspend fun getLatestPostsOnWall(@Path("authorId") authorId: Int, @Query("count") count: Int): Response<List<Post>>
+
+    //JOBs
+    @GET("{userId}/jobs")
+    suspend fun getJobs(@Path("userId") userId: Int): Response<List<Job>>
+
+    @GET("my/jobs")
+    suspend fun getMyJobs(): Response<List<Job>>
+
+    @POST("my/jobs")
+    suspend fun setMyJob(@Body job: Job): Response<Job>
+
+    @DELETE("my/jobs/{id}")
+    suspend fun deleteMyJobs(@Path("id") jobId: Int): Response<Unit>
 }

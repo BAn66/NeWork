@@ -78,7 +78,9 @@ class PostsFragment : Fragment() {
             }
         }
 
-        //        Работа редактирования через фрагменты (конкретно все в фрагменте NewPost)
+        //TODO Редактирование не работает.
+
+        /*        Работа редактирования через фрагменты (конкретно все в фрагменте NewPost)*/
         postViewModel.edited.observe(viewLifecycleOwner) { it ->// Начало редактирования
 //            Toast.makeText(this.context, "Переход на карточку поста", Toast.LENGTH_LONG).show()
             val resultId = it.id
@@ -89,6 +91,7 @@ class PostsFragment : Fragment() {
             }
         }
 
+        //TODO временное хранение не работает.
         binding.addPost.setOnClickListener {
             setFragmentResultListener("requestTmpContent") { key, bundle ->
                 val tmpContent = bundle.getString("tmpContent")
@@ -98,13 +101,17 @@ class PostsFragment : Fragment() {
                 )
             }
             if (authViewModel.authenticated)
-           requireParentFragment().requireParentFragment()
-                .findNavController().navigate(R.id.action_mainFragment_to_newPostFragment)
-            else
-            {
+                requireParentFragment().requireParentFragment()
+                    .findNavController().navigate(R.id.action_mainFragment_to_newPostFragment)
+            else {
                 val authDialogFragmentFromPosts = AuthDialogFragmentFromPosts()
                 val manager = activity?.supportFragmentManager
-                manager?.let { fragmentManager -> authDialogFragmentFromPosts.show(fragmentManager, "myDialog") }
+                manager?.let { fragmentManager ->
+                    authDialogFragmentFromPosts.show(
+                        fragmentManager,
+                        "myDialog"
+                    )
+                }
             }
 
         }

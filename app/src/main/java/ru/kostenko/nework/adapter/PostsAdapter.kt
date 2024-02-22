@@ -128,7 +128,8 @@ class PostViewHolder(
             playButton.setOnClickListener {
                 observer.apply {
                     //Не забываем добавлять разрешение в андроид манифест на работу с сетью
-                    mediaPlayer?.setDataSource(post.attachment!!.url)
+                    val url = post.attachment!!.url
+                    mediaPlayer?.setDataSource(url) //TODO при нажатии на паузу аудиоплеера и повторном плэй падает
                 }.play()
             }
 
