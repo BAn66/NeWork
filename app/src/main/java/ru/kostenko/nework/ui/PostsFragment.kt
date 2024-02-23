@@ -44,8 +44,19 @@ class PostsFragment : Fragment() {
         val binding = FragmentPostsBinding.inflate(layoutInflater)
 
         val adapter = PostsAdapter(object : OnPostInteractionListener {
-            override fun like(post: Post) { //TODO при лайке не авторизованным пользователем необходимо переходить на экран логина
-                postViewModel.likePostById(post.id, post.likedByMe)
+            override fun like(post: Post) {
+                if (authViewModel.authenticated)
+                    postViewModel.likePostById(post.id, post.likedByMe)
+                else {
+                    val authDialogFragmentFromPosts = AuthDialogFragmentFromPosts()
+                    val manager = activity?.supportFragmentManager
+                    manager?.let { fragmentManager ->
+                        authDialogFragmentFromPosts.show(
+                            fragmentManager,
+                            "myDialog"
+                        )
+                    }
+                }
             }
 
             override fun remove(post: Post) {

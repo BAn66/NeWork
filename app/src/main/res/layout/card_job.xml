@@ -36,7 +36,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:paddingHorizontal="@dimen/common_pudding_8dp"
+            android:paddingStart="@dimen/common_pudding_8dp"
+            android:paddingEnd="0dp"
             android:singleLine="true"
             android:textColor="?android:textColorSecondary"
             android:textSize="14sp"
@@ -46,33 +47,18 @@
             app:layout_constraintTop_toBottomOf="@id/job_name"
             tools:text="@sample/posts.json/data/published" />
 
-        <TextView
-            android:id="@+id/space"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:paddingHorizontal="@dimen/common_pudding_8dp"
-            android:singleLine="true"
-            android:textColor="?android:textColorSecondary"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/office_position"
-            app:layout_constraintStart_toEndOf="@id/start_date"
-            app:layout_constraintTop_toBottomOf="@id/job_name"
-            tools:text="-" />
 
         <TextView
             android:id="@+id/end_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:paddingHorizontal="@dimen/common_pudding_8dp"
             android:singleLine="true"
             android:textColor="?android:textColorSecondary"
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/office_position"
-            app:layout_constraintStart_toEndOf="@id/space"
+            app:layout_constraintStart_toEndOf="@id/start_date"
             app:layout_constraintTop_toBottomOf="@id/job_name"
             tools:text="@sample/posts.json/data/published" />
 
