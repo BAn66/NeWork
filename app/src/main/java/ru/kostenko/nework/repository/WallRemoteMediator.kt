@@ -16,7 +16,7 @@ import ru.kostenko.nework.entity.WallEntity
 import java.io.IOException
 
 @OptIn(ExperimentalPagingApi::class)
-class WallRemoteMediator (
+class WallRemoteMediator(
     private val apiService: ApiService,
     private val wallDao: WallDao,
     private val remoteKeyDao: RemoteKeyDao,
@@ -30,16 +30,19 @@ class WallRemoteMediator (
         try {
             val result = when (loadType) {
                 LoadType.REFRESH -> {
-                    apiService.getLatestPostsOnWall(authorId, state.config.initialLoadSize)
+                    if (authorId == 0) apiService.getLatestPostsOnMyWall(state.config.initialLoadSize)
+                    else  apiService.getLatestPostsOnWall(authorId, state.config.initialLoadSize)
                 }
 
                 LoadType.PREPEND -> {
                     val id = remoteKeyDao.max() ?: return MediatorResult.Success(false)
-                    apiService.getAfterPostOnWall(authorId, id, state.config.pageSize)
+                    if (authorId == 0) apiService.getAfterPostOnMyWall(id, state.config.pageSize)
+                    else apiService.getAfterPostOnWall(authorId, id, state.config.pageSize)
                 }
 
                 LoadType.APPEND -> {
                     val id = remoteKeyDao.min() ?: return MediatorResult.Success(false)
+                    if (authorId == 0) apiService.getBeforePostOnMyWall(id, state.config.pageSize)
                     apiService.getBeforePostOnWall(authorId, id, state.config.pageSize)
                 }
             }

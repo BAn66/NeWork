@@ -43,7 +43,13 @@ class WallFragment : Fragment() {
             val authorId = userViewModel.user.value?.id!!
             val wallAdapter = PostsAdapter(object : OnPostInteractionListener {
                 override fun like(post: Post) {
-                    if (authViewModel.authenticated) {
+                    if(authorId == appAuth.authStateFlow.value.id.toInt() && authViewModel.authenticated){
+                        wallViewModel.likeMyPostById(
+                            post.id,
+                            post.likedByMe
+                        )
+                    }
+                    else if (authViewModel.authenticated) {
                         wallViewModel.likePostById(
                             userViewModel.user.value?.id!!,
                             post.id,
@@ -74,10 +80,17 @@ class WallFragment : Fragment() {
             }, MediaLifecycleObserver())
 
             listWall.adapter = wallAdapter
-
-            viewLifecycleOwner.lifecycleScope.launch {
-                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    wallViewModel.getWallPosts(authorId).collectLatest(wallAdapter::submitData)
+            if (authorId == appAuth.authStateFlow.value.id.toInt() && authViewModel.authenticated) {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                        wallViewModel.getWallPosts(0).collectLatest(wallAdapter::submitData)
+                    }
+                }
+            } else {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                        wallViewModel.getWallPosts(authorId).collectLatest(wallAdapter::submitData)
+                    }
                 }
             }
 

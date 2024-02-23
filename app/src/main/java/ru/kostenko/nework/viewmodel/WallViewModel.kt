@@ -58,6 +58,17 @@ class WallViewModel @Inject constructor(
         }
     }
 
+    fun likeMyPostById(id: Int, likedByMe: Boolean) {
+        viewModelScope.launch {
+            try {
+                repository.likeMyPostById( id, likedByMe)
+                _dataState.value = FeedModelState()
+            } catch (e: Exception) {
+                _dataState.value = FeedModelState(error = true)
+            }
+        }
+    }
+
     fun clearWall(){
         viewModelScope.launch {
             try {
