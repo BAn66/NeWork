@@ -31,11 +31,22 @@
     <string name="user_name">User name</string>
     <string name="user_login">Nik name</string>
     <string name="description_edit">Edit</string>
-    <string name="description_remove">Edit</string>
+    <string name="description_remove">Remove</string>
     <string name="play">Play</string>
     <string name="pause">Pause</string>
     <string name="stop">Stop</string>
     <string name="add_event">Add event</string>
     <string name="offline">Offline</string>
     <string name="online">Online</string>
+    <string name="remove">Remove</string>
+    <string name="newpost">New post</string>
+    <string name="save">Save</string>
+    <string name="error_empty_content">"The content field cannot be empty "</string>
+    <string name="profile">Profile</string>
+    <string name="VideoHolder">Video holder</string>
+    <string name="wall">Wall</string>
+    <string name="jobs">Jobs</string>
+    <string name="firm_name">Firm`s name</string>
+    <string name="office_post_name">Office position</string>
+    <string name="until_now">Until now</string>
 </resources>

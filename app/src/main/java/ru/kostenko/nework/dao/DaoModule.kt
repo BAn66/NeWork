@@ -22,4 +22,10 @@ object DaoModule {
 
     @Provides
     fun provideEventDao(appDb: AppDb): EventDao = appDb.eventDao()
+
+    @Provides
+    fun provideWallDao(appDb: AppDb): WallDao = appDb.wallDao()
+
+    @Provides
+    fun provideJobs(appDb: AppDb): JobDao = appDb.jobDao()
 }

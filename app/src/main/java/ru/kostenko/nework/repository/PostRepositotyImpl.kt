@@ -18,6 +18,7 @@ import ru.kostenko.nework.dto.FeedItem
 import ru.kostenko.nework.dto.Media
 import ru.kostenko.nework.dto.MediaModel
 import ru.kostenko.nework.dto.Post
+import ru.kostenko.nework.dto.User
 import ru.kostenko.nework.entity.PostEntity
 import ru.kostenko.nework.error.ApiError
 import ru.kostenko.nework.error.NetworkError
@@ -34,7 +35,6 @@ class PostRepositoryImpl @Inject constructor(
 ) : PostRepository {
     @OptIn(ExperimentalPagingApi::class)
     override val dataPosts: Flow<PagingData<FeedItem>> = Pager(
-
         config = PagingConfig(pageSize = 10, enablePlaceholders = true),
         pagingSourceFactory = { postDao.getPagingSource() },
         remoteMediator = PostRemoteMediator(
@@ -136,6 +136,22 @@ class PostRepositoryImpl @Inject constructor(
             throw NetworkError
         } catch (e: Exception) {
             throw UnknownError
+        }
+    }
+
+    suspend fun getUserById(id: Int): User {
+        try {
+            val response = apiService.getUserById(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            return body
+        } catch (e: IOException) {
+            throw NetworkError
+
+        } catch (e: Exception) {
+            throw Exception(e)
         }
     }
 }

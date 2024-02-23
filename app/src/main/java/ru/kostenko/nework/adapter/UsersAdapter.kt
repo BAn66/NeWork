@@ -1,6 +1,5 @@
 package ru.kostenko.nework.adapter
 
-import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.ColorFilter
@@ -23,7 +22,7 @@ import kotlin.random.Random
 
 
 interface OnUsersInteractionListener {
-    fun getUserDetals(user: User)
+    fun getUserDetails(user: User)
 }
 
 class UserViewHolder(
@@ -57,7 +56,7 @@ class UserViewHolder(
             }
 
             cardUser.setOnClickListener {
-                onUsersInteractionListener.getUserDetals(user)
+                onUsersInteractionListener.getUserDetails(user)
             }
         }
     }

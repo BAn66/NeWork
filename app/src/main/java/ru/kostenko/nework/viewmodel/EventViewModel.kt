@@ -61,7 +61,7 @@ class EventViewModel @Inject constructor(
             repository.dataEvents.map { pagingData ->
                 pagingData.map { event ->
                     if (event is Event) {
-                        event.copy(ownedByMe = event.authorId == myId)
+                        event.copy(ownedByMe = event.authorId.toLong() == myId)
                     } else {
                         event
                     }

@@ -13,6 +13,7 @@ import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 import ru.kostenko.nework.dto.Event
+import ru.kostenko.nework.dto.Job
 import ru.kostenko.nework.dto.Media
 import ru.kostenko.nework.dto.Post
 import ru.kostenko.nework.dto.Token
@@ -117,4 +118,41 @@ interface ApiService {
     @GET("events/latest")
     suspend fun getLatestEvents(@Query("count") count: Int): Response<List<Event>>
 
+    //Wall
+    @POST("{authorId}/wall/{id}/likes")
+    suspend fun likePostByIdOnWall(@Path("authorId") authorId: Int, @Path("id") id: Int): Response<Post>
+
+    @DELETE("{authorId}/wall/{id}/likes")
+    suspend fun dislikePostByIdOnWall(@Path("authorId") authorId: Int, @Path("id") id: Int): Response<Post>
+
+    @GET("{authorId}/wall")
+    suspend fun getWall(@Path("authorId") authorId: Int): Response<List<Post>>
+
+    @GET("{authorId}/wall/{id}/newer")
+    suspend fun getNewerPostsOnWall(@Path("authorId") authorId: Int, @Path("id") id: Int): Response<List<Post>>
+
+    @GET("{authorId}/wall/{id}/before") //Загружает посты до
+    suspend fun getBeforePostOnWall(@Path("authorId") authorId: Int, @Path("id") id: Int, @Query("count") count: Int): Response<List<Post>>
+
+    @GET("{authorId}/wall/{id}/after") //Загружает посты после
+    suspend fun getAfterPostOnWall(@Path("authorId") authorId: Int, @Path("id") id: Int, @Query("count") count: Int): Response<List<Post>>
+
+    @GET("{authorId}/wall/{id}")
+    suspend fun getPostByIdOnWall(@Path("authorId") authorId: Int, @Path("id") id: Int): Response<Post>
+
+    @GET("{authorId}/wall/latest")
+    suspend fun getLatestPostsOnWall(@Path("authorId") authorId: Int, @Query("count") count: Int): Response<List<Post>>
+
+    //JOBs
+    @GET("{userId}/jobs")
+    suspend fun getJobs(@Path("userId") userId: Int): Response<List<Job>>
+
+    @GET("my/jobs")
+    suspend fun getMyJobs(): Response<List<Job>>
+
+    @POST("my/jobs")
+    suspend fun setMyJob(@Body job: Job): Response<Job>
+
+    @DELETE("my/jobs/{id}")
+    suspend fun deleteMyJobs(@Path("id") jobId: Int): Response<Unit>
 }

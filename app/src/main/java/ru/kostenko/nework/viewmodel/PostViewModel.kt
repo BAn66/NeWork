@@ -1,5 +1,6 @@
 package ru.kostenko.nework.viewmodel
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -40,7 +41,6 @@ private val empty = Post(
     mentionIds = emptySet(),
     mentionedMe = false,
     likeOwnerIds = emptySet(),
-    ownedByMe = false,
     published = "",
     attachment = null,
     users = mapOf()
@@ -59,7 +59,7 @@ class PostViewModel @Inject constructor(
                 pagingData.map { post ->
                     if (post is Post) {
 //                        maxId.value = maxOf(post.id, maxId.value)// сравнение текущего макс.ид и ид в паггинге
-                        post.copy(ownedByMe = post.authorId == myId)
+                        post.copy(ownedByMe = post.authorId.toLong() == myId)
                     } else {
                         post
                     }
@@ -86,6 +86,8 @@ class PostViewModel @Inject constructor(
         loadPosts()
     }
 
+    val authorId = appAuth.authStateFlow.value.id.toInt()
+
     fun loadPosts() = viewModelScope.launch { //Загружаем посты c помщью коротюнов и вьюмоделскоуп
         try {
             _dataState.value = FeedModelState(loading = true)
@@ -95,16 +97,18 @@ class PostViewModel @Inject constructor(
         }
     }
 
+    @SuppressLint("SuspiciousIndentation")
     fun changePostAndSave(content: String) {
         val text: String = content.trim()
         //функция изменения и сохранения в репозитории
+
         edited.value?.let {
+            viewModelScope.launch {
             val postCopy = it.copy(
-                author = "me",
+                author = repository.getUserById(authorId).name,
                 content = text,
                 published = OffsetDateTime.now().toString(),
             )
-            viewModelScope.launch {
                 try {
                     val mediaModel = _media.value
                     if (mediaModel == null && it.content != text) {

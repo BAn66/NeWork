@@ -14,9 +14,9 @@ data class Post(
     val mentionedMe: Boolean,
     val likeOwnerIds: Set<Int> = emptySet(),
     val likedByMe: Boolean = false,
-    val ownedByMe: Boolean = false,
     val users: Map<Long, Pair<String, String>>  = mapOf(),
     val attachment: Attachment? = null,
+    val ownedByMe: Boolean = false,
 
     ): FeedItem
 

@@ -16,45 +16,43 @@ import javax.inject.Singleton
 class AppAuth @Inject constructor(
     @ApplicationContext
     private val context: Context
-)
-    {
-        private val prefs = context.getSharedPreferences("auth", Context.MODE_PRIVATE)
+) {
+    private val prefs = context.getSharedPreferences("auth", Context.MODE_PRIVATE)
 
-        private val _authState = MutableStateFlow<AuthState>(
-            AuthState(
-                prefs.getInt("id", 0),
-                prefs.getString("token", null)
-            )
+    private val _authState = MutableStateFlow<AuthState>(
+        AuthState(
+            prefs.getLong("id", 0L),
+            prefs.getString("token", null)
         )
+    )
 
-        @Synchronized
-        fun setAuth(id: Int, token: String) {
-            _authState.value = AuthState(id, token)
-            with(prefs.edit()) {//запись в префс айди пользователя и токена для авторизации
-                putLong("id", id.toLong())
-                putString("token", token)
-                commit()
-            }
+    @Synchronized
+    fun setAuth(id: Long, token: String) {
+        _authState.value = AuthState(id, token)
+        with(prefs.edit()) {//запись в префс айди пользователя и токена для авторизации
+            putLong("id", id)
+            putString("token", token)
+            commit()
         }
+    }
 
-        @Synchronized
-        fun removeAuth() {
-            _authState.value = AuthState(0, null) //запись в префс нулевых значений авторизации
-            with(prefs.edit()) {
-                clear()
-                commit()
-            }
+    @Synchronized
+    fun removeAuth() {
+        _authState.value = AuthState(0, null) //запись в префс нулевых значений авторизации
+        with(prefs.edit()) {
+            clear()
+            commit()
         }
+    }
 
-        @InstallIn(SingletonComponent::class)
-        @EntryPoint
-        interface AppAuthEntryPoint{ //Не стандартный способ добрать до аписервиса из зависимостей HILTa
-            fun getApiService(): ApiService
-        }
+    @InstallIn(SingletonComponent::class)
+    @EntryPoint
+    interface AppAuthEntryPoint { //Не стандартный способ добрать до аписервиса из зависимостей HILTa
+        fun getApiService(): ApiService
+    }
 
 
-
-        val authStateFlow: StateFlow<AuthState> = _authState.asStateFlow()
+    val authStateFlow: StateFlow<AuthState> = _authState.asStateFlow()
 }
 
-data class AuthState(val id: Int = 0, val token: String? = null)
+data class AuthState(val id: Long = 0, val token: String? = null)

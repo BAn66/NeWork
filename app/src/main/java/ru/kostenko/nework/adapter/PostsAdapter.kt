@@ -23,6 +23,8 @@ import ru.kostenko.nework.dto.FeedItem
 import ru.kostenko.nework.dto.Post
 import ru.kostenko.nework.util.AndroidUtils.eraseZero
 import ru.kostenko.nework.util.MediaLifecycleObserver
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
 
 interface OnPostInteractionListener {
     fun like(post: Post)
@@ -59,7 +61,8 @@ class PostViewHolder(
     fun bind(post: Post) {
         binding.apply {
             author.text = post.author
-            published.text = post.published.toString()
+            published.text = OffsetDateTime.parse(post.published)
+                .format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))
             content.text = post.content
 
             Glide.with(avatar)
@@ -128,7 +131,8 @@ class PostViewHolder(
             playButton.setOnClickListener {
                 observer.apply {
                     //Не забываем добавлять разрешение в андроид манифест на работу с сетью
-                    mediaPlayer?.setDataSource(post.attachment!!.url)
+                    val url = post.attachment!!.url
+                    mediaPlayer?.setDataSource(url) //TODO при нажатии на паузу аудиоплеера и повторном плэй падает
                 }.play()
             }
 

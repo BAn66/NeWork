@@ -57,15 +57,14 @@
 
         <Button
             android:id="@+id/menu"
-            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
             android:contentDescription="@string/description_post_more"
-            app:icon="@drawable/more_vert_24"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/author"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:icon ="@drawable/more_vert_24"
+            />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrierAvatar"
@@ -120,7 +119,7 @@
             android:id="@+id/video_holder"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:contentDescription="VideoHolder"
+            android:contentDescription="@string/VideoHolder"
             app:layout_constraintBottom_toTopOf="@id/barrierVideo"
             app:layout_constraintTop_toBottomOf="@id/barrierAvatar" />
         <!--        android:background="@drawable/video_holder"-->

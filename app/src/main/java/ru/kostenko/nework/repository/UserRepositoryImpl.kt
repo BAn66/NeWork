@@ -37,7 +37,7 @@ class UserRepositoryImpl @Inject constructor(
                 400 -> AuthResultCode.IncorrectPassword
                 200 -> {
                     response.body()?.let {
-                        appAuth.setAuth(id = it.id, token = it.token)
+                        appAuth.setAuth(id = it.id.toLong(), token = it.token)
                     }
                     AuthResultCode.Success
                 }
@@ -62,7 +62,7 @@ class UserRepositoryImpl @Inject constructor(
                 400 -> AuthResultCode.UserAlreadyRegister
                 200 -> {
                     response.body()?.let {
-                        appAuth.setAuth(id = it.id, token = it.token)
+                        appAuth.setAuth(id = it.id.toLong(), token = it.token)
                     }
                     AuthResultCode.Success
                 }
@@ -95,7 +95,7 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun getUserById(id: Int): User {
         try {
-            val response = apiService.getUserById(id.toInt())
+            val response = apiService.getUserById(id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }

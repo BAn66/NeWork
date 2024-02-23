@@ -1,8 +1,10 @@
 package ru.kostenko.nework
 
 
+import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
+import ru.kostenko.nework.authorization.AppAuth
 
 @AndroidEntryPoint
 class AppActivity : AppCompatActivity(R.layout.activity_app)

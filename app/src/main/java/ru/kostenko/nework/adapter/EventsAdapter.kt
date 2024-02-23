@@ -22,6 +22,9 @@ import ru.kostenko.nework.dto.Event
 import ru.kostenko.nework.dto.FeedItem
 import ru.kostenko.nework.util.AndroidUtils.eraseZero
 import ru.kostenko.nework.util.MediaLifecycleObserver
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
+
 interface OnEventInteractionListener {
     fun like(event: Event)
     fun remove(event: Event)
@@ -55,10 +58,12 @@ class EventsAdapter(
         fun bind(event: Event) {
             binding.apply {
                 author.text = event.author
-                published.text = event.published.toString()
+                published.text = OffsetDateTime.parse(event.published)
+                    .format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))
                 content.text = event.content
                 typeEvent.text =event.type.str
-                dateTime.text = event.datetime
+                dateTime.text = OffsetDateTime.parse(event.datetime)
+                    .format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))
 
                 Glide.with(avatar)
                     .load(event.authorAvatar)
