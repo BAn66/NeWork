@@ -77,6 +77,7 @@ class JobsFragment : Fragment() {
                 }
             }
 
+
         }
         return binding.root
     }

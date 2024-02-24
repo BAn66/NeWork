@@ -34,7 +34,7 @@
         app:layout_constraintTop_toBottomOf="@id/bar_id">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editLogin"
+            android:id="@+id/company_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/nameText" />
@@ -49,7 +49,7 @@
         app:layout_constraintTop_toBottomOf="@id/text_name">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editName"
+            android:id="@+id/position"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/text_position" />
@@ -64,14 +64,15 @@
         app:layout_constraintTop_toBottomOf="@id/text_position">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editPassword"
+            android:id="@+id/link"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/text_link" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
+        android:id="@+id/start_end_card"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/card_margin"
         android:clickable="true"
@@ -79,17 +80,17 @@
         app:cardCornerRadius="@dimen/card_corner_radius"
         app:cardElevation="@dimen/elevation"
         app:layout_constraintTop_toBottomOf="@id/text_link"
-        tools:ignore="MissingConstraints">
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:padding="@dimen/common_pudding_8dp">
 
             <TextView
                 android:id="@+id/start"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:ellipsize="end"
                 android:paddingStart="@dimen/common_pudding_8dp"
                 android:paddingEnd="0dp"
@@ -99,10 +100,11 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:text="@sample/posts.json/data/published" />
+
             <TextView
                 android:id="@+id/end"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:textColor="?android:textColorSecondary"
@@ -116,7 +118,7 @@
     </androidx.cardview.widget.CardView>
 
     <Button
-        android:id="@+id/login_btn"
+        android:id="@+id/create_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"

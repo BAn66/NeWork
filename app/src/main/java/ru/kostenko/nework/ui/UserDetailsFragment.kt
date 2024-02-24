@@ -57,8 +57,9 @@ class UserDetailsFragment : Fragment() {
             setNavigationOnClickListener {
                 findNavController().popBackStack()
             }
-            if(authViewModel.authenticated){
-            inflateMenu(R.menu.exit_menu)}
+            if(user.value!!.id == authViewModel.data.value.id.toInt()){
+            inflateMenu(R.menu.exit_menu)
+            }
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.logout -> {
