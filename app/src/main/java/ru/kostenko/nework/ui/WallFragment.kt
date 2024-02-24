@@ -40,7 +40,7 @@ class WallFragment : Fragment() {
 
         with(binding) {
 //            textWall.text = userViewModel.user.value?.login
-            val authorId = userViewModel.user.value?.id!!
+            val authorId = userViewModel.user.value?.id
             val wallAdapter = PostsAdapter(object : OnPostInteractionListener {
                 override fun like(post: Post) {
                     if(authorId == appAuth.authStateFlow.value.id.toInt() && authViewModel.authenticated){
@@ -50,11 +50,13 @@ class WallFragment : Fragment() {
                         )
                     }
                     else if (authViewModel.authenticated) {
-                        wallViewModel.likePostById(
-                            userViewModel.user.value?.id!!,
-                            post.id,
-                            post.likedByMe
-                        )
+                        userViewModel.user.value?.let {
+                            wallViewModel.likePostById(
+                                it.id,
+                                post.id,
+                                post.likedByMe
+                            )
+                        }
                     } else {
                         val authDialogFragmentFromUserDetails = AuthDialogFragmentFromUserDetails()
                         val manager = activity?.supportFragmentManager
@@ -89,7 +91,7 @@ class WallFragment : Fragment() {
             } else {
                 viewLifecycleOwner.lifecycleScope.launch {
                     viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                        wallViewModel.getWallPosts(authorId).collectLatest(wallAdapter::submitData)
+                        authorId?.let { wallViewModel.getWallPosts(it).collectLatest(wallAdapter::submitData) }
                     }
                 }
             }

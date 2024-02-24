@@ -57,14 +57,15 @@
 
         <Button
             android:id="@+id/menu"
-            android:layout_width="wrap_content"
+            style="@style/Widget.AppTheme.LikeCheckBox"
+            android:layout_width="@dimen/menu_width"
             android:layout_height="wrap_content"
             android:contentDescription="@string/description_post_more"
+            android:paddingStart="@dimen/common_pudding_8dp"
+            android:paddingEnd="@dimen/common_pudding_8dp"
+            app:icon="@drawable/more_vert_24"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/author"
-            app:layout_constraintTop_toTopOf="parent"
-            app:icon ="@drawable/more_vert_24"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrierAvatar"

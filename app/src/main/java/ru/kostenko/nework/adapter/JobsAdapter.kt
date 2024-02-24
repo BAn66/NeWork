@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -28,6 +29,7 @@ class JobsAdapter(private val listener: OnJobInteractionListener) :
             parent.context
         )
     }
+
     override fun onBindViewHolder(holder: JobViewHolder, position: Int) {
         getItem(position)?.let {
             holder.bind(it)
@@ -61,11 +63,11 @@ class JobViewHolder(
                 "декабря"
             )
 
-            val monthNameStart = monthNames[OffsetDateTime.parse( job.start).month.value-1]
+            val monthNameStart = monthNames[OffsetDateTime.parse(job.start).month.value - 1]
             startDate.text = OffsetDateTime.parse(job.start)
-               .format(DateTimeFormatter.ofPattern("dd $monthNameStart yyyy - "))
+                .format(DateTimeFormatter.ofPattern("dd $monthNameStart yyyy - "))
             if (job.finish != null && job.finish != "1900-01-01T00:00:00Z") {
-                val monthNameEnd = monthNames[OffsetDateTime.parse(job.finish).month.value-1]
+                val monthNameEnd = monthNames[OffsetDateTime.parse(job.finish).month.value - 1]
                 endDate.text = OffsetDateTime.parse(job.finish)
                     .format(DateTimeFormatter.ofPattern("dd $monthNameEnd yyyy"))
             } else {
@@ -77,30 +79,8 @@ class JobViewHolder(
                 webUrl.visibility = View.GONE
             }
 
-//            buttonMenuCardJob.isVisible = job.ownedByMe
-//
-//            buttonMenuCardJob.setOnClickListener {
-//                PopupMenu(context, it).apply {
-//                    inflate(R.menu.edit_options)
-////                    menu.setGroupVisible(R.id.options, job.ownedByMe)
-//                    setOnMenuItemClickListener { item ->
-//                        when (item.itemId) {
-//                            R.id.edit -> {
-//                                listener.edit(job)
-//                                true
-//                            }
-//
-//                            R.id.remove -> {
-//                                listener.delete(job)
-//                                true
-//                            }
-//
-//                            else -> false
-//
-//                        }
-//                    }
-//                }.show()
-//            }
+            removeJob.isVisible = job.ownedByMe
+            removeJob.setOnClickListener { listener.delete(job) }
         }
     }
 }
@@ -109,6 +89,7 @@ class JobViewHolder(
 class JobDiffCallback : DiffUtil.ItemCallback<Job>() {
     override fun areItemsTheSame(oldItem: Job, newItem: Job): Boolean =
         oldItem.id == newItem.id
+
     override fun areContentsTheSame(oldItem: Job, newItem: Job): Boolean = oldItem == newItem
 
 }

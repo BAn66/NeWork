@@ -79,5 +79,17 @@
         <action
             android:id="@+id/action_userDetailsFragment_to_registrationFragment"
             app:destination="@id/registrationFragment" />
+        <action
+            android:id="@+id/action_userDetailsFragment_to_newJobFragment"
+            app:destination="@id/newJobFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newJobFragment"
+        android:name="ru.kostenko.nework.ui.NewJobFragment"
+        android:label="fragment_new_job"
+        tools:layout="@layout/fragment_new_job" >
+        <action
+            android:id="@+id/action_newJobFragment_to_userDetailsFragment"
+            app:destination="@id/userDetailsFragment" />
     </fragment>
 </navigation>

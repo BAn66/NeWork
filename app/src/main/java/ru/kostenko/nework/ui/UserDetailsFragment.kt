@@ -14,6 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import ru.kostenko.nework.R
 import ru.kostenko.nework.authorization.AppAuth
 import ru.kostenko.nework.databinding.FragmentUserDetailsBinding
+import ru.kostenko.nework.viewmodel.AuthViewModel
 import ru.kostenko.nework.viewmodel.JobsViewModel
 import ru.kostenko.nework.viewmodel.UserViewModel
 import ru.kostenko.nework.viewmodel.WallViewModel
@@ -26,6 +27,7 @@ class UserDetailsFragment : Fragment() {
     private val userViewModel: UserViewModel by activityViewModels()
     private val wallViewModel: WallViewModel by activityViewModels()
     private val jobsViewModel: JobsViewModel by activityViewModels()
+    private val authViewModel: AuthViewModel by activityViewModels()
     private lateinit var toolbar: Toolbar
 
     override fun onCreateView(
@@ -54,6 +56,18 @@ class UserDetailsFragment : Fragment() {
             setNavigationIcon(R.drawable.arrow_back_24)
             setNavigationOnClickListener {
                 findNavController().popBackStack()
+            }
+            if(authViewModel.authenticated){
+            inflateMenu(R.menu.exit_menu)}
+            setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.logout -> {
+                        appAuth.removeAuth()
+                        findNavController().popBackStack()
+                        true
+                    }
+                    else -> false
+                }
             }
         }
 

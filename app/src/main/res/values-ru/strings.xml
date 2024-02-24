@@ -50,5 +50,10 @@
     <string name="firm_name">Firm`s name</string>
     <string name="office_post_name">Office position</string>
     <string name="until_now">Until now</string>
+    <string name="add_job">Add job</string>
+    <string name="create_new_job">Create</string>
+    <string name="text_position">Position</string>
+    <string name="text_link">Link</string>
+    <string name="logout">Exit</string>
 
 </resources>

@@ -4,14 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import ru.kostenko.nework.R
 import ru.kostenko.nework.adapter.JobsAdapter
 import ru.kostenko.nework.adapter.OnJobInteractionListener
 import ru.kostenko.nework.adapter.OnPostInteractionListener
@@ -58,6 +62,18 @@ class JobsFragment : Fragment() {
                     jobsViewModel.data.collectLatest {
                         jobsAdapter.submitList(it)
                     }
+                }
+            }
+
+            addJob.setOnClickListener {
+                if (authViewModel.authenticated){
+                    addJob.visibility = View.VISIBLE
+                    Toast.makeText(context, "Добавляем работу", Toast.LENGTH_SHORT).show()
+                    requireParentFragment().requireParentFragment()
+                        .findNavController()
+                        .navigate(R.id.action_userDetailsFragment_to_newJobFragment)
+                } else {
+                    addJob.visibility = View.GONE
                 }
             }
 

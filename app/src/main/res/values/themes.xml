@@ -5,7 +5,33 @@
 <!--        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
 <!--        <item name="colorAccent">@color/colorPrimary</item>-->
 <!--        <item name="android:textColor">@color/colorText</item>-->
+        <item name="extendedFloatingActionButtonStyle">@style/Widget.App.ExtendedFloatingActionButton</item>
+        <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
+
     </style>
+
+<!--    для кнопки добавить -->
+    <style name="Widget.App.ExtendedFloatingActionButton" parent="Widget.MaterialComponents.ExtendedFloatingActionButton.Icon">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.FloatingActionButton</item>
+        <item name="shapeAppearanceOverlay">
+            @style/ShapeAppearance.App.SmallComponent
+        </item>
+    </style>
+    <!--    для кнопки добавить -->
+    <style name="Widget.App.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.FloatingActionButton</item>
+        <item name="shapeAppearanceOverlay">
+            @style/ShapeAppearance.App.SmallComponent
+        </item>
+    </style>
+    <!--    для кнопки добавить -->
+    <style name="ThemeOverlay.App.FloatingActionButton" parent="">
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary</item>
+        <item name="colorOnSurface">@color/colorOnSurface</item>
+    </style>
+
+
 
     <style name="Widget.AppTheme.IconButton" parent="Widget.MaterialComponents.Button.TextButton.Icon">
         <item name="iconTint">@color/button_tint</item>
@@ -27,6 +53,11 @@
     <style name="ShapeAppearanceOverlay.MyApp.MaterialCardView" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">20dp</item>
+    </style>
+
+    <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
     </style>
 
 </resources>

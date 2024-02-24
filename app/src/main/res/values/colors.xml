@@ -3,6 +3,11 @@
     <color name="colorPrimary">#FEF7FF</color>
     <color name="colorPrimaryDark">#6750A4</color>
     <color name="colorAccent">#CAC4D0</color>
+
+    <color  name="colorSecondary">#EADDFF</color>
+    <color  name="colorOnSecondary">#6750A4</color>
+    <color  name="colorOnSurface">#6750A4</color>
+
     <color name="colorText">#1D1B20</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="actionButton">#EADDFF</color>
