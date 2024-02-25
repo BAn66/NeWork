@@ -1,5 +1,6 @@
 package ru.kostenko.nework.viewmodel
 
+import android.icu.text.SimpleDateFormat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,8 +13,8 @@ import kotlinx.coroutines.launch
 import ru.kostenko.nework.authorization.AppAuth
 import ru.kostenko.nework.dto.Job
 import ru.kostenko.nework.model.FeedModelState
-import ru.kostenko.nework.repository.JobsRepository
 import ru.kostenko.nework.repository.JobsRepositoryImpl
+import java.util.Locale
 import javax.inject.Inject
 
 
@@ -86,11 +87,11 @@ class JobsViewModel @Inject constructor(
         name: String,
         position: String,
         start: String,
-        finish: String?,
+        finish: String,
         link: String?,
 
-    ) {
-        edited.value?.let {
+        ) {
+            edited.value?.let {
             val jobCopy = it.copy(
                 name = name.trim(),
                 position = position.trim(),
@@ -109,6 +110,21 @@ class JobsViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun formateDateString(str: String?):String{
+        var newDate: String? = null
+        if (str!=null) {
+            val values = str.split("/")
+            val day = values[0]
+            val month = values[1]
+            val year = values[2]
+//        dd/mm/yyyy
+            newDate = "$year-$month-$day'T'00:00:01.667'Z'"
+        }
+        else
+            newDate = "1900-01-01T00:00:00Z"
+        return newDate
     }
 
     fun startDate(date: String) {

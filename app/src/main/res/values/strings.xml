@@ -54,4 +54,6 @@
     <string name="text_position">Position</string>
     <string name="text_link">Link</string>
     <string name="logout">Exit</string>
+    <string name="error_blank_job">Field \"Company name\" cannot be empty</string>
+    <string name="action_ok">OK</string>
 </resources>

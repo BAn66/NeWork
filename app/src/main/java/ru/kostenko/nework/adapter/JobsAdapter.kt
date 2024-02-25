@@ -43,7 +43,6 @@ class JobViewHolder(
     private val context: Context,
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(job: Job) {
-        //TODO Разберись с датами
         binding.apply {
             jobName.text = job.name
             officePosition.text = job.position
@@ -66,14 +65,17 @@ class JobViewHolder(
             val monthNameStart = monthNames[OffsetDateTime.parse(job.start).month.value - 1]
             startDate.text = OffsetDateTime.parse(job.start)
                 .format(DateTimeFormatter.ofPattern("dd $monthNameStart yyyy - "))
-            if (job.finish != null && job.finish != "1900-01-01T00:00:00Z") {
+            if (job.finish != null && job.finish != "1900-01-01T00:00:00Z"
+                ) {
                 val monthNameEnd = monthNames[OffsetDateTime.parse(job.finish).month.value - 1]
                 endDate.text = OffsetDateTime.parse(job.finish)
                     .format(DateTimeFormatter.ofPattern("dd $monthNameEnd yyyy"))
             } else {
                 endDate.text = context.getString(R.string.until_now)
             }
-            if (job.link != null && job.link != "hide") {
+            if (job.link != null
+//                && job.link != "hide"
+                ) {
                 webUrl.text = job.link
             } else {
                 webUrl.visibility = View.GONE

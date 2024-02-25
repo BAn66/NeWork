@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_date_job"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/card_margin"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardBackgroundColor="#CAC4D0"
+    android:layout_gravity="center"
+    app:cardCornerRadius="24dp"
+    app:cardElevation="@dimen/elevation"
+    tools:context=".ui.JobDateDialogFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/common_pudding">
+
+        <TextView
+            android:id="@+id/select_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/common_pudding"
+            android:text="Select date"
+            android:textColor="#1D1B20"
+            android:textSize="14sp"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/enter_dates"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/common_pudding"
+            android:text="Enter dates"
+            android:textColor="#1D1B20"
+            android:textSize="48sp"
+            app:layout_constraintTop_toBottomOf="@id/select_date" />
+
+        <ImageView
+            android:id="@+id/icon_calendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/common_pudding"
+            android:src="@drawable/calendar_48"
+            app:layout_constraintBottom_toBottomOf="@id/enter_dates"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/select_date" />
+
+        <View
+            android:id="@+id/border"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#575260"
+            app:layout_constraintTop_toBottomOf="@id/enter_dates" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/start_input_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Date"
+            android:padding="@dimen/common_pudding"
+            android:textColorHint="#6750A4"
+            app:boxStrokeColor="#6750A4"
+            app:layout_constraintEnd_toStartOf="@id/end_input_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/border">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_start"
+                android:layout_width="134dp"
+                android:layout_height="match_parent"
+                android:focusable="false"
+                android:text="dd/mm/yyyy" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/end_input_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/common_pudding"
+            app:boxStrokeColor="#6750A4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/start_input_layout"
+            app:layout_constraintTop_toBottomOf="@id/border">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_end"
+                android:layout_width="134dp"
+                android:layout_height="match_parent"
+                android:focusable="false"
+                android:hint="End date" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <Button
+            android:id="@+id/cancel_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/action_cancel"
+            android:textAllCaps="false"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:textColor="#6750A4"
+            app:layout_constraintEnd_toStartOf="@id/ok_btn"
+            app:layout_constraintTop_toBottomOf="@id/end_input_layout" />
+
+        <Button
+            android:id="@+id/ok_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/action_ok"
+            android:textAllCaps="false"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:textColor="#6750A4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/end_input_layout" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
