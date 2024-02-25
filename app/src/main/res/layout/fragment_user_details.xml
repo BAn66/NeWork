@@ -29,34 +29,58 @@
         android:id="@+id/user_photo"
         android:layout_width="match_parent"
         android:layout_height="258dp"
-
         android:contentDescription="@string/VideoHolder"
-        tools:src="@tools:sample/avatars[2]" />
+        tools:src="@tools:sample/avatars[2]"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/nav_user_view"
+        <!--        <com.google.android.material.bottomnavigation.BottomNavigationView-->
+        <!--            android:id="@+id/nav_user_view"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            app:labelVisibilityMode="auto"-->
+        <!--            app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--            app:layout_constraintRight_toRightOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent"-->
+        <!--            app:menu="@menu/user_navigation_menu" />-->
+
+        <!--        <androidx.fragment.app.FragmentContainerView-->
+        <!--            android:id="@+id/nav_user_fragment_main"-->
+        <!--            android:name="androidx.navigation.fragment.NavHostFragment"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--            app:layout_constraintRight_toRightOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/nav_user_view"-->
+        <!--            app:navGraph="@navigation/user_details_navigation" />-->
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/nav_user_tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:labelVisibilityMode="auto"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:menu="@menu/user_navigation_menu" />
+            app:tabInlineLabel="true"
+            app:tabMode="fixed">
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/nav_user_fragment_main"
-            android:name="androidx.navigation.fragment.NavHostFragment"
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wall"
+                android:textAllCaps="false"/>
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/jobs"
+                android:textAllCaps="false" />
+        </com.google.android.material.tabs.TabLayout>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/nav_user_viewP2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nav_user_view"
-            app:navGraph="@navigation/user_details_navigation" />
-
+            android:layout_height="match_parent" />
     </LinearLayout>
 </LinearLayout>
