@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -18,7 +16,6 @@ import kotlinx.coroutines.launch
 import ru.kostenko.nework.R
 import ru.kostenko.nework.adapter.JobsAdapter
 import ru.kostenko.nework.adapter.OnJobInteractionListener
-import ru.kostenko.nework.adapter.OnPostInteractionListener
 import ru.kostenko.nework.authorization.AppAuth
 import ru.kostenko.nework.databinding.FragmentJobsBinding
 import ru.kostenko.nework.dto.Job
@@ -68,7 +65,7 @@ class JobsFragment : Fragment() {
             addJob.setOnClickListener {
                 if (authViewModel.authenticated){
                     addJob.visibility = View.VISIBLE
-                    Toast.makeText(context, "Добавляем работу", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(context, "Добавляем работу", Toast.LENGTH_SHORT).show()
                     requireParentFragment().requireParentFragment()
                         .findNavController()
                         .navigate(R.id.action_userDetailsFragment_to_newJobFragment)

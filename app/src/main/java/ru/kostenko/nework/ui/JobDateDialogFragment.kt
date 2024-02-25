@@ -1,22 +1,15 @@
 package ru.kostenko.nework.ui
 
 import android.app.DatePickerDialog
-import android.app.Dialog
 import android.content.Context
-import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.setFragmentResult
-import androidx.navigation.fragment.findNavController
-import ru.kostenko.nework.R
 import ru.kostenko.nework.databinding.FragmentJobDateDialogBinding
-import ru.kostenko.nework.databinding.FragmentNewJobBinding
 import java.util.Calendar
 import java.util.GregorianCalendar
 import java.util.Locale
@@ -34,10 +27,10 @@ class JobDateDialogFragment : DialogFragment() {
             dismiss()
         }
         binding.okBtn.setOnClickListener {
-            val start = binding.editStart.text.toString()
-            val end = binding.editEnd.text.toString()
-            setFragmentResult("setDateStart", bundleOf("start" to start))
-            setFragmentResult("setDateEnd", bundleOf("end" to end))
+            val resultStart  = binding.editStart.text.toString()
+            val resultEnd = binding.editEnd.text.toString()
+            parentFragmentManager.setFragmentResult("setDateStart", bundleOf("start" to resultStart))
+            parentFragmentManager.setFragmentResult("setDateEnd", bundleOf("end" to resultEnd))
             dismiss()
         }
         binding.startInputLayout.setOnClickListener {

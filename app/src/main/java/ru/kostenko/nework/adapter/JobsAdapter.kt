@@ -74,7 +74,7 @@ class JobViewHolder(
                 endDate.text = context.getString(R.string.until_now)
             }
             if (job.link != null
-//                && job.link != "hide"
+                && job.link != ""
                 ) {
                 webUrl.text = job.link
             } else {

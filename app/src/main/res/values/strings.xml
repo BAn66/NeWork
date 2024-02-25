@@ -15,6 +15,7 @@
     <string name="password">Password</string>
     <string name="notLoginText">Don\'t have an account? Register</string>
     <string name="error_blank_auth">Empty login and password fields</string>
+    <string name="error_blank_job">Empty company name, position and start job fields</string>
     <string name="error_blank_username">Enter Login</string>
     <string name="error_blank_password">Enter Password</string>
     <string name="password_helper_text">Password cannot be empty</string>
@@ -54,6 +55,5 @@
     <string name="text_position">Position</string>
     <string name="text_link">Link</string>
     <string name="logout">Exit</string>
-    <string name="error_blank_job">Field \"Company name\" cannot be empty</string>
     <string name="action_ok">OK</string>
 </resources>

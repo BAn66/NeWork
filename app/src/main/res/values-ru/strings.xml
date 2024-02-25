@@ -16,6 +16,7 @@
     <string name="password">Пароль</string>
     <string name="notLoginText">Нет аккаунта? Зарегестрируйтесь.</string>
     <string name="error_blank_auth">Поля логина и пароля пустые</string>
+    <string name="error_blank_job">Empty company name, position and start job fields</string>
     <string name="error_blank_username">Введите логин</string>
     <string name="error_blank_password">Введите пароль</string>
     <string name="password_helper_text">Поле пароля не может быть пустым</string>
@@ -55,7 +56,6 @@
     <string name="text_position">Position</string>
     <string name="text_link">Link</string>
     <string name="logout">Exit</string>
-    <string name="error_blank_job">Field \"Company name\" cannot be empty</string>
     <string name="action_ok">OK</string>
 
 </resources>
