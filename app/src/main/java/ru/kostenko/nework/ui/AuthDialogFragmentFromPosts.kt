@@ -15,15 +15,15 @@ class AuthDialogFragmentFromPosts: DialogFragment() {
                 .setMessage("To add a post, you must be logged in.")
                 .setIcon(R.drawable.baseline_question_mark_24)
                 .setPositiveButton("Login") {
-                        dialog, id ->
+                        _, _ ->
                     findNavController().navigate(R.id.action_mainFragment_to_authFragment)
                 }
                 .setNegativeButton("Registration") {
-                        dialog, id ->
+                        _, _ ->
                    findNavController().navigate(R.id.action_mainFragment_to_registrationFragment)
                 }
                 .setNeutralButton("Back"){
-                        dialog, id -> dialog.cancel()
+                        dialog, _ -> dialog.cancel()
                 }
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")

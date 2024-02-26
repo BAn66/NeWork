@@ -1,13 +1,20 @@
 package ru.kostenko.nework
 
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import dagger.hilt.android.AndroidEntryPoint
-import ru.kostenko.nework.authorization.AppAuth
 
-@AndroidEntryPoint
+import androidx.appcompat.app.AppCompatActivity
+
 class AppActivity : AppCompatActivity(R.layout.activity_app)
+
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+////        MapKitFactory.setApiKey(BuildConfig.MAPKIT_API_KEY)
+//
+//        MapKitFactory.initialize(this)
+//        setContentView(R.layout.activity_app)
+//        mapView = findViewById(R.id.map)
+//
+//    }
 //{
 //    private lateinit var binding: ActivityMainBinding
 ////    private lateinit var navHostFragment: NavHostFragment

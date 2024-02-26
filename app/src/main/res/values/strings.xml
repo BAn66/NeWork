@@ -58,4 +58,5 @@
     <string name="action_ok">OK</string>
     <string name="post">Post</string>
     <string name="share">Share</string>
+    <string name="location_mark">Mark of location</string>
 </resources>

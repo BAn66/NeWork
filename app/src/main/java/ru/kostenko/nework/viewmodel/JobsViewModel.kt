@@ -1,11 +1,12 @@
 package ru.kostenko.nework.viewmodel
 
-import android.icu.text.SimpleDateFormat
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
@@ -14,7 +15,6 @@ import ru.kostenko.nework.authorization.AppAuth
 import ru.kostenko.nework.dto.Job
 import ru.kostenko.nework.model.FeedModelState
 import ru.kostenko.nework.repository.JobsRepositoryImpl
-import java.util.Locale
 import javax.inject.Inject
 
 
@@ -35,6 +35,7 @@ class JobsViewModel @Inject constructor(
 ) : ViewModel() {
     private val userId = MutableLiveData<Int>()
     private val edited = MutableLiveData(empty)
+    @OptIn(ExperimentalCoroutinesApi::class)
     val data: Flow<List<Job>> = appAuth.authStateFlow.flatMapLatest { (myId, _) ->
         jobsRepository.data.map {
 //            JobModel()
@@ -61,8 +62,6 @@ class JobsViewModel @Inject constructor(
         }
     }
 
-    fun saveMyJob() {}
-    fun editMyJob() {}
     fun removeMyJob(id: Int) {
         viewModelScope.launch {
             try {
@@ -113,7 +112,7 @@ class JobsViewModel @Inject constructor(
     }
 
     fun formateDateString(str: String?):String{
-        var newDate: String? = null
+        var newDate: String?
         if (str!=null) {
             val values = str.split("/")
             val day = values[0]
