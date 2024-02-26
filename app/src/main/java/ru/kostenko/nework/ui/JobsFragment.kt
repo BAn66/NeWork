@@ -62,19 +62,17 @@ class JobsFragment : Fragment() {
                 }
             }
 
+            if (authViewModel.authenticated && authViewModel.data.value.id.toInt() == userId){
+                addJob.visibility = View.VISIBLE
+            } else {
+                addJob.visibility = View.GONE
+            }
+
             addJob.setOnClickListener {
-                if (authViewModel.authenticated){
-                    addJob.visibility = View.VISIBLE
-//                    Toast.makeText(context, "Добавляем работу", Toast.LENGTH_SHORT).show()
                     requireParentFragment().requireParentFragment()
                         .findNavController()
                         .navigate(R.id.action_userDetailsFragment_to_newJobFragment)
-                } else {
-                    addJob.visibility = View.GONE
-                }
             }
-
-
         }
         return binding.root
     }

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".ui.JobsFragment">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:listitem="@layout/card_job" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
@@ -30,6 +31,5 @@
         android:clickable="true"
         android:contentDescription="@string/add_job"
         android:focusable="true"
-        app:srcCompat="@drawable/add_24"
-        />
+        app:srcCompat="@drawable/add_24" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
