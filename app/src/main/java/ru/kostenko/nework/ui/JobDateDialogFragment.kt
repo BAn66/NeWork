@@ -33,28 +33,36 @@ class JobDateDialogFragment : DialogFragment() {
             parentFragmentManager.setFragmentResult("setDateEnd", bundleOf("end" to resultEnd))
             dismiss()
         }
+
+        val startClickListener = View.OnClickListener {
+            selectDateDialog(binding.editStart)
+        }
+        val endClickListener = View.OnClickListener {
+            selectDateDialog(binding.editEnd)
+        }
+
         binding.startInputLayout.setOnClickListener {
-            selectDateDialog(binding.editStart, it.context)
+            selectDateDialog(binding.editStart)
         }
         binding.endInputLayout.setOnClickListener {
-            selectDateDialog(binding.editEnd, it.context)
+            selectDateDialog(binding.editEnd)
         }
         return binding.root
     }
 
-    fun selectDateDialog(textView: TextView?, context: Context) {
+    fun selectDateDialog(textView: TextView) {
         val currentDateTime = Calendar.getInstance()
         val startYear = currentDateTime.get(Calendar.YEAR)
         val startMonth = currentDateTime.get(Calendar.MONTH)
         val startDay = currentDateTime.get(Calendar.DAY_OF_MONTH)
 
-        DatePickerDialog(context, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+        DatePickerDialog(textView.context, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
             val pickedDateTime = Calendar.getInstance()
             pickedDateTime.set(year, month, dayOfMonth)
             val result = GregorianCalendar(year, month, dayOfMonth).time
             val dateFormat =
                 java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.uuu'Z'", Locale.getDefault())
-            textView?.setText(dateFormat.format(result))
+            textView.text = dateFormat.format(result)
         }, startYear, startMonth, startDay).show()
     }
 }

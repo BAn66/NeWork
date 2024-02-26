@@ -57,17 +57,17 @@ class NewJobFragment : Fragment() {
 
         binding.startEndCard.setOnClickListener {
             var dialog = JobDateDialogFragment()
-            dialog.show(requireParentFragment().parentFragmentManager, "jobDateDialog")
+            dialog.show(parentFragmentManager, null)
         }
 
-        setFragmentResultListener("setDateStart") { key, bundle ->
+        setFragmentResultListener("setDateStart") { _, bundle ->
             val start = bundle.getString("start")
-            binding.start.setText(start)
+            binding.start.text = start
         }
 
-        setFragmentResultListener("setDateEnd") { key, bundle ->
+        setFragmentResultListener("setDateEnd") { _, bundle ->
             val end = bundle.getString("end")
-            binding.end.setText(end)
+            binding.end.text = end
         }
 
         binding.createBtn.setOnClickListener {
