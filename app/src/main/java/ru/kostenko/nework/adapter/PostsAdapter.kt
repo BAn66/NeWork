@@ -178,7 +178,8 @@ class PostViewHolder(
             avatar.setOnClickListener { onPostInteractionListener.openPost(post) }
             author.setOnClickListener { onPostInteractionListener.openPost(post) }
             published.setOnClickListener { onPostInteractionListener.openPost(post) }
-//            imageAttach.setOnClickListener { onPostInteractionListener.openImage(post) }
+            content.setOnClickListener { onPostInteractionListener.openPost(post) }
+            imageAttach.setOnClickListener { onPostInteractionListener.openPost(post) }
 
             menu.isVisible = post.ownedByMe  //Меню видно если пост наш
             menu.setOnClickListener {

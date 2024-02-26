@@ -39,7 +39,6 @@ class UsersFragment : Fragment() {
                         .navigate(R.id.action_mainFragment_to_userDetailsFragment)
                 }
             }
-
         })
 
         binding.userList.adapter = adapter

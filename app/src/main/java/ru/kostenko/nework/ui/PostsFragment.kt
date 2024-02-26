@@ -1,6 +1,7 @@
 package ru.kostenko.nework.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -68,7 +69,13 @@ class PostsFragment : Fragment() {
             }
 
             override fun openPost(post: Post) {
-                val resultId = post.id
+                lifecycleScope.launch {
+                    postViewModel.getPostById(post.id).join()
+//                parentFragmentManager.setFragmentResult("openPostId", bundleOf("id" to resultId))
+                    Log.d("MYTAAAG", "onCreateView1: ${post.id}  ${postViewModel.post.value?.id}")
+                    requireParentFragment().requireParentFragment().findNavController()
+                        .navigate(R.id.action_mainFragment_to_postFragment)
+                }
             }
         }, MediaLifecycleObserver())
 
@@ -93,7 +100,7 @@ class PostsFragment : Fragment() {
 
         /*        Работа редактирования через фрагменты (конкретно все в фрагменте NewPost)*/
         postViewModel.edited.observe(viewLifecycleOwner) { it ->// Начало редактирования
-//            Toast.makeText(this.context, "Переход на карточку поста", Toast.LENGTH_LONG).show()
+//            Toast.makeText(this.context, "Переход на карточку редактирования поста", Toast.LENGTH_LONG).show()
             val resultId = it.id
             setFragmentResult("requestIdForNewPostFragment", bundleOf("id" to resultId))
             if (it.id != 0) {
@@ -104,7 +111,7 @@ class PostsFragment : Fragment() {
 
         //TODO временное хранение не работает.
         binding.addPost.setOnClickListener {
-            setFragmentResultListener("requestTmpContent") { key, bundle ->
+            setFragmentResultListener("requestTmpContent") { _, bundle ->
                 val tmpContent = bundle.getString("tmpContent")
                 setFragmentResult(
                     "requestSavedTmpContent",
@@ -124,7 +131,6 @@ class PostsFragment : Fragment() {
                     )
                 }
             }
-
         }
         return binding.root
     }

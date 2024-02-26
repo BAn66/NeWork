@@ -8,9 +8,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import ru.kostenko.nework.R
@@ -65,6 +63,7 @@ class UserDetailsFragment : Fragment() {
 //        })
 
         //TODO Сделай скрытие аватарки при скролле
+
         val tabLayout = binding.navUserTabs
         val viewPager = binding.navUserViewP2
 
@@ -119,13 +118,5 @@ class UserDetailsFragment : Fragment() {
             .into(binding.userPhoto)
 
         return binding.root
-    }
-
-    fun createFragment(position: Int): Fragment {
-        return when (position) {
-            0 -> WallFragment()
-            1 -> JobsFragment()
-            else -> WallFragment()
-        }
     }
 }

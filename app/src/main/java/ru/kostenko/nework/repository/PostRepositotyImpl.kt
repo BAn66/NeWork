@@ -154,4 +154,20 @@ class PostRepositoryImpl @Inject constructor(
             throw Exception(e)
         }
     }
+
+    suspend fun getPostById(id: Int): Post {
+        try {
+            val response = apiService.getPostById(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            return body
+        } catch (e: IOException) {
+            throw NetworkError
+
+        } catch (e: Exception) {
+            throw Exception(e)
+        }
+    }
 }

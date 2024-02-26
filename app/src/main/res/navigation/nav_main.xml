@@ -16,14 +16,14 @@
             android:id="@+id/action_mainFragment_to_newPostFragment"
             app:destination="@id/newPostFragment" />
         <action
-            android:id="@+id/action_mainFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
-        <action
             android:id="@+id/action_mainFragment_to_registrationFragment"
             app:destination="@id/registrationFragment" />
         <action
             android:id="@+id/action_mainFragment_to_userDetailsFragment"
             app:destination="@id/userDetailsFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_postFragment"
+            app:destination="@id/postFragment" />
     </fragment>
 
     <fragment
@@ -61,11 +61,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/profileFragment"
-        android:name="ru.kostenko.nework.ui.ProfileFragment"
-        android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
-    <fragment
         android:id="@+id/userDetailsFragment"
         android:name="ru.kostenko.nework.ui.UserDetailsFragment"
         android:label="fragment_user_details"
@@ -91,5 +86,14 @@
         <action
             android:id="@+id/action_newJobFragment_to_userDetailsFragment"
             app:destination="@id/userDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/postFragment"
+        android:name="ru.kostenko.nework.ui.PostFragment"
+        android:label="fragment_post"
+        tools:layout="@layout/fragment_post" >
+        <action
+            android:id="@+id/action_postFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
     </fragment>
 </navigation>

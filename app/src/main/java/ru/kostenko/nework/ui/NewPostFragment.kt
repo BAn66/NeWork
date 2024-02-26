@@ -51,7 +51,7 @@ class NewPostFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentNewPostBinding.inflate(layoutInflater)
-
+        viewModel.clearMedia()
         //Верхний аппбар
         toolbar_login = binding.toolbar
         toolbar_login.apply {
@@ -84,13 +84,13 @@ class NewPostFragment : Fragment() {
         }
 
         //        Для загрузки черновика
-        setFragmentResultListener("requestSavedTmpContent") { key, bundle ->
+        setFragmentResultListener("requestSavedTmpContent") { _, bundle ->
             val savedTmpContent = bundle.getString("savedTmpContent")
             binding.editTextNewPost.setText(savedTmpContent)
         }
 
         //Для редактирования поста
-        setFragmentResultListener("requestIdForNewPostFragment") { key, bundle ->
+        setFragmentResultListener("requestIdForNewPostFragment") { _, bundle ->
             // Здесь можно передать любой тип, поддерживаемый Bundle-ом
             val resultId = bundle.getInt("id")
             if (resultId != 0) {

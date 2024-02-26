@@ -57,5 +57,7 @@
     <string name="text_link">Link</string>
     <string name="logout">Exit</string>
     <string name="action_ok">OK</string>
+    <string name="post">Post</string>
+    <string name="share">Share</string>
 
 </resources>

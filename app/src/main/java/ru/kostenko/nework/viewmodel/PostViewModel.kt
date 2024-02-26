@@ -82,6 +82,10 @@ class PostViewModel @Inject constructor(
     val postCreated: LiveData<Unit>
         get() = _postCreated
 
+    private val _post = MutableLiveData<Post>()
+    val post: LiveData<Post>
+        get() = _post
+
     init {
         loadPosts()
     }
@@ -166,4 +170,15 @@ class PostViewModel @Inject constructor(
     fun clearMedia() {
         _media.value = null
     }
+
+    fun getPostById(id: Int) = viewModelScope.launch {
+            _dataState.postValue(FeedModelState(loading = true))
+            try {
+                _post.value = repository.getPostById(id)
+                _dataState.value = FeedModelState()
+            } catch (e: Exception) {
+                _dataState.value = FeedModelState(error = true)
+            }
+        }
+
 }
