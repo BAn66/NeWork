@@ -59,4 +59,5 @@
     <string name="post">Post</string>
     <string name="share">Share</string>
     <string name="location_mark">Mark of location</string>
+    <string name="description_mention_count">Mentioned</string>
 </resources>
