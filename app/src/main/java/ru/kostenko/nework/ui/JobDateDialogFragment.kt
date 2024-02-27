@@ -34,10 +34,10 @@ class JobDateDialogFragment : DialogFragment() {
             dismiss()
         }
 
-        val startClickListener = View.OnClickListener {
+        View.OnClickListener {
             selectDateDialog(binding.editStart)
         }
-        val endClickListener = View.OnClickListener {
+        View.OnClickListener {
             selectDateDialog(binding.editEnd)
         }
 
@@ -45,6 +45,12 @@ class JobDateDialogFragment : DialogFragment() {
             selectDateDialog(binding.editStart)
         }
         binding.endInputLayout.setOnClickListener {
+            selectDateDialog(binding.editEnd)
+        }
+        binding.editStart.setOnClickListener {
+            selectDateDialog(binding.editStart)
+        }
+        binding.editEnd.setOnClickListener {
             selectDateDialog(binding.editEnd)
         }
         return binding.root

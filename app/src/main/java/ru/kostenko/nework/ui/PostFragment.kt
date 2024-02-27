@@ -3,8 +3,10 @@ package ru.kostenko.nework.ui
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.annotation.SuppressLint
+import android.icu.text.DecimalFormat
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 
 import android.view.LayoutInflater
 import android.view.View
@@ -48,6 +50,7 @@ import ru.kostenko.nework.viewmodel.PostViewModel
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 @AndroidEntryPoint
 class PostFragment : Fragment() {
@@ -123,24 +126,24 @@ class PostFragment : Fragment() {
             }
         }
 
-        val post = postViewModel.post
+        val post = postViewModel.post.value!!.copy()
         val observer: MediaLifecycleObserver = MediaLifecycleObserver()
 
-        binding.author.text = post.value?.author
-        binding.published.text = OffsetDateTime.parse(post.value?.published)
+        binding.author.text = post.author
+        binding.published.text = OffsetDateTime.parse(post.published)
             .format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))
-        binding.content.text = post.value!!.content
+        binding.content.text = post.content
 
         Glide.with(binding.avatar)
-            .load(post.value?.authorAvatar)
+            .load(post.authorAvatar)
             .placeholder(R.drawable.ic_loading_100dp)
             .error(R.drawable.post_avatar_drawable)
             .timeout(10_000)
             .apply(RequestOptions().circleCrop()) //делает круглыми аватарки
             .into(binding.avatar)
 
-        if (post.value?.attachment != null) {
-            when (post.value!!.attachment!!.type) {
+        if (post.attachment != null) {
+            when (post.attachment.type) {
                 AttachmentType.IMAGE -> binding.imageAttach.visibility = View.VISIBLE
                 AttachmentType.AUDIO -> binding.audioGroup.visibility = View.VISIBLE
                 AttachmentType.VIDEO -> binding.videoGroup.visibility = View.VISIBLE
@@ -152,15 +155,15 @@ class PostFragment : Fragment() {
         }
 
         binding.imageAttach.visibility =
-            if (post.value?.attachment != null && post.value!!.attachment!!.type == AttachmentType.IMAGE) View.VISIBLE else View.GONE
+            if (post.attachment != null && post.attachment.type == AttachmentType.IMAGE) View.VISIBLE else View.GONE
 
         binding.audioGroup.visibility =
-            if (post.value?.attachment != null && post.value!!.attachment!!.type == AttachmentType.AUDIO) View.VISIBLE else View.GONE
+            if (post.attachment != null && post.attachment.type == AttachmentType.AUDIO) View.VISIBLE else View.GONE
 
         binding.videoGroup.visibility =
-            if (post.value?.attachment != null && post.value!!.attachment!!.type == AttachmentType.VIDEO) View.VISIBLE else View.GONE
+            if (post.attachment != null && post.attachment.type == AttachmentType.VIDEO) View.VISIBLE else View.GONE
 
-        post.value?.attachment?.apply {
+        post.attachment?.apply {
             binding.imageAttach.contentDescription = this.url
             Glide.with(binding.imageAttach)
                 .load(this.url)
@@ -182,7 +185,7 @@ class PostFragment : Fragment() {
             binding.videoContent.apply {
                 setMediaController(MediaController(context))
                 setVideoURI(
-                    Uri.parse(post.value!!.attachment!!.url)
+                    Uri.parse(post.attachment!!.url)
                 )
                 setOnPreparedListener {
                     start()
@@ -197,7 +200,7 @@ class PostFragment : Fragment() {
         binding.playButton.setOnClickListener {
             observer.apply {
                 //Не забываем добавлять разрешение в андроид манифест на работу с сетью
-                val url = post.value!!.attachment!!.url
+                val url = post.attachment!!.url
                 mediaPlayer?.setDataSource(url) //TODO при нажатии на паузу аудиоплеера и повторном плэй падает
             }.play()
         }
@@ -215,10 +218,10 @@ class PostFragment : Fragment() {
         }
 
         binding.btnLike.text = AndroidUtils.eraseZero(
-            post.value?.likeOwnerIds?.size?.toLong()
-                ?: 0
+            post.likeOwnerIds.size.toLong()
+
         )
-        binding.btnLike.isChecked = post.value?.likedByMe!!
+        binding.btnLike.isChecked = post.likedByMe
 
         binding.btnLike.setOnClickListener {//анимация лайка
             val scaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, 1F, 1.25F, 1F)
@@ -228,7 +231,7 @@ class PostFragment : Fragment() {
 //                    repeatCount = 100
                 interpolator = BounceInterpolator()
             }.start()
-            postViewModel.likePostById(post.value?.id!!, post.value?.likedByMe!!)
+            postViewModel.likePostById(post.id, post.likedByMe)
         }
 
 //            btnLike.setOnLongClickListener {
@@ -242,21 +245,23 @@ class PostFragment : Fragment() {
             userLocation.isVisible = true
             userLocation.isHeadingEnabled = false
 
-            val arguments = post.value!!.coords
+            val arguments = post.coords?.copy()
             //Создаем маркер на карте
             //переход к точке на карте после клика на списке
-            if (arguments?.latC != null) {
+            if (arguments?.lat != null) {
+                val latCoord = arguments.lat
+                val longCoord = arguments.long
                 val collection = mapWindow.map.mapObjects.addCollection()
                 collection.clear()
                 val placeBinding = PlaceBinding.inflate(layoutInflater)
                 collection.addPlacemark(
-                    Point(arguments.latC, arguments.longC),
+                    Point(latCoord, longCoord),
                     ViewProvider(placeBinding.root)
                 )
                 val cameraPosition = mapWindow.map.cameraPosition
                 mapWindow.map.move(
                     CameraPosition(
-                        Point(arguments.latC, arguments.longC),
+                        Point(latCoord, longCoord),
                         16.5F,
                         0.0f,
                         0.0f
@@ -269,7 +274,6 @@ class PostFragment : Fragment() {
                 binding.mapview.visibility = View.GONE
             }
         }
-
         return binding.root
     }
 

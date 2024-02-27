@@ -71,8 +71,6 @@ class PostsFragment : Fragment() {
             override fun openPost(post: Post) {
                 lifecycleScope.launch {
                     postViewModel.getPostById(post.id).join()
-//                parentFragmentManager.setFragmentResult("openPostId", bundleOf("id" to resultId))
-                    Log.d("MYTAAAG", "onCreateView1: ${post.id}  ${postViewModel.post.value?.id}")
                     requireParentFragment().requireParentFragment().findNavController()
                         .navigate(R.id.action_mainFragment_to_postFragment)
                 }
