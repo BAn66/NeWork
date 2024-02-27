@@ -3,6 +3,7 @@ package ru.kostenko.nework.ui
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -110,6 +111,9 @@ class PostFragment : Fragment() {
 
         //Наполняем верхний аппбар
         toolbar = binding.toolbar
+        val post = postViewModel.post.value!!.copy()
+        val observer = MediaLifecycleObserver()
+
         toolbar.apply {
             setTitle(R.string.post)
             setNavigationIcon(R.drawable.arrow_back_24)
@@ -121,6 +125,15 @@ class PostFragment : Fragment() {
                 when (it.itemId) {
                     R.id.share -> {
                         Toast.makeText(context, "Делимся ссылкой", Toast.LENGTH_SHORT).show()
+
+                val intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, post.content)
+                    type = "text/plain"
+                }
+                val shareIntent =
+                    Intent.createChooser(intent, getString(R.string.description_shared))
+                startActivity(shareIntent)
                         true
                     }
 
@@ -129,8 +142,7 @@ class PostFragment : Fragment() {
             }
         }
 
-        val post = postViewModel.post.value!!.copy()
-        val observer = MediaLifecycleObserver()
+
 
         binding.author.text = post.author
         binding.published.text = OffsetDateTime.parse(post.published)

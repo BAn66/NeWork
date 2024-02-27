@@ -3,6 +3,7 @@ package ru.kostenko.nework.adapter
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import android.view.ViewGroup
 import android.view.animation.BounceInterpolator
 import android.widget.MediaController
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -161,6 +163,20 @@ class PostViewHolder(
                 }.start()
                 onPostInteractionListener.like(post)
             }
+
+            btnShare.setOnClickListener {
+                Toast.makeText(it.context, "Делимся ссылкой", Toast.LENGTH_SHORT).show()
+
+                val intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, post.content)
+                    type = "text/plain"
+                }
+                val shareIntent =
+                    Intent.createChooser(intent, getString(R.string.description_shared))
+                startActivity(shareIntent)
+            }
+
 
 //            btnLike.setOnLongClickListener {
 //                onPostInteractionListener.onOpenLikers(post)
