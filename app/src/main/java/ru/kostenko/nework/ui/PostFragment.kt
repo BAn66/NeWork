@@ -378,6 +378,83 @@ class PostFragment : Fragment() {
             Toast.makeText(context, "Открываем список лайкеров", Toast.LENGTH_SHORT).show()
         }
 
+        //Упомянутые и все все все
+        val listMentId = mutableListOf<Int>()
+        post.mentionIds.forEach {
+            listMentId.add(it)
+        }
+        val avatarViewMent0: AvatarView = binding.avatarLayoutMent.findViewById(R.id.avatar_ment_0)
+        val avatarViewMent1: AvatarView = binding.avatarLayoutMent.findViewById(R.id.avatar_ment_1)
+        val avatarViewMent2: AvatarView = binding.avatarLayoutMent.findViewById(R.id.avatar_ment_2)
+        val avatarViewMent3: AvatarView = binding.avatarLayoutMent.findViewById(R.id.avatar_ment_3)
+        val avatarViewMent4: AvatarView = binding.avatarLayoutMent.findViewById(R.id.avatar_ment_4)
+
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                val mapAvatarsMentioneds = mutableMapOf<Int, Pair<AvatarView, String?>>()
+                mapAvatarsMentioneds.put(0, Pair(avatarViewMent0, null))
+                mapAvatarsMentioneds.put(1, Pair(avatarViewMent1, null))
+                mapAvatarsMentioneds.put(2, Pair(avatarViewMent2, null))
+                mapAvatarsMentioneds.put(3, Pair(avatarViewMent3, null))
+                mapAvatarsMentioneds.put(4, Pair(avatarViewMent4, null))
+
+                if (listMentId.size == 0) binding.avatarLayoutMent.visibility = View.GONE
+                else if (listMentId.size < 6) {
+                    for (i in 0..(listMentId.size - 1)) {
+                        userViewModel.getUserById(listLikersId[i]).join()
+                        val userName = userViewModel.user.value?.name
+                        val userAvatar = userViewModel.user.value?.avatar
+                        var pair = mapAvatarsMentioneds.getValue(i)
+                        if (userAvatar.isNullOrEmpty()) {
+                            pair = pair.copy(second = userName)
+                            mapAvatarsMentioneds.set(i, pair)
+                        } else {
+                            pair = pair.copy(second = userAvatar)
+                            mapAvatarsMentioneds.set(i, pair)
+                        }
+                    }
+                } else {
+                    for (i in 0..4) {
+                        userViewModel.getUserById(listLikersId[i]).join()
+                        val userName = userViewModel.user.value?.name
+                        val userAvatar = userViewModel.user.value?.avatar
+                        var pair = mapAvatarsMentioneds.getValue(i)
+                        if (userAvatar.isNullOrEmpty()) {
+                            pair = pair.copy(second = userName)
+                            mapAvatarsMentioneds.set(i, pair)
+                        } else {
+                            pair = pair.copy(second = userAvatar)
+                            mapAvatarsMentioneds.set(i, pair)
+                        }
+                    }
+                }
+
+                mapAvatarsMentioneds.forEach {
+                    it.value.first.visibility = View.GONE
+                    if (it.value.second != null) {
+                        if (it.value.second!!.startsWith("https://")) {
+                            it.value.first.visibility = View.VISIBLE
+                            it.value.first.loadImage(it.value.second)
+                        } else {
+                            if (it.value.second == "") {
+                                it.value.first.visibility = View.VISIBLE
+                                it.value.first.loadImage(R.drawable.post_avatar_drawable)
+                            } else {
+                                it.value.first.visibility = View.VISIBLE
+                                it.value.first.avatarInitials = it.value.second!!.substring(0, 1).uppercase()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (post.mentionIds.size <= 5) binding.btnMentMore.visibility = View.GONE
+        binding.btnMentMore.setOnClickListener {
+            Toast.makeText(context, "Открываем список упомянутых", Toast.LENGTH_SHORT).show()
+        }
+
+
         return binding.root
     }
 

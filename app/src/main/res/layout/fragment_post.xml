@@ -352,7 +352,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
-                        android:contentDescription="@string/description_liked_count"
+                        android:contentDescription="@string/liked_more"
                         android:insetTop="0dp"
                         android:insetBottom="0dp"
                         android:minHeight="0dp"
@@ -407,45 +407,75 @@
                     app:layout_constraintStart_toEndOf="@id/btn_mention"
                     app:layout_constraintTop_toTopOf="@id/btn_mention">
 
-                    <ImageView
+                    <io.getstream.avatarview.AvatarView
+                        android:id="@+id/avatar_ment_0"
+                        app:avatarViewInitialsBackgroundColor="@color/colorOnSurface"
+                        app:avatarViewInitialsTextColor="@color/colorWhite"
+                        app:avatarViewInitialsTextSize="16sp"
+                        app:avatarViewInitialsTextSizeRatio="0.33"
+                        app:avatarViewInitialsTextStyle="bold"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        app:avatarViewBorderColor="@color/colorWhite"
+                        app:avatarViewBorderWidth="2dp"
+                        app:avatarViewPlaceholder="@drawable/account_24"
+                        app:avatarViewShape="circle" />
+
+                    <io.getstream.avatarview.AvatarView
                         android:id="@+id/avatar_ment_1"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_margin="8dp"
-                        android:contentDescription="@string/description_post_author_avatar"
-                        app:srcCompat="@drawable/post_avatar_drawable" />
+                        app:avatarViewInitialsBackgroundColor="@color/colorOnSurface"
+                        app:avatarViewInitialsTextColor="@color/colorWhite"
+                        app:avatarViewInitialsTextSize="16sp"
+                        app:avatarViewInitialsTextSizeRatio="0.33"
+                        app:avatarViewInitialsTextStyle="bold"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        app:avatarViewBorderColor="@color/colorWhite"
+                        app:avatarViewBorderWidth="2dp"
+                        app:avatarViewPlaceholder="@drawable/account_24"
+                        app:avatarViewShape="circle" />
 
-                    <ImageView
+                    <io.getstream.avatarview.AvatarView
                         android:id="@+id/avatar_ment_2"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_margin="8dp"
-                        android:contentDescription="@string/description_post_author_avatar"
-                        app:srcCompat="@drawable/post_avatar_drawable" />
+                        app:avatarViewInitialsBackgroundColor="@color/colorOnSurface"
+                        app:avatarViewInitialsTextColor="@color/colorWhite"
+                        app:avatarViewInitialsTextSize="16sp"
+                        app:avatarViewInitialsTextSizeRatio="0.33"
+                        app:avatarViewInitialsTextStyle="bold"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        app:avatarViewBorderColor="@color/colorWhite"
+                        app:avatarViewBorderWidth="2dp"
+                        app:avatarViewPlaceholder="@drawable/account_24"
+                        app:avatarViewShape="circle" />
 
-                    <ImageView
+                    <io.getstream.avatarview.AvatarView
                         android:id="@+id/avatar_ment_3"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_margin="8dp"
-                        android:contentDescription="@string/description_post_author_avatar"
-                        app:srcCompat="@drawable/post_avatar_drawable" />
+                        app:avatarViewInitialsBackgroundColor="@color/colorOnSurface"
+                        app:avatarViewInitialsTextColor="@color/colorWhite"
+                        app:avatarViewInitialsTextSize="16sp"
+                        app:avatarViewInitialsTextSizeRatio="0.33"
+                        app:avatarViewInitialsTextStyle="bold"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        app:avatarViewBorderColor="@color/colorWhite"
+                        app:avatarViewBorderWidth="2dp"
+                        app:avatarViewPlaceholder="@drawable/account_24"
+                        app:avatarViewShape="circle" />
 
-                    <ImageView
+                    <io.getstream.avatarview.AvatarView
                         android:id="@+id/avatar_ment_4"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_margin="8dp"
-                        android:contentDescription="@string/description_post_author_avatar"
-                        app:srcCompat="@drawable/post_avatar_drawable" />
-
-                    <ImageView
-                        android:id="@+id/avatar_ment_5"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_margin="8dp"
-                        android:contentDescription="@string/description_post_author_avatar"
-                        app:srcCompat="@drawable/post_avatar_drawable" />
+                        app:avatarViewInitialsBackgroundColor="@color/colorOnSurface"
+                        app:avatarViewInitialsTextColor="@color/colorWhite"
+                        app:avatarViewInitialsTextSize="16sp"
+                        app:avatarViewInitialsTextSizeRatio="0.33"
+                        app:avatarViewInitialsTextStyle="bold"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        app:avatarViewBorderColor="@color/colorWhite"
+                        app:avatarViewBorderWidth="2dp"
+                        app:avatarViewPlaceholder="@drawable/account_24"
+                        app:avatarViewShape="circle"/>
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_ment_more"
@@ -453,16 +483,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
-                        android:checkable="true"
-                        android:contentDescription="@string/description_liked_count"
+                        android:contentDescription="@string/ment_more"
                         android:insetTop="0dp"
                         android:insetBottom="0dp"
                         android:minHeight="0dp"
                         android:paddingTop="0dp"
                         android:paddingBottom="0dp"
-                        app:icon="@drawable/add_circle_24"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/likers_title" />
+                        app:icon="@drawable/add_circle_24" />
                 </LinearLayout>
 
                 <androidx.constraintlayout.widget.Barrier
