@@ -9,7 +9,6 @@
     <string name="description_post_author_avatar">Имя аватара</string>
     <string name="description_post_more">Больше</string>
     <string name="description_liked_count">Счетчик лайков</string>
-    <string name="description_shared">Поделится</string>
     <string name="description_play">Воспроизведение</string>
     <string name="login">Логин</string>
     <string name="registration">Регистрация</string>
@@ -63,5 +62,5 @@
     <string name="description_mention_count">Mentioned</string>
     <string name="liked_more">See more likers</string>
     <string name="ment_more">See more mentioned</string>
-
+    <string name="description_shared">Share</string>
 </resources>

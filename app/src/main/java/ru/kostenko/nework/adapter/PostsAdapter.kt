@@ -12,6 +12,8 @@ import android.view.animation.BounceInterpolator
 import android.widget.MediaController
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.core.content.ContextCompat.getString
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -33,12 +35,12 @@ interface OnPostInteractionListener {
     fun remove(post: Post)
     fun edit(post: Post)
     fun openPost(post: Post)
-//    fun onOpenLikers(post: Post) Это в детальную карточку поста надо
+    fun share(post: Post)
 }
 
 class PostsAdapter(
     private val onPostIteractionLister: OnPostInteractionListener,
-    private val observer : MediaLifecycleObserver
+    private val observer: MediaLifecycleObserver
 ) : PagingDataAdapter<FeedItem, PostViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
@@ -57,8 +59,8 @@ class PostsAdapter(
 class PostViewHolder(
     private val binding: CardPostBinding,
     private val onPostInteractionListener: OnPostInteractionListener,
-    private val observer :MediaLifecycleObserver
-) : RecyclerView.ViewHolder(binding.root){
+    private val observer: MediaLifecycleObserver
+) : RecyclerView.ViewHolder(binding.root) {
     @SuppressLint("SetTextI18n")
     fun bind(post: Post) {
         binding.apply {
@@ -115,19 +117,19 @@ class PostViewHolder(
 //            } else author.text = post.author
 
             play.setOnClickListener {
-                    videoContent.apply{
-                        setMediaController(MediaController( context))
-                        setVideoURI(
-                            Uri.parse(post.attachment!!.url)
-                        )
-                        setOnPreparedListener {
-                            start()
-                        }
-                        setOnCompletionListener {
-                            stopPlayback()
-                        }
+                videoContent.apply {
+                    setMediaController(MediaController(context))
+                    setVideoURI(
+                        Uri.parse(post.attachment!!.url)
+                    )
+                    setOnPreparedListener {
+                        start()
+                    }
+                    setOnCompletionListener {
+                        stopPlayback()
                     }
                 }
+            }
 
 
             playButton.setOnClickListener {
@@ -145,8 +147,8 @@ class PostViewHolder(
             }
 
             stopButton.setOnClickListener {
-                if (observer.mediaPlayer != null &&  observer.mediaPlayer!!.isPlaying) {
-                   observer.mediaPlayer?.stop()
+                if (observer.mediaPlayer != null && observer.mediaPlayer!!.isPlaying) {
+                    observer.mediaPlayer?.stop()
                 }
             }
 
@@ -165,16 +167,7 @@ class PostViewHolder(
             }
 
             btnShare.setOnClickListener {
-                Toast.makeText(it.context, "Делимся ссылкой", Toast.LENGTH_SHORT).show()
-
-                val intent = Intent().apply {
-                    action = Intent.ACTION_SEND
-                    putExtra(Intent.EXTRA_TEXT, post.content)
-                    type = "text/plain"
-                }
-                val shareIntent =
-                    Intent.createChooser(intent, getString(R.string.description_shared))
-                startActivity(shareIntent)
+                onPostInteractionListener.share(post)
             }
 
 
@@ -207,10 +200,12 @@ class PostViewHolder(
                                 onPostInteractionListener.remove(post)
                                 true
                             }
+
                             R.id.edit -> {
                                 onPostInteractionListener.edit(post)
                                 true
                             }
+
                             else -> false
                         }
                     }
@@ -218,6 +213,8 @@ class PostViewHolder(
             }
         }
     }
+
+
 }
 
 

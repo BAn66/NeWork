@@ -1,5 +1,6 @@
 package ru.kostenko.nework.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -74,6 +75,19 @@ class PostsFragment : Fragment() {
                     requireParentFragment().requireParentFragment().findNavController()
                         .navigate(R.id.action_mainFragment_to_postFragment)
                 }
+            }
+
+            override fun share(post: Post) { //создаем актвити Chooser для расшаривания текста поста через Intent
+
+                val intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, post.content)
+                    type = "text/plain"
+                }
+//                startActivity(intent) //Более скромный вариант ниже более симпатичный вариант
+                val shareIntent =
+                    Intent.createChooser(intent, getString(R.string.description_shared))
+                startActivity(shareIntent)
             }
         }, MediaLifecycleObserver())
 

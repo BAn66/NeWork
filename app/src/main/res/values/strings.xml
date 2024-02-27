@@ -8,7 +8,6 @@
     <string name="description_post_author_avatar">Avatar name</string>
     <string name="description_post_more">Больше</string>
     <string name="description_liked_count">Liked count</string>
-    <string name="description_shared">Share</string>
     <string name="description_play">Play</string>
     <string name="login">Login</string>
     <string name="registration">Registration</string>
@@ -62,4 +61,5 @@
     <string name="description_mention_count">Mentioned</string>
     <string name="liked_more">See more likers</string>
     <string name="ment_more">See more mentioned</string>
+    <string name="description_shared">Share</string>
 </resources>
