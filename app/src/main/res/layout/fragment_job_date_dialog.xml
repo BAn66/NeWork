@@ -11,13 +11,14 @@
     android:focusable="true"
     app:cardBackgroundColor="#CAC4D0"
     android:layout_gravity="center"
-    app:cardCornerRadius="24dp"
+    app:cardCornerRadius="0dp"
     app:cardElevation="0dp"
     tools:context=".ui.JobDateDialogFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:paddingBottom="@dimen/common_pudding">
 
         <TextView

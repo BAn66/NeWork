@@ -1,16 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="Theme.NeWork" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-<!--        <item name="colorPrimary">@color/colorPrimary</item>-->
-<!--        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
-<!--        <item name="colorAccent">@color/colorPrimary</item>-->
-<!--        <item name="android:textColor">@color/colorText</item>-->
-        <item name="extendedFloatingActionButtonStyle">@style/Widget.App.ExtendedFloatingActionButton</item>
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:textColorPrimaryInverse">@color/colorText</item>
+        <item name="android:colorAccent">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorText</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
+        <!--    Цвет для неактивных компонентов-->
+        <item name="android:colorControlNormal">@color/colorControlNormal</item>
+        <!--    Цвет для активных компонентов-->
+        <item name="android:colorControlActivated">@color/colorControlActivated</item>
+        <!--    Цвет для нажатых элементов интерфейса    -->
+        <item name="android:colorControlHighlight">@color/colorControlHighlight</item>
+        <!--    Фон панели навигации-->
+        <item name="android:navigationBarColor">@color/navigationBarColor</item>
+        <item name="extendedFloatingActionButtonStyle">
+
+            @style/Widget.App.ExtendedFloatingActionButton
+        </item>
         <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
 
     </style>
 
-<!--    для кнопки добавить -->
+    <!--    для кнопки добавить -->
     <style name="Widget.App.ExtendedFloatingActionButton" parent="Widget.MaterialComponents.ExtendedFloatingActionButton.Icon">
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.FloatingActionButton</item>
         <item name="shapeAppearanceOverlay">
@@ -32,22 +46,21 @@
     </style>
 
 
-
     <style name="Widget.AppTheme.IconButton" parent="Widget.MaterialComponents.Button.TextButton.Icon">
         <item name="iconTint">@color/button_tint</item>
         <item name="iconPadding">0dp</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
-<!--        <item name="android:paddingStart">@dimen/icon_button_padding</item>-->
-<!--        <item name="android:paddingEnd">@dimen/icon_button_padding</item>-->
-<!--        <item name="android:minWidth">@dimen/icon_button_min_size</item>-->
-<!--        <item name="android:minHeight">@dimen/icon_button_min_size</item>-->
+        <!--        <item name="android:paddingStart">@dimen/icon_button_padding</item>-->
+        <!--        <item name="android:paddingEnd">@dimen/icon_button_padding</item>-->
+        <!--        <item name="android:minWidth">@dimen/icon_button_min_size</item>-->
+        <!--        <item name="android:minHeight">@dimen/icon_button_min_size</item>-->
     </style>
 
     <style name="Widget.AppTheme.LikeCheckBox" parent="Widget.MaterialComponents.Button.TextButton.Icon">
         <item name="iconTint">@color/like_selector</item>
-<!--        <item name="android:minWidth">@dimen/icon_button_min_size</item>-->
-<!--        <item name="android:minHeight">@dimen/icon_button_min_size</item>-->
+        <!--        <item name="android:minWidth">@dimen/icon_button_min_size</item>-->
+        <!--        <item name="android:minHeight">@dimen/icon_button_min_size</item>-->
     </style>
 
     <style name="ShapeAppearanceOverlay.MyApp.MaterialCardView" parent="">
