@@ -3,7 +3,6 @@ package ru.kostenko.nework.ui
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.annotation.SuppressLint
-import android.icu.text.DecimalFormat
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -20,6 +19,9 @@ import androidx.appcompat.widget.Toolbar
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 
 import androidx.navigation.fragment.findNavController
 
@@ -35,28 +37,29 @@ import com.yandex.mapkit.user_location.UserLocationLayer
 
 import com.yandex.runtime.ui_view.ViewProvider
 import dagger.hilt.android.AndroidEntryPoint
-
+import io.getstream.avatarview.AvatarView
+import io.getstream.avatarview.coil.loadImage
+import kotlinx.coroutines.launch
 import ru.kostenko.nework.R
-
 import ru.kostenko.nework.authorization.AppAuth
 import ru.kostenko.nework.databinding.FragmentPostBinding
 import ru.kostenko.nework.databinding.PlaceBinding
 import ru.kostenko.nework.dto.AttachmentType
-
 import ru.kostenko.nework.util.AndroidUtils
 import ru.kostenko.nework.util.MediaLifecycleObserver
 import ru.kostenko.nework.viewmodel.PostViewModel
-
+import ru.kostenko.nework.viewmodel.UserViewModel
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
-import kotlin.math.roundToInt
+
 
 @AndroidEntryPoint
 class PostFragment : Fragment() {
     @Inject//Внедряем зависимость для авторизации
     lateinit var appAuth: AppAuth
     private val postViewModel: PostViewModel by activityViewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
     private lateinit var toolbar: Toolbar
 
     private var mapView: MapView? = null
@@ -127,12 +130,14 @@ class PostFragment : Fragment() {
         }
 
         val post = postViewModel.post.value!!.copy()
-        val observer: MediaLifecycleObserver = MediaLifecycleObserver()
+        val observer = MediaLifecycleObserver()
 
         binding.author.text = post.author
         binding.published.text = OffsetDateTime.parse(post.published)
             .format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))
         binding.content.text = post.content
+        binding.job.text = if (post.authorJob.isNullOrEmpty()) "В поиске работы"
+        else (post.authorJob)
 
         Glide.with(binding.avatar)
             .load(post.authorAvatar)
@@ -234,11 +239,6 @@ class PostFragment : Fragment() {
             postViewModel.likePostById(post.id, post.likedByMe)
         }
 
-//            btnLike.setOnLongClickListener {
-//                onPostInteractionListener.onOpenLikers(post)
-//                true
-//            }
-
         //Для карты
         mapView = binding.mapview.apply {
             userLocation = MapKitFactory.getInstance().createUserLocationLayer(mapWindow)
@@ -258,7 +258,7 @@ class PostFragment : Fragment() {
                     Point(latCoord, longCoord),
                     ViewProvider(placeBinding.root)
                 )
-                val cameraPosition = mapWindow.map.cameraPosition
+                mapWindow.map.cameraPosition
                 mapWindow.map.move(
                     CameraPosition(
                         Point(latCoord, longCoord),
@@ -274,6 +274,110 @@ class PostFragment : Fragment() {
                 binding.mapview.visibility = View.GONE
             }
         }
+
+
+        //Группа лайков и лайкеров
+        val listLikersId = mutableListOf<Int>()
+        post.likeOwnerIds.forEach {
+            listLikersId.add(it)
+        }
+        val avatarView0: AvatarView = binding.avatarLayoutLike.findViewById(R.id.avatar_liker_0)
+        val avatarView1: AvatarView = binding.avatarLayoutLike.findViewById(R.id.avatar_liker_1)
+        val avatarView2: AvatarView = binding.avatarLayoutLike.findViewById(R.id.avatar_liker_2)
+        val avatarView3: AvatarView = binding.avatarLayoutLike.findViewById(R.id.avatar_liker_3)
+        val avatarView4: AvatarView = binding.avatarLayoutLike.findViewById(R.id.avatar_liker_4)
+
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                val mapAvatarsLikers = mutableMapOf<Int, Pair<AvatarView, String?>>()
+                mapAvatarsLikers.put(0, Pair(avatarView0, null))
+                mapAvatarsLikers.put(1, Pair(avatarView1, null))
+                mapAvatarsLikers.put(2, Pair(avatarView2, null))
+                mapAvatarsLikers.put(3, Pair(avatarView3, null))
+                mapAvatarsLikers.put(4, Pair(avatarView4, null))
+
+                Log.d("KAva", "onCreateViewList: $listLikersId")
+                if (listLikersId.size == 0) binding.avatarLayoutLike.visibility = View.GONE
+                else if (listLikersId.size < 6) {
+                    for (i in 0..(listLikersId.size - 1)) {
+                        userViewModel.getUserById(listLikersId[i]).join()
+                        val userName = userViewModel.user.value?.name
+                        val userAvatar = userViewModel.user.value?.avatar
+                        Log.d("KAva", "onCreateView1-1: $userAvatar")
+                        var pair = mapAvatarsLikers.getValue(i)
+                        if (userAvatar.isNullOrEmpty()) {
+                            pair = pair.copy(second = userName)
+                            Log.d("KAva", "onCreateView1-2-1: ${pair.second}")
+                            mapAvatarsLikers.set(i, pair)
+                            Log.d(
+                                "KAva",
+                                "onCreateView1-2-2: ${mapAvatarsLikers.getValue(i).second}"
+                            )
+                        } else {
+                            pair = pair.copy(second = userAvatar)
+                            Log.d("KAva", "onCreateView1-3-1: ${pair.second}")
+                            mapAvatarsLikers.set(i, pair)
+                            Log.d(
+                                "KAva",
+                                "onCreateView1-3-2: ${mapAvatarsLikers.getValue(i).second}"
+                            )
+                        }
+                    }
+
+
+                } else {
+                    for (i in 0..4) {
+                        userViewModel.getUserById(listLikersId[i]).join()
+                        val userName = userViewModel.user.value?.name
+                        val userAvatar = userViewModel.user.value?.avatar
+                        Log.d("KAva", "onCreateView2-1: $userAvatar")
+                        var pair = mapAvatarsLikers.getValue(i)
+                        if (userAvatar.isNullOrEmpty()) {
+                            pair = pair.copy(second = userName)
+                            Log.d("KAva", "onCreateView2-2-1: ${pair.second}")
+                            mapAvatarsLikers.set(i, pair)
+                            Log.d(
+                                "KAva",
+                                "onCreateView2-2-2: ${mapAvatarsLikers.getValue(i).second}"
+                            )
+                        } else {
+                            pair = pair.copy(second = userAvatar)
+                            Log.d("KAva", "onCreateView2-3-1: ${pair.second}")
+                            mapAvatarsLikers.set(i, pair)
+                            Log.d(
+                                "KAva",
+                                "onCreateView2-3-2: ${mapAvatarsLikers.getValue(i).second}"
+                            )
+                        }
+                    }
+                }
+
+                mapAvatarsLikers.forEach {
+                    it.value.first.visibility = View.GONE
+                    Log.d("KAva", "onCreateViewMap: ${it.value.second}")
+                    if (it.value.second != null) {
+                        if (it.value.second!!.startsWith("https://")) {
+                            it.value.first.visibility = View.VISIBLE
+                            it.value.first.loadImage(it.value.second)
+                        } else {
+                                if (it.value.second == "") {
+                                    it.value.first.visibility = View.VISIBLE
+                                    it.value.first.loadImage(R.drawable.post_avatar_drawable)
+                                } else {
+                                    it.value.first.visibility = View.VISIBLE
+                                    it.value.first.avatarInitials = it.value.second!!.substring(0, 1).uppercase()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (post.likeOwnerIds.size <= 5) binding.btnLikersMore.visibility = View.GONE
+        binding.btnLikersMore.setOnClickListener {
+            Toast.makeText(context, "Открываем список лайкеров", Toast.LENGTH_SHORT).show()
+        }
+
         return binding.root
     }
 
@@ -301,4 +405,6 @@ class PostFragment : Fragment() {
         super.onDestroyView()
         mapView = null
     }
+
+
 }
