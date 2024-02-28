@@ -83,6 +83,11 @@ class PostViewModel @Inject constructor(
     val postCreated: LiveData<Unit>
         get() = _postCreated
 
+    private val _content = SingleLiveEvent<String>()
+    val content: LiveData<String>
+        get() = _content
+
+
     private val _post = MutableLiveData<Post>()
     val post: LiveData<Post>
         get() = _post
@@ -110,15 +115,15 @@ class PostViewModel @Inject constructor(
     fun changePostAndSave(content: String) {
         val text: String = content.trim()
         //функция изменения и сохранения в репозитории
-
+        _content.value = text
         edited.value?.let {
             viewModelScope.launch {
-            val postCopy = it.copy(
-                author = repository.getUserById(authorId).name,
-                content = text,
-                published = OffsetDateTime.now().toString(),
-                coords = _coords.value
-            )
+                val postCopy = it.copy(
+                    author = repository.getUserById(authorId).name,
+                    content = text,
+                    published = OffsetDateTime.now().toString(),
+                    coords = _coords.value
+                )
                 try {
                     val mediaModel = _media.value
                     if (mediaModel == null && it.content != text) {
@@ -132,6 +137,9 @@ class PostViewModel @Inject constructor(
                 } catch (e: Exception) {
                     _dataState.value = FeedModelState(error = true)
                 }
+                clearMedia()
+                clearCoords()
+                clearContent()
             }
         }
         emptyNew()
@@ -173,22 +181,38 @@ class PostViewModel @Inject constructor(
         _media.value = MediaModel(uri, inputStream, type)
     }
 
+    fun clearContent() {
+        _content.value = ""
+    }
+
     fun clearMedia() {
         _media.value = null
     }
 
+    fun clearCoords(){
+        _coords.value = null
+    }
+
     fun getPostById(id: Int) = viewModelScope.launch {
-            _dataState.postValue(FeedModelState(loading = true))
-            try {
-                _post.value = repository.getPostById(id)
-                _dataState.value = FeedModelState()
-            } catch (e: Exception) {
-                _dataState.value = FeedModelState(error = true)
-            }
+        _dataState.postValue(FeedModelState(loading = true))
+        try {
+            _post.value = repository.getPostById(id)
+            _dataState.value = FeedModelState()
+        } catch (e: Exception) {
+            _dataState.value = FeedModelState(error = true)
         }
+    }
 
     fun setCoords(latC: Double, LongC: Double) {
-        _coords.value= Coords(latC, LongC)
+        _coords.value = Coords(latC, LongC)
+    }
+
+    fun setContent(tmpContent: String) {
+        _content.value = tmpContent
+    }
+
+    fun getTmpContent(): String {
+        return content.value.toString()
     }
 
 }
