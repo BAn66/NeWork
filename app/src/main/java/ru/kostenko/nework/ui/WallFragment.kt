@@ -79,6 +79,10 @@ class WallFragment : Fragment() {
 
                 override fun openPost(post: Post) {
                 }
+
+                override fun share(post: Post) {
+                    TODO("Not yet implemented")
+                }
             }, MediaLifecycleObserver())
 
             listWall.adapter = wallAdapter

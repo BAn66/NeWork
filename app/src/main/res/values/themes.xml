@@ -16,8 +16,12 @@
         <item name="android:colorControlHighlight">@color/colorControlHighlight</item>
         <!--    Фон панели навигации-->
         <item name="android:navigationBarColor">@color/navigationBarColor</item>
-        <item name="extendedFloatingActionButtonStyle">
+<!--цвет часов и системных кнопок черный или белый-->
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:textColorLink">@color/colorOnSecondary</item>
 
+        <item name="cardViewStyle">@style/NeworkCardViewStyle</item>
+        <item name="extendedFloatingActionButtonStyle">
             @style/Widget.App.ExtendedFloatingActionButton
         </item>
         <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
@@ -45,9 +49,23 @@
         <item name="colorOnSurface">@color/colorOnSurface</item>
     </style>
 
+<!--        Для аппбара-->
+    <style name="NeworkToolbarStyle" parent="Widget.MaterialComponents.Toolbar">
+        <item name="titleTextColor">@color/colorText</item>
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:shadowColor">@color/colorPrimary</item>
+    </style>
+
+<!--    Для карточек androidx.cardview.widget.CardView-->
+    <style name="NeworkCardViewStyle">
+<!--        цвет бэкграунда карточек не соответствует действительности-->
+        <item name="cardBackgroundColor">@color/cardViewBackground</item>
+        <item name="cardCornerRadius">@dimen/card_corner_radius</item>
+        <item name="cardElevation">@dimen/elevation</item>
+    </style>
 
     <style name="Widget.AppTheme.IconButton" parent="Widget.MaterialComponents.Button.TextButton.Icon">
-        <item name="iconTint">@color/button_tint</item>
+<!--        <item name="iconTint">@color/button_tint</item>-->
         <item name="iconPadding">0dp</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
@@ -59,6 +77,12 @@
 
     <style name="Widget.AppTheme.LikeCheckBox" parent="Widget.MaterialComponents.Button.TextButton.Icon">
         <item name="iconTint">@color/like_selector</item>
+        <!--        <item name="android:minWidth">@dimen/icon_button_min_size</item>-->
+        <!--        <item name="android:minHeight">@dimen/icon_button_min_size</item>-->
+    </style>
+
+    <style name="Widget.AppTheme.MentionCheckBox" parent="Widget.MaterialComponents.Button.TextButton.Icon">
+        <item name="iconTint">@color/mentioned_selector</item>
         <!--        <item name="android:minWidth">@dimen/icon_button_min_size</item>-->
         <!--        <item name="android:minHeight">@dimen/icon_button_min_size</item>-->
     </style>

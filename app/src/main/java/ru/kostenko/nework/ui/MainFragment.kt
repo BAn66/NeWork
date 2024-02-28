@@ -26,6 +26,7 @@ class MainFragment : Fragment() {
     private val authViewModel: AuthViewModel by activityViewModels()
     private val userViewModel: UserViewModel by activityViewModels()
     private lateinit var toolbar: Toolbar
+    private val tmpContent: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,

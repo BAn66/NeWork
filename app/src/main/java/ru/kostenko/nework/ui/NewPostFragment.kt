@@ -2,16 +2,19 @@ package ru.kostenko.nework.ui
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
 import androidx.core.net.toFile
+import androidx.core.os.bundleOf
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -36,6 +39,7 @@ class NewPostFragment : Fragment() {
     }
     private lateinit var toolbar_login: Toolbar
     private val viewModel: PostViewModel by activityViewModels()
+
     private val photoResultContract =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { // Контракт для картинок
             if (it.resultCode == Activity.RESULT_OK) {
@@ -50,14 +54,23 @@ class NewPostFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentNewPostBinding.inflate(layoutInflater)
         viewModel.clearMedia()
+        val binding = FragmentNewPostBinding.inflate(layoutInflater)
         //Верхний аппбар
         toolbar_login = binding.toolbar
         toolbar_login.apply {
             setTitle(R.string.newpost)
             setNavigationIcon(R.drawable.arrow_back_24)
-            setNavigationOnClickListener { findNavController().popBackStack()}
+            setNavigationOnClickListener {
+                val tmpContent = if (binding.editTextNewPost.text.isNotBlank()) {
+                    binding.editTextNewPost.text.toString()
+                } else {
+                    "empty"
+                }
+                //Для отправки черновика
+                parentFragmentManager.setFragmentResult("saveTmpContent", bundleOf("tmpContent" to tmpContent))
+                findNavController().popBackStack()
+            }
             inflateMenu(R.menu.save_feed_item)
             setOnMenuItemClickListener {
                 when (it.itemId) {
@@ -73,8 +86,9 @@ class NewPostFragment : Fragment() {
                         } else {
                             val content = binding.editTextNewPost.text.toString()
                             viewModel.changePostAndSave(content)
+                            Log.d("KCoords", "onCreateView: ${viewModel.coords.value}")
                             activity?.invalidateOptionsMenu()
-                            findNavController().popBackStack()
+                            requireParentFragment().findNavController().navigate(R.id.action_newPostFragment_to_mainFragment)
                         }
                         true
                     }
@@ -84,10 +98,11 @@ class NewPostFragment : Fragment() {
         }
 
         //        Для загрузки черновика
-        setFragmentResultListener("requestSavedTmpContent") { _, bundle ->
+        setFragmentResultListener("takeTmpContent") { _, bundle ->
             val savedTmpContent = bundle.getString("savedTmpContent")
             binding.editTextNewPost.setText(savedTmpContent)
         }
+
 
         //Для редактирования поста
         setFragmentResultListener("requestIdForNewPostFragment") { _, bundle ->
@@ -135,6 +150,14 @@ class NewPostFragment : Fragment() {
             binding.imageContainer.isVisible = true
             binding.preview.setImageURI(it.uri)
         }
+
+
+        //TODO при переходе на карту и обратно не сохранаяется напечатанный текст
+        binding.takeLocation.setOnClickListener {
+            requireParentFragment()
+                .findNavController().navigate(R.id.action_newPostFragment_to_mapFragment)
+        }
+
 
         return binding.root
     }

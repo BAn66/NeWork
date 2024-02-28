@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
     tools:context=".ui.RegistrationFragment">
 
     <LinearLayout
@@ -21,9 +19,9 @@
             android:layout_width="match_parent"
             android:layout_height="160dp"
             android:layout_gravity="bottom"
+            android:contentDescription="@string/user_avatar"
             android:padding="@dimen/common_pudding"
-            android:src="@drawable/avatar_default"
-            android:contentDescription="@string/user_avatar"/>
+            android:src="@drawable/avatar_default" />
 
 
         <com.google.android.material.textfield.TextInputLayout
@@ -101,8 +99,8 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.Toolbar
-            android:background="@color/colorPrimary"
             android:id="@+id/toolbar"
+            style="@style/NeworkToolbarStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:minHeight="?attr/actionBarSize"

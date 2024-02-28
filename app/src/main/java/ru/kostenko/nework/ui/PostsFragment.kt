@@ -72,8 +72,8 @@ class PostsFragment : Fragment() {
             override fun openPost(post: Post) {
                 lifecycleScope.launch {
                     postViewModel.getPostById(post.id).join()
-                    requireParentFragment().requireParentFragment().findNavController()
-                        .navigate(R.id.action_mainFragment_to_postFragment)
+                    requireParentFragment().requireParentFragment()
+                        .findNavController().navigate(R.id.action_mainFragment_to_postFragment)
                 }
             }
 
@@ -121,13 +121,11 @@ class PostsFragment : Fragment() {
             }
         }
 
-        //TODO временное хранение не работает.
+        //TODO временное текста не сохраненного поста не работает.
         binding.addPost.setOnClickListener {
-            setFragmentResultListener("requestTmpContent") { _, bundle ->
-                val tmpContent = bundle.getString("tmpContent")
-                setFragmentResult(
-                    "requestSavedTmpContent",
-                    bundleOf("savedTmpContent" to tmpContent)
+            setFragmentResultListener("saveTmpContent") { _, bundle ->
+                val savedTmpContent = bundle.getString("tmpContent")
+                parentFragmentManager.setFragmentResult("takeTmpContent",bundleOf("savedTmpContent" to savedTmpContent)
                 )
             }
             if (authViewModel.authenticated)

@@ -11,13 +11,15 @@
     <!--    Цвет для активных компонентов-->
     <color name="colorControlActivated">#F3EDF7</color>
     <!--    Цвет для нажатых элементов интерфейса    -->
-    <color name="colorControlHighlight">#F3EDF7</color>
+    <color name="colorControlHighlight">#E8DEF8</color>
     <!--    Фон панели навигации-->
-    <color name="navigationBarColor">#FEF7FF</color>
+    <color name="navigationBarColor">#F3EDF7</color>
     <!--    Цвет кнопки?-->
     <color name="colorButtonNormal">#E8DEF8</color>
     <!--Цвет бэкграунда телефона-->
-    <color name="windowBackground">#FEF7FF</color>
+    <color name="windowBackground">#FFFFFF</color>
+    <!--Цвет бэкграунда карточек-->
+    <color name="cardViewBackground">#f2ebff</color>
 
     <color name="colorSwitchThumbNormal">#F3EDF7</color>
     <color name="colorSecondary">#EADDFF</color>

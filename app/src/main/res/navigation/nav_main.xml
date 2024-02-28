@@ -58,6 +58,9 @@
         <action
             android:id="@+id/action_newPostFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_newPostFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
     </fragment>
 
     <fragment
@@ -96,4 +99,23 @@
             android:id="@+id/action_postFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="ru.kostenko.nework.ui.MapFragment"
+        android:label="MapFragment" >
+        <action
+            android:id="@+id/action_mapFragment_to_newPostFragment"
+            app:destination="@id/newPostFragment" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/addPlace"
+        android:name="ru.kostenko.nework.ui.AddPlaceDialog"
+        android:label="@string/add_place"
+        >
+        <action
+            android:id="@+id/action_addPlace_to_newPostFragment"
+            app:destination="@id/newPostFragment" />
+    </dialog>
+
 </navigation>

@@ -62,4 +62,8 @@
     <string name="liked_more">See more likers</string>
     <string name="ment_more">See more mentioned</string>
     <string name="description_shared">Share</string>
+    <string name="zoom_plus">Zoom in</string>
+    <string name="zoom_minus">Zoom out</string>
+    <string name="currnet_place">Current place</string>
+    <string name="add_place">Add place</string>
 </resources>

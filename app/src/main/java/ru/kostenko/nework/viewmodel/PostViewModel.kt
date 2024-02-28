@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import ru.kostenko.nework.authorization.AppAuth
 import ru.kostenko.nework.dto.AttachmentType
+import ru.kostenko.nework.dto.Coords
 import ru.kostenko.nework.dto.FeedItem
 import ru.kostenko.nework.dto.MediaModel
 import ru.kostenko.nework.dto.Post
@@ -86,6 +87,10 @@ class PostViewModel @Inject constructor(
     val post: LiveData<Post>
         get() = _post
 
+    private val _coords = MutableLiveData<Coords>()
+    val coords: LiveData<Coords>
+        get() = _coords
+
     init {
         loadPosts()
     }
@@ -112,6 +117,7 @@ class PostViewModel @Inject constructor(
                 author = repository.getUserById(authorId).name,
                 content = text,
                 published = OffsetDateTime.now().toString(),
+                coords = _coords.value
             )
                 try {
                     val mediaModel = _media.value
@@ -180,5 +186,9 @@ class PostViewModel @Inject constructor(
                 _dataState.value = FeedModelState(error = true)
             }
         }
+
+    fun setCoords(latC: Double, LongC: Double) {
+        _coords.value= Coords(latC, LongC)
+    }
 
 }
