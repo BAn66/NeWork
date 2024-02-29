@@ -92,8 +92,8 @@ class PostViewModel @Inject constructor(
     val post: LiveData<Post>
         get() = _post
 
-    private val _coords = MutableLiveData<Coords>()
-    val coords: LiveData<Coords>
+    private val _coords = MutableLiveData<Coords?>()
+    val coords: LiveData<Coords?>
         get() = _coords
 
     init {
@@ -210,9 +210,4 @@ class PostViewModel @Inject constructor(
     fun setContent(tmpContent: String) {
         _content.value = tmpContent
     }
-
-    fun getTmpContent(): String {
-        return content.value.toString()
-    }
-
 }

@@ -3,7 +3,6 @@ package ru.kostenko.nework.adapter
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -11,9 +10,6 @@ import android.view.ViewGroup
 import android.view.animation.BounceInterpolator
 import android.widget.MediaController
 import android.widget.PopupMenu
-import android.widget.Toast
-import androidx.core.content.ContextCompat.getString
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -131,12 +127,12 @@ class PostViewHolder(
                 }
             }
 
-
+            //TODO при нажатии на паузу аудиоплеера и повторном плэй падает
             playButton.setOnClickListener {
                 observer.apply {
                     //Не забываем добавлять разрешение в андроид манифест на работу с сетью
                     val url = post.attachment!!.url
-                    mediaPlayer?.setDataSource(url) //TODO при нажатии на паузу аудиоплеера и повторном плэй падает
+                    mediaPlayer?.setDataSource(url)
                 }.play()
             }
 

@@ -83,6 +83,10 @@ class EventViewModel @Inject constructor(
     val eventCreated: LiveData<Unit>
         get() = _eventCreated
 
+    private val _event = SingleLiveEvent<Event>()
+    val event: LiveData<Event>
+        get() = _event
+
     init {
         loadEvents()
     }

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.net.toFile
 import androidx.fragment.app.Fragment
@@ -24,7 +25,7 @@ import ru.kostenko.nework.repository.AuthResultCode
 import ru.kostenko.nework.viewmodel.LoginViewModel
 
 @AndroidEntryPoint
-class RegistrationFragment: Fragment() {
+class RegistrationFragment : Fragment() {
     private lateinit var toolbar_registration: Toolbar
     private val viewModel: LoginViewModel by activityViewModels()
 
@@ -57,19 +58,21 @@ class RegistrationFragment: Fragment() {
         }
 
 
-        binding.avatar.setOnClickListener { //Берем фотку через галерею
-            ImagePicker.Builder(this)
-                .galleryMimeTypes(
-                    mimeTypes = arrayOf(
-                        "image/png",
-                        "image/jpeg"
-                    )
-                )
-                .crop()
-                .galleryOnly()
-                .maxResultSize(2048, 2048)
-                .createIntent(photoResultContract::launch)
+        binding.avatar.setOnClickListener {
 
+            val pictureDialog = AlertDialog.Builder(it.context)
+            pictureDialog.setTitle("Select Action")
+            val pictureDialogItems =
+                arrayOf("Select photo from gallery", "Capture photo from camera")
+            pictureDialog.setItems(
+                pictureDialogItems
+            ) { dialog, which ->
+                when (which) {
+                    0 -> choosePhotoFromGallary()
+                    1 -> takePhotoFromCamera()
+                }
+            }
+            pictureDialog.show()
         }
 
         viewModel.photo.observe(viewLifecycleOwner) {
@@ -86,9 +89,17 @@ class RegistrationFragment: Fragment() {
             } else if (binding.editPassword.text.isNullOrBlank()) {
                 Toast.makeText(context, R.string.error_blank_password, Toast.LENGTH_SHORT).show()
             } else if (binding.editPasswordRepeat.text.isNullOrBlank()) {
-                Toast.makeText(context, R.string.error_blank_password_repeat_text, Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    R.string.error_blank_password_repeat_text,
+                    Toast.LENGTH_SHORT
+                ).show()
             } else if (binding.editPasswordRepeat.text.toString() != binding.editPassword.text.toString()) {
-                Toast.makeText(context, R.string.error_blank_pass_notequals_passre, Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    R.string.error_blank_pass_notequals_passre,
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
 
                 viewLifecycleOwner.lifecycleScope.launch {
@@ -97,7 +108,7 @@ class RegistrationFragment: Fragment() {
                             binding.editLogin.text.toString(),
                             binding.editPassword.text.toString(),
                             binding.editName.text.toString()
-                        )){
+                        )) {
                             AuthResultCode.UserAlreadyRegister -> Toast.makeText(
                                 context,
                                 R.string.user_already_register,
@@ -112,17 +123,45 @@ class RegistrationFragment: Fragment() {
 
                             AuthResultCode.Success -> findNavController().navigate(R.id.action_authFragment_to_mainFragment)
 
-                            else -> Toast.makeText(context, R.string.unknown_error, Toast.LENGTH_SHORT)
+                            else -> Toast.makeText(
+                                context,
+                                R.string.unknown_error,
+                                Toast.LENGTH_SHORT
+                            )
                                 .show()
                         }
-
                     }
                 }
             }
-
         }
+        return binding.root
+    }
 
-        return  binding.root
+    fun choosePhotoFromGallary() {
+        ImagePicker.Builder(this)
+            .galleryMimeTypes(
+                mimeTypes = arrayOf(
+                    "image/png",
+                    "image/jpeg"
+                )
+            )
+            .crop()
+            .galleryOnly()
+            .maxResultSize(2048, 2048)
+            .createIntent(photoResultContract::launch)
+    }
 
+    private fun takePhotoFromCamera() {
+        ImagePicker.Builder(this)
+            .galleryMimeTypes(
+                mimeTypes = arrayOf(
+                    "image/png",
+                    "image/jpeg"
+                )
+            )
+            .crop()
+            .cameraOnly()
+            .maxResultSize(2048, 2048)
+            .createIntent(photoResultContract::launch)
     }
 }

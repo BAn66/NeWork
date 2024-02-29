@@ -47,7 +47,9 @@
                     android:gravity="start|top"
                     android:inputType="textMultiLine"
                     android:padding="@dimen/common_pudding"
-                    tools:text="@tools:sample/lorem[25]" />
+                    tools:text="@tools:sample/lorem[25]"
+                    android:autofillHints="@string/enter_text"
+                    android:hint="@string/enter_text"/>
 
                 <FrameLayout
                     android:id="@+id/imageContainer"
@@ -62,6 +64,7 @@
                         android:layout_height="wrap_content"
                         android:adjustViewBounds="true"
                         android:padding="@dimen/common_pudding"
+                        android:contentDescription="@string/image"
                         tools:src="@tools:sample/avatars[2]" />
 
                     <com.google.android.material.button.MaterialButton
@@ -206,35 +209,32 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                app:srcCompat="@drawable/add_photo_48" />
+                app:srcCompat="@drawable/add_photo_48"
+                android:contentDescription="@string/take_image"/>
 
             <ImageView
                 android:id="@+id/take_file"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                app:srcCompat="@drawable/attach_file_48" />
-
-            <ImageView
-                android:id="@+id/take_audio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="4dp"
-                app:srcCompat="@drawable/audiotrack_24" />
+                app:srcCompat="@drawable/attach_file_48"
+                android:contentDescription="@string/take_media"/>
 
             <ImageView
                 android:id="@+id/take_people"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                app:srcCompat="@drawable/people_48" />
+                app:srcCompat="@drawable/people_48"
+                android:contentDescription="@string/choose_mentinoed"/>
 
             <ImageView
                 android:id="@+id/take_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                app:srcCompat="@drawable/location_48" />
+                app:srcCompat="@drawable/location_48"
+                android:contentDescription="@string/take_location"/>
         </LinearLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </LinearLayout>

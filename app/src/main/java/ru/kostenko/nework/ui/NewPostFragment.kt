@@ -1,19 +1,16 @@
 package ru.kostenko.nework.ui
 
 import android.app.Activity
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.MediaController
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.net.toFile
-import androidx.core.os.bundleOf
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -28,14 +25,12 @@ import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import okio.Path.Companion.toPath
 import ru.kostenko.nework.R
 import ru.kostenko.nework.databinding.FragmentNewPostBinding
 import ru.kostenko.nework.dto.AttachmentType
 import ru.kostenko.nework.util.MediaLifecycleObserver
 import ru.kostenko.nework.util.StringArg
 import ru.kostenko.nework.viewmodel.PostViewModel
-import java.io.File
 
 
 @AndroidEntryPoint
@@ -45,14 +40,15 @@ class NewPostFragment : Fragment() {
         var Bundle.text by StringArg
     }
 
-    private lateinit var toolbar_login: Toolbar
-    private val viewModel: PostViewModel by activityViewModels()
+    private lateinit var toolbar: Toolbar
+    private val postViewModel: PostViewModel by activityViewModels()
     private val photoResultContract =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { // Контракт для картинок
             if (it.resultCode == Activity.RESULT_OK) {
+//                val uri = Uri.parse(Uri_string)
                 val uri = it.data?.data ?: return@registerForActivityResult
                 val file = uri.toFile().inputStream()
-                viewModel.setMedia(uri, file, AttachmentType.IMAGE)
+                postViewModel.setMedia(uri, file, AttachmentType.IMAGE)
             }
         }
     private val videoResultContract =
@@ -60,57 +56,47 @@ class NewPostFragment : Fragment() {
             it?.let {
                 val stream = context?.contentResolver?.openInputStream(it)
                 if (stream != null) {
-                    viewModel.setMedia(it, stream, AttachmentType.VIDEO)
+                    postViewModel.setMedia(it, stream, AttachmentType.VIDEO)
                 }
             }
         }
 
     private val audioResultContract =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { // Контракт для VIDEO
+        registerForActivityResult(ActivityResultContracts.GetContent()) { // Контракт для AUDIO
             it?.let {
                 val stream = context?.contentResolver?.openInputStream(it)
                 if (stream != null) {
-                    viewModel.setMedia(it, stream, AttachmentType.AUDIO)
+                    postViewModel.setMedia(it, stream, AttachmentType.AUDIO)
                 }
             }
         }
-
-//    private val AudioResultContract =
-//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { // Контракт для AUDIO
-//            if (it.resultCode == Activity.RESULT_OK) {
-//                val uri = it.data?.data ?: return@registerForActivityResult
-//                val file = uri.toFile().inputStream()
-//                viewModel.setMedia(uri, file, AttachmentType.AUDIO)
-//            }
-//        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel.clearMedia()
-        val observer: MediaLifecycleObserver = MediaLifecycleObserver()
+
+        val observer = MediaLifecycleObserver()
         val binding = FragmentNewPostBinding.inflate(layoutInflater)
 
+        //Если есть черновик он вставляется
+        binding.editTextNewPost.setText(postViewModel.content.value)
+
         //Верхний аппбар
-        toolbar_login = binding.toolbar
-        toolbar_login.apply {
+        toolbar = binding.toolbar
+        toolbar.apply {
             setTitle(R.string.newpost)
             setNavigationIcon(R.drawable.arrow_back_24)
             setNavigationOnClickListener {
                 if (binding.editTextNewPost.text.isNotBlank()) {
-                    viewModel.setContent(binding.editTextNewPost.text.toString())
+                    postViewModel.setContent(binding.editTextNewPost.text.toString())
                 } else {
-                    viewModel.setContent("")
+                    postViewModel.setContent("")
                 }
-//                //Для отправки черновика
-//                parentFragmentManager.setFragmentResult(
-//                    "saveTmpContent",
-//                    bundleOf("tmpContent" to tmpContent)
-//                )
-                findNavController().popBackStack()
+                findNavController().navigate(R.id.action_newPostFragment_to_mainFragment)
             }
+
             inflateMenu(R.menu.save_feed_item)
             setOnMenuItemClickListener {
                 when (it.itemId) {
@@ -125,24 +111,18 @@ class NewPostFragment : Fragment() {
                                 }.show()
                         } else {
                             val content = binding.editTextNewPost.text.toString()
-                            viewModel.changePostAndSave(content)
+                            postViewModel.changePostAndSave(content)
                             activity?.invalidateOptionsMenu()
                             findNavController()
                                 .navigate(R.id.action_newPostFragment_to_mainFragment)
                         }
                         true
                     }
+
                     else -> false
                 }
             }
         }
-
-        //        Для загрузки черновика
-        setFragmentResultListener("takeTmpContent") { _, bundle ->
-            val savedTmpContent = bundle.getString("savedTmpContent")
-            binding.editTextNewPost.setText(savedTmpContent)
-        }
-
 
         //Для редактирования поста
         setFragmentResultListener("requestIdForNewPostFragment") { _, bundle ->
@@ -151,10 +131,10 @@ class NewPostFragment : Fragment() {
             if (resultId != 0) {
                 viewLifecycleOwner.lifecycleScope.launch {
                     viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                        viewModel.edited.observe(viewLifecycleOwner) { //Не факт что сработает)
+                        postViewModel.edited.observe(viewLifecycleOwner) { //Не факт что сработает)
                             if (it.id == resultId) {
                                 val resultPost = it.copy()
-                                viewModel.editPost(resultPost)
+                                postViewModel.editPost(resultPost)
                                 binding.editTextNewPost.setText(resultPost.content)
                             }
                         }
@@ -171,31 +151,48 @@ class NewPostFragment : Fragment() {
 
         //Кнопка очистки фото
         binding.remove.setOnClickListener {
-            viewModel.clearMedia()
+            postViewModel.clearMedia()
         }
 
+        //Выбираем фото
         binding.takePhoto.setOnClickListener { //Берем фотку через галерею
-            viewModel.clearMedia()
-            ImagePicker.Builder(this)
-                .crop()
-                .galleryOnly()
-                .maxResultSize(2048, 2048)
-                .createIntent(
-                    photoResultContract::launch
-                )
+            postViewModel.clearMedia()
+            val pictureDialog = AlertDialog.Builder(it.context)
+            pictureDialog.setTitle("Select Action")
+            val pictureDialogItems =
+                arrayOf("Select photo from gallery", "Capture photo from camera")
+            pictureDialog.setItems(
+                pictureDialogItems
+            ) { dialog, which ->
+                when (which) {
+                    0 -> choosePhotoFromGallary()
+                    1 -> takePhotoFromCamera()
+                }
+            }
+            pictureDialog.show()
         }
 
+        //Выбираем видео или аудио
         binding.takeFile.setOnClickListener {
-            viewModel.clearMedia()
-            videoResultContract.launch("video/*")
+            postViewModel.clearMedia()
+            val pictureDialog = AlertDialog.Builder(it.context)
+            pictureDialog.setTitle("Select Action")
+            val pictureDialogItems =
+                arrayOf("Select video", "Select audio")
+            pictureDialog.setItems(
+                pictureDialogItems
+            ) { dialog, which ->
+                when (which) {
+                    0 -> takeVideo()
+                    1 -> takeAudio()
+                }
+            }
+            pictureDialog.show()
+
         }
 
-        binding.takeAudio.setOnClickListener {
-            viewModel.clearMedia()
-            audioResultContract.launch("audio/*")
-        }
-
-        viewModel.media.observe(viewLifecycleOwner) { mediaModel ->
+        postViewModel.media.observe(viewLifecycleOwner) { mediaModel ->
+            Log.d("ImgTAAG", "postViewModel2: ${postViewModel.media.value?.uri} ")
             if (mediaModel == null) {
                 binding.imageContainer.isGone = true
                 binding.videoGroup.isGone = true
@@ -206,28 +203,32 @@ class NewPostFragment : Fragment() {
             if (mediaModel.type == AttachmentType.IMAGE) {
                 binding.imageContainer.isVisible = true
                 binding.preview.setImageURI(mediaModel.uri)
+                postViewModel.setContent(binding.editTextNewPost.text.toString())
+
+
             }
             if (mediaModel.type == AttachmentType.VIDEO) {
                 binding.videoGroup.isVisible = true
-                binding.videoContent.apply {
-                    setMediaController(MediaController(this.context))
-                    setVideoURI(mediaModel.uri)
-                }
+                postViewModel.setContent(binding.editTextNewPost.text.toString())
+
             }
             if (mediaModel.type == AttachmentType.AUDIO) {
                 binding.audioGroup.isVisible = true
-                observer.apply {
-                    //Не забываем добавлять разрешение в андроид манифест на работу с сетью
-                    val url = mediaModel.uri.toString()
-                    observer.mediaPlayer?.setDataSource(url)
-                    //TODO при нажатии на паузу аудиоплеера и повторном плэй падает
-                }
+                postViewModel.setContent(binding.editTextNewPost.text.toString())
             }
         }
+
+        postViewModel.content.observe(viewLifecycleOwner) {
+            binding.editTextNewPost.setText(postViewModel.content.value)
+        }
+
 
         binding.play.setOnClickListener {
             binding.videoContent.apply {
                 setMediaController(MediaController(context))
+                setVideoURI(
+                    postViewModel.media.value?.uri
+                )
                 setOnPreparedListener {
                     start()
                 }
@@ -237,10 +238,14 @@ class NewPostFragment : Fragment() {
             }
         }
 
+        //TODO в фрагменте нового поста не проигрывается аудио
         binding.playButton.setOnClickListener {
-            if (observer.mediaPlayer != null) {
-                observer.play()
-            }
+            observer.apply {
+                //Не забываем добавлять разрешение в андроид манифест на работу с сетью
+                val uri = postViewModel.media.value?.uri
+//                    observer.mediaPlayer?.setDataSource(requireContext(), uri)
+                observer.mediaPlayer?.setDataSource(uri.toString())
+            }.play()
         }
 
         binding.pauseButton.setOnClickListener {
@@ -255,14 +260,45 @@ class NewPostFragment : Fragment() {
             }
         }
 
-        //TODO при переходе на карту и обратно не сохранаяется напечатанный текст
+
         binding.takeLocation.setOnClickListener {
+            postViewModel.setContent(binding.editTextNewPost.text.toString())
             requireParentFragment()
                 .findNavController().navigate(R.id.action_newPostFragment_to_mapFragment)
         }
 
 
+        //TODO Сделать выбор отмеченных пользователей
+
         return binding.root
+    }
+
+    fun choosePhotoFromGallary() {
+        ImagePicker.Builder(this)
+            .crop()
+            .galleryOnly()
+            .maxResultSize(2048, 2048)
+            .createIntent(
+                photoResultContract::launch
+            )
+    }
+
+    private fun takePhotoFromCamera() {
+        ImagePicker.Builder(this)
+            .crop()
+            .cameraOnly()
+            .maxResultSize(2048, 2048)
+            .createIntent(
+                photoResultContract::launch
+            )
+    }
+
+    fun takeVideo() {
+        videoResultContract.launch("video/*")
+    }
+
+    fun takeAudio() {
+        audioResultContract.launch("audio/*")
     }
 
 }

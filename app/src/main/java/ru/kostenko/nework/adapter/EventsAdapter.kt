@@ -60,7 +60,7 @@ class EventsAdapter(
                 author.text = event.author
                 published.text = OffsetDateTime.parse(event.published)
                     .format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))
-                content.text = event.content
+                content.setText(event.content)
                 typeEvent.text =event.type.str
                 dateTime.text = OffsetDateTime.parse(event.datetime)
                     .format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))
