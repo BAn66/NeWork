@@ -1,6 +1,7 @@
 package ru.kostenko.nework.ui
 
 import android.app.Activity
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -20,6 +21,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
@@ -95,7 +97,8 @@ class NewPostFragment : Fragment() {
                     postViewModel.setContent("")
                 }
                 postViewModel.clearCoords()
-                findNavController().navigate(R.id.action_newPostFragment_to_mainFragment)
+                postViewModel.emptyNew()
+                requireParentFragment().findNavController().navigate(R.id.action_newPostFragment_to_mainFragment)
             }
 
             inflateMenu(R.menu.save_feed_item)
@@ -114,7 +117,7 @@ class NewPostFragment : Fragment() {
                             val content = binding.editTextNewPost.text.toString()
                             postViewModel.changePostAndSave(content)
                             activity?.invalidateOptionsMenu()
-                            findNavController()
+                            requireParentFragment().findNavController()
                                 .navigate(R.id.action_newPostFragment_to_mainFragment)
                         }
                         true
@@ -125,30 +128,10 @@ class NewPostFragment : Fragment() {
             }
         }
 
-        //Для редактирования поста
-        setFragmentResultListener("requestIdForNewPostFragment") { _, bundle ->
-            // Здесь можно передать любой тип, поддерживаемый Bundle-ом
-            val resultId = bundle.getInt("id")
-            if (resultId != 0) {
-                viewLifecycleOwner.lifecycleScope.launch {
-                    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                        postViewModel.edited.observe(viewLifecycleOwner) { //Не факт что сработает)
-                            if (it.id == resultId) {
-                                val resultPost = it.copy()
-                                postViewModel.editPost(resultPost)
-                                binding.editTextNewPost.setText(resultPost.content)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
 //        viewModel.postCreated.observe(viewLifecycleOwner) { //Работа с SingleLiveEvent: Остаемся на экране редактирования пока не придет ответ с сервера
 //            viewModel.loadPosts()// не забываем обновить значения вью модели (запрос с сервера и загрузка к нам)
 //            findNavController().popBackStack(R.id.postsFragment, false)
-//
-//        }
+//}
 
         //Кнопка очистки фото
         binding.remove.setOnClickListener {
@@ -267,6 +250,95 @@ class NewPostFragment : Fragment() {
             requireParentFragment()
                 .findNavController().navigate(R.id.action_newPostFragment_to_mapFragment)
         }
+
+        //Для редактирования поста
+        if (postViewModel.edited.value?.id != 0) {
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    postViewModel.edited.observe(viewLifecycleOwner) { //Не факт что сработает)
+                        val resultPost = it.copy()
+                        postViewModel.setContent(resultPost.content)
+                        binding.editTextNewPost.setText(postViewModel.content.value)
+                        postViewModel.setContent(binding.editTextNewPost.toString())
+                        if (resultPost.coords != null) {
+                            postViewModel.setCoords(
+                                resultPost.coords.lat,
+                                resultPost.coords.long
+                            )
+                        }
+
+                        if (resultPost.attachment != null) {
+                            when (resultPost.attachment.type) {
+                                AttachmentType.IMAGE -> binding.imageContainer .visibility = View.VISIBLE
+                                AttachmentType.AUDIO -> binding.audioGroup.visibility = View.VISIBLE
+                                AttachmentType.VIDEO -> binding.videoGroup.visibility = View.VISIBLE
+                            }
+                        } else {
+                            binding.imageContainer.visibility = View.GONE
+                            binding.audioGroup.visibility = View.GONE
+                            binding.videoGroup.visibility = View.VISIBLE
+                        }
+
+                        binding.imageContainer.visibility =
+                            if (resultPost.attachment != null && resultPost.attachment.type == AttachmentType.IMAGE) View.VISIBLE else View.GONE
+
+                        binding.audioGroup.visibility =
+                            if (resultPost.attachment != null && resultPost.attachment.type == AttachmentType.AUDIO) View.VISIBLE else View.GONE
+
+                        binding.videoGroup.visibility =
+                            if (resultPost.attachment != null && resultPost.attachment.type == AttachmentType.VIDEO) View.VISIBLE else View.GONE
+
+                        resultPost.attachment?.apply {
+                            binding.preview.contentDescription = this.url
+                            Glide.with(binding.preview)
+                                .load(this.url)
+                                .placeholder(R.drawable.ic_loading_100dp)
+                                .error(R.drawable.ic_error_100dp)
+                                .timeout(10_000)
+                                .into(binding.preview)
+                        }
+
+                        binding.play.setOnClickListener {
+                            binding.videoContent.apply {
+                                setMediaController(MediaController(context))
+                                setVideoURI(
+                                    Uri.parse(resultPost.attachment!!.url)
+                                )
+                                setOnPreparedListener {
+                                    start()
+                                }
+                                setOnCompletionListener {
+                                    stopPlayback()
+                                }
+                            }
+                        }
+
+
+                        binding.playButton.setOnClickListener {
+                            observer.apply {
+                                //Не забываем добавлять разрешение в андроид манифест на работу с сетью
+                                val url = resultPost.attachment!!.url
+                                mediaPlayer?.setDataSource(url) //TODO при нажатии на паузу аудиоплеера и повторном плэй падает
+                            }.play()
+                        }
+
+                        binding.pauseButton.setOnClickListener {
+                            if (observer.mediaPlayer != null) {
+                                if (observer.mediaPlayer!!.isPlaying) observer.mediaPlayer?.pause() else observer.mediaPlayer?.start()
+                            }
+                        }
+
+                        binding.stopButton.setOnClickListener {
+                            if (observer.mediaPlayer != null && observer.mediaPlayer!!.isPlaying) {
+                                observer.mediaPlayer?.stop()
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+
 
 //TODO сделать кнопку очистки для видео и аудио(может использовать уже имеющуюся?) в новом посте
         //TODO Сделать выбор отмеченных пользователей в новом посте

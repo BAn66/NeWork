@@ -110,11 +110,10 @@ class PostsFragment : Fragment() {
         //TODO Редактирование не работает.
 
         /*        Работа редактирования через фрагменты (конкретно все в фрагменте NewPost)*/
-        postViewModel.edited.observe(viewLifecycleOwner) { it ->// Начало редактирования
-//            Toast.makeText(this.context, "Переход на карточку редактирования поста", Toast.LENGTH_LONG).show()
-            val resultId = it.id
-            setFragmentResult("requestIdForNewPostFragment", bundleOf("id" to resultId))
-            if (it.id != 0) {
+        postViewModel.edited.observe(viewLifecycleOwner) { post->// Начало редактирования
+//           Toast.makeText(this.context, "Переход на карточку редактирования поста", Toast.LENGTH_LONG).show()
+//            setFragmentResult("requestIdForNewPostFragment", bundleOf("id" to resultId))
+            if (post.id != 0) {
                 requireParentFragment().requireParentFragment()
                     .findNavController().navigate(R.id.action_mainFragment_to_newPostFragment)
             }
