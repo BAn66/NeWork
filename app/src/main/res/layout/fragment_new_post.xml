@@ -237,4 +237,5 @@
                 android:contentDescription="@string/take_location"/>
         </LinearLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 </LinearLayout>

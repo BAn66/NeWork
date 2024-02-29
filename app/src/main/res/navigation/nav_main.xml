@@ -27,6 +27,9 @@
         <action
             android:id="@+id/action_mainFragment_to_eventFragment"
             app:destination="@id/eventFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_newEventFragment"
+            app:destination="@id/newEventFragment" />
     </fragment>
 
     <fragment
@@ -109,6 +112,9 @@
         <action
             android:id="@+id/action_mapFragment_to_newPostFragment"
             app:destination="@id/newPostFragment" />
+        <action
+            android:id="@+id/action_mapFragment_to_newEventFragment"
+            app:destination="@id/newEventFragment" />
     </fragment>
 
     <dialog
@@ -119,6 +125,9 @@
         <action
             android:id="@+id/action_addPlace_to_newPostFragment"
             app:destination="@id/newPostFragment" />
+        <action
+            android:id="@+id/action_addPlace_to_newEventFragment"
+            app:destination="@id/newEventFragment" />
     </dialog>
     <fragment
         android:id="@+id/eventFragment"
@@ -128,6 +137,17 @@
         <action
             android:id="@+id/action_eventFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newEventFragment"
+        android:name="ru.kostenko.nework.ui.NewEventFragment"
+        android:label="NewEventFragment" >
+        <action
+            android:id="@+id/action_newEventFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_newEventFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
     </fragment>
 
 </navigation>

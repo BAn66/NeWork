@@ -3,21 +3,19 @@ package ru.kostenko.nework.ui
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import ru.kostenko.nework.R
+import ru.kostenko.nework.viewmodel.EventViewModel
 import ru.kostenko.nework.viewmodel.PostViewModel
 
 @AndroidEntryPoint
 class AddPlaceDialog : DialogFragment() {
-    val viewModel: PostViewModel by activityViewModels()//Диалог добавления места в список
+    val postViewModel: PostViewModel by activityViewModels()//Диалог добавления места в список
+    val eventViewModel: EventViewModel by activityViewModels()
 
     companion object {
         private const val LAT_KEY = "LAT_KEY"
@@ -38,18 +36,21 @@ class AddPlaceDialog : DialogFragment() {
         return AlertDialog.Builder(requireContext())
             .setView(view)
             .setTitle("Set position?")
-            .setNegativeButton(android.R.string.cancel){_, _ ->
+            .setNegativeButton(android.R.string.cancel) { _, _ ->
                 findNavController().popBackStack()
             }
             .setPositiveButton(android.R.string.ok) { _, _ ->
-                viewModel.setCoords(
+                postViewModel.setCoords(
                     requireArguments().getDouble(LAT_KEY),
                     requireArguments().getDouble(LONG_KEY)
                 )
-                Log.d("KCoords", "onCreateView: ${viewModel.coords.value}")
-                requireParentFragment().findNavController().navigate(R.id.action_addPlace_to_newPostFragment)
+                eventViewModel.setCoords(
+                    requireArguments().getDouble(LAT_KEY),
+                    requireArguments().getDouble(LONG_KEY)
+                )
+                findNavController().popBackStack()
             }
 
-                .create()
+            .create()
     }
 }

@@ -94,6 +94,7 @@ class NewPostFragment : Fragment() {
                 } else {
                     postViewModel.setContent("")
                 }
+                postViewModel.clearCoords()
                 findNavController().navigate(R.id.action_newPostFragment_to_mainFragment)
             }
 
@@ -267,8 +268,8 @@ class NewPostFragment : Fragment() {
                 .findNavController().navigate(R.id.action_newPostFragment_to_mapFragment)
         }
 
-
-        //TODO Сделать выбор отмеченных пользователей
+//TODO сделать кнопку очистки для видео и аудио(может использовать уже имеющуюся?) в новом посте
+        //TODO Сделать выбор отмеченных пользователей в новом посте
 
         return binding.root
     }

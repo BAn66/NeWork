@@ -365,7 +365,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/common_pudding"
-                android:text="@string/mentinoned_label"
+                android:text="@string/participants_label"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -393,7 +393,7 @@
                 android:id="@+id/avatar_layout_ment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="@id/btn_mention"
                 app:layout_constraintStart_toEndOf="@id/btn_mention"
                 app:layout_constraintTop_toTopOf="@id/btn_mention">

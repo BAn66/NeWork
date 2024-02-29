@@ -123,9 +123,7 @@ class PostFragment : Fragment() {
             inflateMenu(R.menu.share_menu)
             setOnMenuItemClickListener {
                 when (it.itemId) {
-                    R.id.share -> {
-                        Toast.makeText(context, "Делимся ссылкой", Toast.LENGTH_SHORT).show()
-
+                    R.id.share -> { //Делимся текстом карточки
                 val intent = Intent().apply {
                     action = Intent.ACTION_SEND
                     putExtra(Intent.EXTRA_TEXT, post.content)
@@ -136,7 +134,6 @@ class PostFragment : Fragment() {
                 startActivity(shareIntent)
                         true
                     }
-
                     else -> false
                 }
             }

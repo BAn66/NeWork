@@ -18,6 +18,7 @@ import ru.kostenko.nework.dto.Event
 import ru.kostenko.nework.dto.FeedItem
 import ru.kostenko.nework.dto.Media
 import ru.kostenko.nework.dto.MediaModel
+import ru.kostenko.nework.dto.User
 import ru.kostenko.nework.entity.EventEntity
 import ru.kostenko.nework.error.ApiError
 import ru.kostenko.nework.error.NetworkError
@@ -126,6 +127,38 @@ class EventRepositoryImpl @Inject constructor(
             throw NetworkError
         } catch (e: Exception) {
             throw UnknownError
+        }
+    }
+
+    suspend fun getUserById(id: Int): User {
+        try {
+            val response = apiService.getUserById(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            return body
+        } catch (e: IOException) {
+            throw NetworkError
+
+        } catch (e: Exception) {
+            throw Exception(e)
+        }
+    }
+
+    suspend fun getEventById(id: Int): Event {
+        try {
+            val response = apiService.getEventById(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            return body
+        } catch (e: IOException) {
+            throw NetworkError
+
+        } catch (e: Exception) {
+            throw Exception(e)
         }
     }
 }

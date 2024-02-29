@@ -166,18 +166,10 @@ class PostViewHolder(
                 onPostInteractionListener.share(post)
             }
 
-
-//            btnLike.setOnLongClickListener {
-//                onPostInteractionListener.onOpenLikers(post)
-//                true
-//            }
-
             content.setOnClickListener {
                 println("content clicked")
                 onPostInteractionListener.openPost(post)
             }
-
-
 
             postLayout.setOnClickListener { onPostInteractionListener.openPost(post) }
             avatar.setOnClickListener { onPostInteractionListener.openPost(post) }

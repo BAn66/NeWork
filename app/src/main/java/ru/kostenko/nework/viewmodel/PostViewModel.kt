@@ -122,7 +122,7 @@ class PostViewModel @Inject constructor(
                     author = repository.getUserById(authorId).name,
                     content = text,
                     published = OffsetDateTime.now().toString(),
-                    coords = _coords.value
+                    coords = _coords.value,
                 )
                 try {
                     val mediaModel = _media.value
@@ -181,14 +181,22 @@ class PostViewModel @Inject constructor(
         _media.value = MediaModel(uri, inputStream, type)
     }
 
-    fun clearContent() {
-        _content.value = ""
-    }
-
     fun clearMedia() {
         _media.value = null
     }
 
+
+    fun setContent(tmpContent: String) {
+        _content.value = tmpContent
+    }
+
+    fun clearContent() {
+        _content.value = ""
+    }
+
+    fun setCoords(latC: Double, LongC: Double) {
+        _coords.value = Coords(latC, LongC)
+    }
     fun clearCoords(){
         _coords.value = null
     }
@@ -203,11 +211,7 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    fun setCoords(latC: Double, LongC: Double) {
-        _coords.value = Coords(latC, LongC)
-    }
 
-    fun setContent(tmpContent: String) {
-        _content.value = tmpContent
-    }
+
+
 }

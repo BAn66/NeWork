@@ -2,7 +2,6 @@ package ru.kostenko.nework.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,6 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -50,10 +48,10 @@ class PostsFragment : Fragment() {
                 if (authViewModel.authenticated)
                     postViewModel.likePostById(post.id, post.likedByMe)
                 else {
-                    val authDialogFragmentFromPosts = AuthDialogFragmentFromPosts()
+                    val authDialogFragment = AuthDialogFragment()
                     val manager = activity?.supportFragmentManager
                     manager?.let { fragmentManager ->
-                        authDialogFragmentFromPosts.show(
+                        authDialogFragment.show(
                             fragmentManager,
                             "myDialog"
                         )
@@ -77,14 +75,15 @@ class PostsFragment : Fragment() {
                 }
             }
 
-            override fun share(post: Post) { //создаем актвити Chooser для расшаривания текста поста через Intent
+            override fun share(post: Post) {
+                //создаем актвити Chooser для расшаривания текста поста через Intent
 
                 val intent = Intent().apply {
                     action = Intent.ACTION_SEND
                     putExtra(Intent.EXTRA_TEXT, post.content)
                     type = "text/plain"
                 }
-//                startActivity(intent) //Более скромный вариант ниже более симпатичный вариант
+                //startActivity(intent) //Более скромный вариант ниже более симпатичный вариант
                 val shareIntent =
                     Intent.createChooser(intent, getString(R.string.description_shared))
                 startActivity(shareIntent)
@@ -123,19 +122,14 @@ class PostsFragment : Fragment() {
 
         //TODO временное текста не сохраненного поста не работает.
         binding.addPost.setOnClickListener {
-            setFragmentResultListener("saveTmpContent") { _, bundle ->
-                val savedTmpContent = bundle.getString("tmpContent")
-                parentFragmentManager.setFragmentResult("takeTmpContent",bundleOf("savedTmpContent" to savedTmpContent)
-                )
-            }
             if (authViewModel.authenticated)
                 requireParentFragment().requireParentFragment()
                     .findNavController().navigate(R.id.action_mainFragment_to_newPostFragment)
             else {
-                val authDialogFragmentFromPosts = AuthDialogFragmentFromPosts()
+                val authDialogFragment = AuthDialogFragment()
                 val manager = activity?.supportFragmentManager
                 manager?.let { fragmentManager ->
-                    authDialogFragmentFromPosts.show(
+                    authDialogFragment.show(
                         fragmentManager,
                         "myDialog"
                     )

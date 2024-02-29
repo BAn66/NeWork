@@ -56,7 +56,7 @@ class NewJobFragment : Fragment() {
         binding.end.text = "НВ"
 
         binding.startEndCard.setOnClickListener {
-            var dialog = JobDateDialogFragment()
+            val dialog = JobDateDialogFragment()
             dialog.show(parentFragmentManager, null)
         }
 
@@ -70,6 +70,7 @@ class NewJobFragment : Fragment() {
             binding.end.text = end
         }
 
+        //TODO Сделать что то с датами, чтобы отображались в укороченном варианте, а в вьюмодель передавались в полном варианте
         binding.createBtn.setOnClickListener {
             viewLifecycleOwner.lifecycleScope.launch {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {

@@ -30,6 +30,7 @@ interface OnEventInteractionListener {
     fun remove(event: Event)
     fun edit(event: Event)
     fun openEvent(event: Event)
+    fun share(event: Event)
 }
 
 class EventsAdapter(
@@ -161,23 +162,21 @@ class EventsAdapter(
                     onEventInteractionListener.like(event)
                 }
 
-//            btnLike.setOnLongClickListener {
-//                onPostInteractionListener.onOpenLikers(post)
-//                true
-//            }
+                btnShare.setOnClickListener {
+                    onEventInteractionListener.share(event)
+                }
 
                 content.setOnClickListener {
                     println("content clicked")
                     onEventInteractionListener.openEvent(event)
                 }
 
-
-
                 postLayout.setOnClickListener { onEventInteractionListener.openEvent(event) }
                 avatar.setOnClickListener { onEventInteractionListener.openEvent(event) }
                 author.setOnClickListener { onEventInteractionListener.openEvent(event) }
                 published.setOnClickListener { onEventInteractionListener.openEvent(event) }
-//            imageAttach.setOnClickListener { onPostInteractionListener.openImage(post) }
+                content.setOnClickListener { onEventInteractionListener.openEvent(event)  }
+                imageAttach.setOnClickListener { onEventInteractionListener.openEvent(event) }
 
                 menu.isVisible = event.ownedByMe  //Меню видно если пост наш
                 menu.setOnClickListener {

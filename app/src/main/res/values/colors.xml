@@ -5,7 +5,7 @@
     <!--    цвет для системных элементов - строка состояния-->
     <color name="colorPrimaryDark">#FEF7FF</color>
     <!--    Цвет по умолчанию для компонентов, которые находятся в фокусе или активны  -->
-    <color name="colorAccent">#E8DEF8</color>
+    <color name="colorAccent">#F3EDF7</color>
     <!--    Цвет для неактивных компонентов-->
     <color name="colorControlNormal">#F3EDF7</color>
     <!--    Цвет для активных компонентов-->

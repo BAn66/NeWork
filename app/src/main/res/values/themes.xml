@@ -16,11 +16,15 @@
         <item name="android:colorControlHighlight">@color/colorControlHighlight</item>
         <!--    Фон панели навигации-->
         <item name="android:navigationBarColor">@color/navigationBarColor</item>
-<!--цвет часов и системных кнопок черный или белый-->
+        <!--цвет часов и системных кнопок черный или белый-->
         <item name="android:windowLightStatusBar">true</item>
+        <!--цвет ссылок-->
         <item name="android:textColorLink">@color/colorOnSecondary</item>
 
         <item name="cardViewStyle">@style/NeworkCardViewStyle</item>
+<!--Стиль на кнопки-->
+<!--        <item name="materialButtonStyle">@style/Widget.App.Button</item>-->
+
         <item name="extendedFloatingActionButtonStyle">
             @style/Widget.App.ExtendedFloatingActionButton
         </item>
@@ -49,23 +53,23 @@
         <item name="colorOnSurface">@color/colorOnSurface</item>
     </style>
 
-<!--        Для аппбара-->
+    <!--        Для аппбара-->
     <style name="NeworkToolbarStyle" parent="Widget.MaterialComponents.Toolbar">
         <item name="titleTextColor">@color/colorText</item>
         <item name="android:background">@color/colorPrimary</item>
         <item name="android:shadowColor">@color/colorPrimary</item>
     </style>
 
-<!--    Для карточек androidx.cardview.widget.CardView-->
+    <!--    Для карточек androidx.cardview.widget.CardView-->
     <style name="NeworkCardViewStyle">
-<!--        цвет бэкграунда карточек не соответствует действительности-->
+        <!--        цвет бэкграунда карточек не соответствует действительности-->
         <item name="cardBackgroundColor">@color/cardViewBackground</item>
         <item name="cardCornerRadius">@dimen/card_corner_radius</item>
         <item name="cardElevation">@dimen/elevation</item>
     </style>
 
     <style name="Widget.AppTheme.IconButton" parent="Widget.MaterialComponents.Button.TextButton.Icon">
-<!--        <item name="iconTint">@color/button_tint</item>-->
+        <!--        <item name="iconTint">@color/button_tint</item>-->
         <item name="iconPadding">0dp</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>

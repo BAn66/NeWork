@@ -1,5 +1,6 @@
 package ru.kostenko.nework.viewmodel
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -17,6 +18,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import ru.kostenko.nework.authorization.AppAuth
 import ru.kostenko.nework.dto.AttachmentType
+import ru.kostenko.nework.dto.Coords
 import ru.kostenko.nework.dto.Event
 import ru.kostenko.nework.dto.EventType
 import ru.kostenko.nework.dto.FeedItem
@@ -87,9 +89,18 @@ class EventViewModel @Inject constructor(
     val event: LiveData<Event>
         get() = _event
 
+    private val _content = SingleLiveEvent<String>()
+    val content: LiveData<String>
+        get() = _content
+
+    private val _coords = MutableLiveData<Coords?>()
+    val coords: LiveData<Coords?>
+        get() = _coords
+
     init {
         loadEvents()
     }
+    val authorId = appAuth.authStateFlow.value.id.toInt()
 
     fun loadEvents() = viewModelScope.launch { //Загружаем события c помщью коротюнов и вьюмоделскоуп
         try {
@@ -100,19 +111,21 @@ class EventViewModel @Inject constructor(
         }
     }
 
-    fun changeEventAndSave(content: String, dateTime: OffsetDateTime, type: EventType) {
+    @SuppressLint("SuspiciousIndentation")
+    fun changeEventAndSave(content: String, dateTime: String, type: EventType) {
         val text: String = content.trim()
+        _content.value = text
         //функция изменения и сохранения в репозитории
         edited.value?.let {
+            viewModelScope.launch {
             val eventCopy = it.copy(
-                author = "me",
+                author = repository.getUserById(authorId).name,
                 content = text,
                 published = OffsetDateTime.now().toString(),
-                datetime = dateTime.toLocalDate().toString(),
-                type = type
-            //TODO Проверить везде как даты вводятся и отображаются
+                coords = _coords.value,
+                datetime = dateTime,
+                type = type,
             )
-            viewModelScope.launch {
                 try {
                     val mediaModel = _media.value
                     if (mediaModel == null && it.content != text) {
@@ -126,9 +139,12 @@ class EventViewModel @Inject constructor(
                 } catch (e: Exception) {
                     _dataState.value = FeedModelState(error = true)
                 }
+                clearCoords()
+                clearContent()
+                clearMedia()
             }
         }
-        emptyNew()
+            emptyNew()
     }
 
     fun emptyNew() {
@@ -166,9 +182,33 @@ class EventViewModel @Inject constructor(
     ) {
         _media.value = MediaModel(uri, inputStream, type)
     }
-
     fun clearMedia() {
         _media.value = null
+    }
+
+    fun setContent(tmpContent: String) {
+        _content.value = tmpContent
+    }
+
+    fun clearContent(){
+        _content.value=""
+    }
+
+    fun setCoords(latC: Double, LongC: Double) {
+        _coords.value = Coords(latC, LongC)
+    }
+    fun clearCoords(){
+        _coords.value = null
+    }
+
+    fun getEventById(id: Int) = viewModelScope.launch {
+        _dataState.postValue(FeedModelState(loading = true))
+        try {
+            _event.value = repository.getEventById(id)
+            _dataState.value = FeedModelState()
+        } catch (e: Exception) {
+            _dataState.value = FeedModelState(error = true)
+        }
     }
 
 }

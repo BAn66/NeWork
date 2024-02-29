@@ -74,4 +74,8 @@
     <string name="take_location">Take location</string>
     <string name="mentinoned_label">Mentinoned</string>
     <string name="likers_label">Likers</string>
+    <string name="add_date_event">Add date event</string>
+    <string name="event">Event</string>
+    <string name="participants_label">Participants</string>
+    <string name="video_holder">Media holder</string>
 </resources>
