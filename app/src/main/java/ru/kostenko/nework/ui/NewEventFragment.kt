@@ -219,9 +219,9 @@ class NewEventFragment : Fragment() {
         }
 
 
+
         //Вызов диалога для установки даты и вида событий
         binding.addDateEvent.setOnClickListener {
-            Toast.makeText(this.context, "Добавь дату события и его тип", Toast.LENGTH_LONG).show()
             val modalBottomSheet = DateEventFragment()
             modalBottomSheet.show(parentFragmentManager, DateEventFragment.TAG)
 //            findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
