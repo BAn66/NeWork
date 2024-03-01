@@ -249,33 +249,33 @@ class NewPostFragment : Fragment() {
         postViewModel.edited.observe(viewLifecycleOwner) { editedPost ->
             if (editedPost.id != 0) {
                 postViewModel.setContent(editedPost.content)
-                binding.editTextNewPost.requestFocus()
-                // TODO не редактирует медиа и локацию
-                editedPost?.let {
-                    it.attachment?.let { attachment ->
-                        val type = attachment.type
-                        val url = attachment.url
-                        postViewModel.setMedia(url.toUri(), null, type)
-
-                        if (type == AttachmentType.IMAGE) {
-
-                            binding.imageContainer.visibility = View.VISIBLE
-
-//                                binding.preview.setImageURI(url.toUri())
-
-                            editedPost.attachment?.apply {
-//                                    imageAttach.contentDescription = this.url
-                                Glide.with(binding.preview)
-                                    .load(this.url)
-                                    .placeholder(R.drawable.ic_loading_100dp)
-                                    .error(R.drawable.ic_error_100dp)
-                                    .timeout(10_000)
-                                    .into(binding.preview)
-                            }
-
-                        }
-                    }
-                }
+//                binding.editTextNewPost.requestFocus()
+//                // TODO не редактирует медиа и локацию
+//                editedPost?.let {
+//                    it.attachment?.let { attachment ->
+//                        val type = attachment.type
+//                        val url = attachment.url
+//                        postViewModel.setMedia(url.toUri(), null, type)
+//
+//                        if (type == AttachmentType.IMAGE) {
+//
+//                            binding.imageContainer.visibility = View.VISIBLE
+//
+////                                binding.preview.setImageURI(url.toUri())
+//
+//                            editedPost.attachment?.apply {
+////                                    imageAttach.contentDescription = this.url
+//                                Glide.with(binding.preview)
+//                                    .load(this.url)
+//                                    .placeholder(R.drawable.ic_loading_100dp)
+//                                    .error(R.drawable.ic_error_100dp)
+//                                    .timeout(10_000)
+//                                    .into(binding.preview)
+//                            }
+//
+//                        }
+//                    }
+//                }
             }
         }
 

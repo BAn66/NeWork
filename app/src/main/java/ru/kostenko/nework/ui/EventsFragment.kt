@@ -62,6 +62,7 @@ class EventsFragment: Fragment() {
             }
 
             override fun edit(event: Event) {
+                eventViewModel.clearMedia()
                 eventViewModel.editEvent(event)
             }
 
@@ -108,8 +109,8 @@ class EventsFragment: Fragment() {
             }
         }
 
-        //        Работа редактирования через фрагменты (конкретно все в фрагменте NewPost)
-        eventViewModel.edited.observe(viewLifecycleOwner) {// Начало редактирования
+
+        eventViewModel.edited.observe(viewLifecycleOwner) {
             if (it.id != 0) {
                 requireParentFragment().requireParentFragment()
                     .findNavController().navigate(R.id.action_mainFragment_to_newEventFragment)

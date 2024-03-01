@@ -2,6 +2,7 @@ package ru.kostenko.nework.viewmodel
 
 import android.annotation.SuppressLint
 import android.net.Uri
+import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -115,10 +116,9 @@ class PostViewModel @Inject constructor(
     fun changePostAndSave(content: String) {
         val text: String = content.trim()
         //функция изменения и сохранения в репозитории
-//        _content.value = text
-        edited.value?.let {
+        edited.value?.let { editedPost ->
             viewModelScope.launch {
-                val postCopy = it.copy(
+                val postCopy = editedPost.copy(
                     author = repository.getUserById(authorId).name,
                     content = text,
                     published = OffsetDateTime.now().toString(),
@@ -126,9 +126,10 @@ class PostViewModel @Inject constructor(
                 )
                 try {
                     val mediaModel = _media.value
-                    if (mediaModel == null && it.content != text) {
+                    if (mediaModel == null && editedPost.content != text) {
                         repository.savePost(postCopy)
-                    } else if (mediaModel != null && it.content != text) {
+//                    } else if (mediaModel != null && editedPost.content != text && editedPost.attachment?.url?.toUri() != _media.value?.uri) {
+                    } else if (mediaModel != null && editedPost.content != text) {
                         repository.savePostWithAttachment(postCopy, mediaModel)
                     }
                     _dataState.value = FeedModelState()

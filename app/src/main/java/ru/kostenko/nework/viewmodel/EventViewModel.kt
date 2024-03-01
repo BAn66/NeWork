@@ -114,11 +114,10 @@ class EventViewModel @Inject constructor(
     @SuppressLint("SuspiciousIndentation")
     fun changeEventAndSave(content: String, dateTime: String, type: EventType) {
         val text: String = content.trim()
-        _content.value = text
         //функция изменения и сохранения в репозитории
-        edited.value?.let {
+        edited.value?.let { editEvent->
             viewModelScope.launch {
-            val eventCopy = it.copy(
+            val eventCopy = editEvent.copy(
                 author = repository.getUserById(authorId).name,
                 content = text,
                 published = OffsetDateTime.now().toString(),
@@ -128,10 +127,10 @@ class EventViewModel @Inject constructor(
             )
                 try {
                     val mediaModel = _media.value
-                    if (mediaModel == null && it.content != text) {
+                    if (mediaModel == null && editEvent.content != text) {
                         repository.saveEvent(eventCopy)
 
-                    } else if (mediaModel != null && it.content != text) {
+                    } else if (mediaModel != null && editEvent.content != text) {
                         repository.saveEventWithAttachment(eventCopy, mediaModel)
                     }
                     _dataState.value = FeedModelState()

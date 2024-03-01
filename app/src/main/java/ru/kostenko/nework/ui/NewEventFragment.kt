@@ -81,6 +81,7 @@ class NewEventFragment : Fragment() {
         val binding = FragmentNewEventBinding.inflate(layoutInflater)
 
         binding.editTextNewPost.setText(eventViewModel.content.value)
+        binding.editTextNewPost.requestFocus()
 
         //Верхний аппбар
         toolbar = binding.toolbar
@@ -94,7 +95,8 @@ class NewEventFragment : Fragment() {
                     eventViewModel.setContent("")
                 }
                 eventViewModel.clearCoords()
-                findNavController().navigate(R.id.action_newEventFragment_to_mainFragment)
+                requireParentFragment().findNavController()
+                    .navigate(R.id.action_newEventFragment_to_mainFragment)
             }
 
             inflateMenu(R.menu.save_feed_item)
@@ -230,32 +232,32 @@ class NewEventFragment : Fragment() {
             if (editedEvent.id != 0) {
                 eventViewModel.setContent(editedEvent.content)
 
-                // TODO не редактирует медиа и локацию
-                editedEvent?.let {
-                    it.attachment?.let { attachment ->
-                        val type = attachment.type
-                        val url = attachment.url
-                        eventViewModel.setMedia(url.toUri(), null, type)
-
-                        if (type == AttachmentType.IMAGE) {
-
-                            binding.imageContainer.visibility = View.VISIBLE
-
-//                                binding.preview.setImageURI(url.toUri())
-
-                            editedEvent.attachment?.apply {
-//                                    imageAttach.contentDescription = this.url
-                                Glide.with(binding.preview)
-                                    .load(this.url)
-                                    .placeholder(R.drawable.ic_loading_100dp)
-                                    .error(R.drawable.ic_error_100dp)
-                                    .timeout(10_000)
-                                    .into(binding.preview)
-                            }
-
-                        }
-                    }
-                }
+//                // TODO не редактирует медиа и локацию
+//                editedEvent?.let {
+//                    it.attachment?.let { attachment ->
+//                        val type = attachment.type
+//                        val url = attachment.url
+//                        eventViewModel.setMedia(url.toUri(), null, type)
+//
+//                        if (type == AttachmentType.IMAGE) {
+//
+//                            binding.imageContainer.visibility = View.VISIBLE
+//
+////                                binding.preview.setImageURI(url.toUri())
+//
+//                            editedEvent.attachment?.apply {
+////                                    imageAttach.contentDescription = this.url
+//                                Glide.with(binding.preview)
+//                                    .load(this.url)
+//                                    .placeholder(R.drawable.ic_loading_100dp)
+//                                    .error(R.drawable.ic_error_100dp)
+//                                    .timeout(10_000)
+//                                    .into(binding.preview)
+//                            }
+//
+//                        }
+//                    }
+//                }
             }
         }
 
