@@ -11,13 +11,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.net.toFile
-import androidx.core.net.toUri
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
@@ -249,7 +247,7 @@ class NewPostFragment : Fragment() {
         postViewModel.edited.observe(viewLifecycleOwner) { editedPost ->
             if (editedPost.id != 0) {
                 postViewModel.setContent(editedPost.content)
-//                binding.editTextNewPost.requestFocus()
+                binding.editTextNewPost.requestFocus()
 //                // TODO не редактирует медиа и локацию
 //                editedPost?.let {
 //                    it.attachment?.let { attachment ->
