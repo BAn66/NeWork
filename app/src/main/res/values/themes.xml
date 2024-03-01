@@ -24,12 +24,12 @@
         <item name="cardViewStyle">@style/NeworkCardViewStyle</item>
 <!--Стиль на кнопки-->
 <!--        <item name="materialButtonStyle">@style/Widget.App.Button</item>-->
-
         <item name="extendedFloatingActionButtonStyle">
             @style/Widget.App.ExtendedFloatingActionButton
         </item>
         <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
-
+<!--        Для боттомщита (нижняя всплывашка)-->
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.App.BottomSheetDialog</item>
     </style>
 
     <!--    для кнопки добавить -->
@@ -68,6 +68,8 @@
         <item name="cardElevation">@dimen/elevation</item>
     </style>
 
+
+
     <style name="Widget.AppTheme.IconButton" parent="Widget.MaterialComponents.Button.TextButton.Icon">
         <!--        <item name="iconTint">@color/button_tint</item>-->
         <item name="iconPadding">0dp</item>
@@ -100,5 +102,11 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">8dp</item>
     </style>
+
+    <style name="ThemeOverlay.App.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/ModalBottomSheetDialog</item>
+    </style>
+
+
 
 </resources>

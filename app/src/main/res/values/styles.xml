@@ -26,4 +26,15 @@
         <item name="android:minHeight">48dp</item>
         <item name="iconTint">?attr/colorControlNormal</item>
     </style>
+
+<!--Для боттомщита (нижняя всплывашка)-->
+    <style name="ModalBottomSheetDialog" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="backgroundTint">@color/bottomSheetBackground</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.App.LargeComponent</item>
+    </style>
+
+    <style name="ShapeAppearance.App.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">24dp</item>
+    </style>
 </resources>

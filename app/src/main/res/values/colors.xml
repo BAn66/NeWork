@@ -21,6 +21,8 @@
     <!--Цвет бэкграунда карточек-->
     <color name="cardViewBackground">#f2ebff</color>
 
+    <color name="bottomSheetBackground">#CAC4D0</color>
+
     <color name="colorSwitchThumbNormal">#F3EDF7</color>
     <color name="colorSecondary">#EADDFF</color>
     <color name="colorOnSecondary">#6750A4</color>
