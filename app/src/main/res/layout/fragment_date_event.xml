@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,32 +7,45 @@
     android:layout_height="match_parent"
     tools:context=".ui.DateEventFragment">
 
-<FrameLayout
-android:id="@+id/my_frame_layout"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-style="?attr/bottomSheetStyle"
-app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
 <!-- Bottom sheet contents. -->
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Заголовок"
+    <ImageView
+        android:id="@+id/drag_handler"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintEnd_toEndOf="parent" android:paddingTop="@dimen/common_pudding_8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/drag_handle_24"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/start_input_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Date"
+        android:textColorHint="#6750A4"
+        app:boxStrokeColor="#6750A4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/drag_handler"
+        app:helperText="MM/dd/yyyy HH:mm"
+        app:endIconMode="custom"
+        app:endIconDrawable="@drawable/calendar_24">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_start"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusable="false"
+            android:text="dd/mm/yyyy hh:mm" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
 />
 
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Поддерживающая строка"
-/>
 
-<Button
-    android:id="@+id/bottomsheet_button"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Действие"
-/>
-
-</FrameLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
