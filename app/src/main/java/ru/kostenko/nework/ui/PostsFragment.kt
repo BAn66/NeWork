@@ -64,6 +64,7 @@ class PostsFragment : Fragment() {
             }
 
             override fun edit(post: Post) {
+                postViewModel.clearMedia()
                 postViewModel.editPost(post)
             }
 
@@ -108,18 +109,13 @@ class PostsFragment : Fragment() {
         }
 
         //TODO Редактирование не работает.
-
-        /*        Работа редактирования через фрагменты (конкретно все в фрагменте NewPost)*/
         postViewModel.edited.observe(viewLifecycleOwner) { post->// Начало редактирования
-//           Toast.makeText(this.context, "Переход на карточку редактирования поста", Toast.LENGTH_LONG).show()
-//            setFragmentResult("requestIdForNewPostFragment", bundleOf("id" to resultId))
             if (post.id != 0) {
                 requireParentFragment().requireParentFragment()
                     .findNavController().navigate(R.id.action_mainFragment_to_newPostFragment)
             }
         }
 
-        //TODO временное текста не сохраненного поста не работает.
         binding.addPost.setOnClickListener {
             if (authViewModel.authenticated)
                 requireParentFragment().requireParentFragment()

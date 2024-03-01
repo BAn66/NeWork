@@ -178,7 +178,7 @@ class EventViewModel @Inject constructor(
     }
 
     fun setMedia(
-        uri: Uri, inputStream: InputStream, type: AttachmentType
+        uri: Uri, inputStream: InputStream?, type: AttachmentType
     ) {
         _media.value = MediaModel(uri, inputStream, type)
     }

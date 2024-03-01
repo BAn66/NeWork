@@ -109,11 +109,10 @@ class EventsFragment: Fragment() {
         }
 
         //        Работа редактирования через фрагменты (конкретно все в фрагменте NewPost)
-        eventViewModel.edited.observe(viewLifecycleOwner) { it ->// Начало редактирования
-            val resultId = it.id
-            setFragmentResult("requestIdForNewPostFragment", bundleOf("id" to resultId))
+        eventViewModel.edited.observe(viewLifecycleOwner) {// Начало редактирования
             if (it.id != 0) {
-//                findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
+                requireParentFragment().requireParentFragment()
+                    .findNavController().navigate(R.id.action_mainFragment_to_newEventFragment)
             }
         }
 

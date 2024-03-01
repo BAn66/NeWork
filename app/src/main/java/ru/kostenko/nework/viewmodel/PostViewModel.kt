@@ -115,7 +115,7 @@ class PostViewModel @Inject constructor(
     fun changePostAndSave(content: String) {
         val text: String = content.trim()
         //функция изменения и сохранения в репозитории
-        _content.value = text
+//        _content.value = text
         edited.value?.let {
             viewModelScope.launch {
                 val postCopy = it.copy(
@@ -128,7 +128,6 @@ class PostViewModel @Inject constructor(
                     val mediaModel = _media.value
                     if (mediaModel == null && it.content != text) {
                         repository.savePost(postCopy)
-
                     } else if (mediaModel != null && it.content != text) {
                         repository.savePostWithAttachment(postCopy, mediaModel)
                     }
@@ -137,9 +136,9 @@ class PostViewModel @Inject constructor(
                 } catch (e: Exception) {
                     _dataState.value = FeedModelState(error = true)
                 }
-                clearMedia()
                 clearCoords()
                 clearContent()
+                clearMedia()
             }
         }
         emptyNew()
@@ -176,7 +175,7 @@ class PostViewModel @Inject constructor(
     }
 
     fun setMedia(
-        uri: Uri, inputStream: InputStream, type: AttachmentType
+        uri: Uri, inputStream: InputStream?, type: AttachmentType
     ) {
         _media.value = MediaModel(uri, inputStream, type)
     }

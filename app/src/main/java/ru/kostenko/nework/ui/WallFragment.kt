@@ -9,9 +9,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import ru.kostenko.nework.R
 import ru.kostenko.nework.adapter.OnPostInteractionListener
 import ru.kostenko.nework.adapter.PostsAdapter
 import ru.kostenko.nework.authorization.AppAuth
@@ -19,6 +21,7 @@ import ru.kostenko.nework.databinding.FragmentWallBinding
 import ru.kostenko.nework.dto.Post
 import ru.kostenko.nework.util.MediaLifecycleObserver
 import ru.kostenko.nework.viewmodel.AuthViewModel
+import ru.kostenko.nework.viewmodel.PostViewModel
 import ru.kostenko.nework.viewmodel.UserViewModel
 import ru.kostenko.nework.viewmodel.WallViewModel
 import javax.inject.Inject
@@ -30,7 +33,7 @@ class WallFragment : Fragment() {
     private val authViewModel: AuthViewModel by activityViewModels()
     private val wallViewModel: WallViewModel by activityViewModels()
     private val userViewModel: UserViewModel by activityViewModels()
-
+    private val  postViewModel: PostViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -74,7 +77,7 @@ class WallFragment : Fragment() {
                 }
 
                 override fun edit(post: Post) {
-                    TODO("Not yet implemented")
+                    postViewModel.editPost(post)
                 }
 
                 override fun openPost(post: Post) {
@@ -97,6 +100,13 @@ class WallFragment : Fragment() {
                     viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                         authorId?.let { wallViewModel.getWallPosts(it).collectLatest(wallAdapter::submitData) }
                     }
+                }
+            }
+
+            postViewModel.edited.observe(viewLifecycleOwner) { post->// Начало редактирования
+                if (post.id != 0) {
+                    requireParentFragment().requireParentFragment()
+                        .findNavController().navigate(R.id.action_userDetailsFragment_to_newPostFragment)
                 }
             }
 
