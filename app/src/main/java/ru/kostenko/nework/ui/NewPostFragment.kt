@@ -109,10 +109,10 @@ class NewPostFragment : Fragment() {
                                 .setAction(android.R.string.ok) {
                                 }.show()
                         } else {
-                            Log.d("PostTAAAG", "changeEventAndSave newPostFragment coords: ${postViewModel.coords.value}")
-
                             val content = binding.editTextNewPost.text.toString()
                             postViewModel.changePostAndSave(content)
+                            Log.d("PostTAAAG", "changeEventAndSave newPostFragment content: ${postViewModel.content.value}")
+                            Log.d("PostTAAAG", "changeEventAndSave newPostFragment coords: ${postViewModel.coords.value}")
                             activity?.invalidateOptionsMenu()
                             requireParentFragment().findNavController()
                                 .navigate(R.id.action_newPostFragment_to_mainFragment)
@@ -137,6 +137,7 @@ class NewPostFragment : Fragment() {
 
         //Выбираем фото
         binding.takePhoto.setOnClickListener { //Берем фотку через галерею
+            postViewModel.setContent(binding.editTextNewPost.text.toString())
             postViewModel.clearMedia()
             val pictureDialog = AlertDialog.Builder(it.context)
             pictureDialog.setTitle("Select Action")
@@ -153,8 +154,12 @@ class NewPostFragment : Fragment() {
             pictureDialog.show()
         }
 
+        binding.editTextNewPost.setOnClickListener {
+            postViewModel.setContent(binding.editTextNewPost.text.toString())
+        }
         //Выбираем видео или аудио
         binding.takeFile.setOnClickListener {
+            postViewModel.setContent(binding.editTextNewPost.text.toString())
             postViewModel.clearMedia()
             val pictureDialog = AlertDialog.Builder(it.context)
             pictureDialog.setTitle("Select Action")
@@ -248,6 +253,9 @@ class NewPostFragment : Fragment() {
 
         binding.takeLocation.setOnClickListener {
             postViewModel.setContent(binding.editTextNewPost.text.toString())
+
+            Log.d("PostSaveTAAAG", "to Map - postViewModel.coords: ${postViewModel.coords.value}).")
+            Log.d("PostSaveTAAAG", "to Map - edited.coords: ${postViewModel.edited.value?.coords}).")
             requireParentFragment()
                 .findNavController().navigate(R.id.action_newPostFragment_to_mapFragment)
         }
@@ -258,6 +266,10 @@ class NewPostFragment : Fragment() {
                 postViewModel.setContent(editedPost.content)
                 binding.editTextNewPost.requestFocus()
 
+                editedPost.coords?.let {
+                    postViewModel.setCoords(editedPost.coords.lat, editedPost.coords.long)
+                    Log.d("PostSaveTAAAG", "при редаткировании поста coords: ${postViewModel.coords.value}).")
+                }
                 // TODO не редактирует локацию
                 editedPost.attachment?.let { attachment ->
                         val type = attachment.type
@@ -282,6 +294,7 @@ class NewPostFragment : Fragment() {
             }
 
         binding.takePeople.setOnClickListener {
+            postViewModel.setContent(binding.editTextNewPost.text.toString())
             requireParentFragment().findNavController().navigate(R.id.action_newPostFragment_to_takePeopleFragment)
         }
 
