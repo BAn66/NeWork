@@ -295,31 +295,19 @@ private lateinit var userLocation: UserLocationLayer
                 mapAvatarsLikers.put(3, Pair(avatarView3, null))
                 mapAvatarsLikers.put(4, Pair(avatarView4, null))
 
-                Log.d("KAva", "onCreateViewList: $listLikersId")
                 if (listLikersId.size == 0) binding.avatarLayoutLike.visibility = View.GONE
                 else if (listLikersId.size < 6) {
                     for (i in 0..(listLikersId.size - 1)) {
                         userViewModel.getUserById(listLikersId[i]).join()
                         val userName = userViewModel.user.value?.name
                         val userAvatar = userViewModel.user.value?.avatar
-                        Log.d("KAva", "onCreateView1-1: $userAvatar")
                         var pair = mapAvatarsLikers.getValue(i)
                         if (userAvatar.isNullOrEmpty()) {
                             pair = pair.copy(second = userName)
-                            Log.d("KAva", "onCreateView1-2-1: ${pair.second}")
                             mapAvatarsLikers.set(i, pair)
-                            Log.d(
-                                "KAva",
-                                "onCreateView1-2-2: ${mapAvatarsLikers.getValue(i).second}"
-                            )
                         } else {
                             pair = pair.copy(second = userAvatar)
-                            Log.d("KAva", "onCreateView1-3-1: ${pair.second}")
                             mapAvatarsLikers.set(i, pair)
-                            Log.d(
-                                "KAva",
-                                "onCreateView1-3-2: ${mapAvatarsLikers.getValue(i).second}"
-                            )
                         }
                     }
 
@@ -329,31 +317,19 @@ private lateinit var userLocation: UserLocationLayer
                         userViewModel.getUserById(listLikersId[i]).join()
                         val userName = userViewModel.user.value?.name
                         val userAvatar = userViewModel.user.value?.avatar
-                        Log.d("KAva", "onCreateView2-1: $userAvatar")
                         var pair = mapAvatarsLikers.getValue(i)
                         if (userAvatar.isNullOrEmpty()) {
                             pair = pair.copy(second = userName)
-                            Log.d("KAva", "onCreateView2-2-1: ${pair.second}")
                             mapAvatarsLikers.set(i, pair)
-                            Log.d(
-                                "KAva",
-                                "onCreateView2-2-2: ${mapAvatarsLikers.getValue(i).second}"
-                            )
                         } else {
                             pair = pair.copy(second = userAvatar)
-                            Log.d("KAva", "onCreateView2-3-1: ${pair.second}")
                             mapAvatarsLikers.set(i, pair)
-                            Log.d(
-                                "KAva",
-                                "onCreateView2-3-2: ${mapAvatarsLikers.getValue(i).second}"
-                            )
                         }
                     }
                 }
 
                 mapAvatarsLikers.forEach {
                     it.value.first.visibility = View.GONE
-                    Log.d("KAva", "onCreateViewMap: ${it.value.second}")
                     if (it.value.second != null) {
                         if (it.value.second!!.startsWith("https://")) {
                             it.value.first.visibility = View.VISIBLE

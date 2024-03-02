@@ -109,6 +109,8 @@ class NewPostFragment : Fragment() {
                                 .setAction(android.R.string.ok) {
                                 }.show()
                         } else {
+                            Log.d("PostTAAAG", "changeEventAndSave newPostFragment coords: ${postViewModel.coords.value}")
+
                             val content = binding.editTextNewPost.text.toString()
                             postViewModel.changePostAndSave(content)
                             activity?.invalidateOptionsMenu()
@@ -171,7 +173,6 @@ class NewPostFragment : Fragment() {
         }
 
         postViewModel.media.observe(viewLifecycleOwner) { mediaModel ->
-            Log.d("ImgTAAG", "postViewModel2: ${postViewModel.media.value?.uri} ")
             if (mediaModel == null) {
                 binding.imageContainer.isGone = true
                 binding.videoGroup.isGone = true

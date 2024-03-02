@@ -169,7 +169,6 @@ class NewEventFragment : Fragment() {
             pictureDialog.show()
         }
         eventViewModel.media.observe(viewLifecycleOwner) { mediaModel ->
-            Log.d("ImgTAAG", "postViewModel2: ${eventViewModel.media.value?.uri} ")
             if (mediaModel == null) {
                 binding.imageContainer.isGone = true
                 binding.videoGroup.isGone = true

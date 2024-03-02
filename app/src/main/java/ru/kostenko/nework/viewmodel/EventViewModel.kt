@@ -133,7 +133,8 @@ class EventViewModel @Inject constructor(
                 type = type,
             )
                 try {
-                    Log.d("EventTAAAG", "changeEventAndSave: ${_datetime.value.toString()}  /  ${_datetime.value}  / ${datetime.value}")
+                    Log.d("EventTAAAG", "changeEventAndSave viewModel: ${_coords.value} ")
+                    Log.d("EventTAAAG", "changeEventAndSave viewModel: ${coords.value}")
                     val mediaModel = _media.value
                     if (mediaModel == null && editEvent.content != text) {
                         repository.saveEvent(eventCopy)

@@ -2,6 +2,7 @@ package ru.kostenko.nework.viewmodel
 
 import android.annotation.SuppressLint
 import android.net.Uri
+import android.util.Log
 import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -125,13 +126,11 @@ class PostViewModel @Inject constructor(
                     coords = _coords.value,
                 )
                 try {
+                    Log.d("PostTAAAG", "changeEventAndSave viewModel coords: ${_coords.value} ")
+                    Log.d("PostTAAAG", "changeEventAndSave viewModel coords: ${coords.value}")
+                    Log.d("PostTAAAG", "changeEventAndSave newPostFragment content: ${text} / ${postCopy.content}")
                     val mediaModel = _media.value
-                    if (mediaModel == null && editedPost.content != text) {
-                        repository.savePost(postCopy)
-//                    } else if (mediaModel != null && editedPost.content != text && editedPost.attachment?.url?.toUri() != _media.value?.uri) {
-                    } else if (mediaModel != null) {
-                        repository.savePostWithAttachment(postCopy, mediaModel)
-                    }
+                    repository.savePost(postCopy, mediaModel)
                     _dataState.value = FeedModelState()
                     _postCreated.value = Unit
                 } catch (e: Exception) {
