@@ -66,7 +66,7 @@ class RegistrationFragment : Fragment() {
                 arrayOf("Select photo from gallery", "Capture photo from camera")
             pictureDialog.setItems(
                 pictureDialogItems
-            ) { dialog, which ->
+            ) { _, which ->
                 when (which) {
                     0 -> choosePhotoFromGallary()
                     1 -> takePhotoFromCamera()

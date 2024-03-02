@@ -4,6 +4,7 @@ data class User(
     override val id: Int = 0,
     val login: String = "",
     val name: String = "",
-    val avatar: String? = null
-) : FeedItem{}
+    val avatar: String? = null,
+    var isTaken: Boolean = false
+) : FeedItem
 

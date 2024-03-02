@@ -80,4 +80,5 @@
     <string name="participants_label">Participants</string>
     <string name="video_holder">Media holder</string>
     <string name="speakers_label">Speakers</string>
+    <string name="take_people">Choose users</string>
 </resources>

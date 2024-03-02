@@ -144,7 +144,7 @@ class NewPostFragment : Fragment() {
                 arrayOf("Select photo from gallery", "Capture photo from camera")
             pictureDialog.setItems(
                 pictureDialogItems
-            ) { dialog, which ->
+            ) { _, which ->
                 when (which) {
                     0 -> choosePhotoFromGallary()
                     1 -> takePhotoFromCamera()
@@ -162,7 +162,7 @@ class NewPostFragment : Fragment() {
                 arrayOf("Select video", "Select audio")
             pictureDialog.setItems(
                 pictureDialogItems
-            ) { dialog, which ->
+            ) { _, which ->
                 when (which) {
                     0 -> takeVideo()
                     1 -> takeAudio()
@@ -281,9 +281,15 @@ class NewPostFragment : Fragment() {
                 }
             }
 
+        binding.takePeople.setOnClickListener {
+            requireParentFragment().findNavController().navigate(R.id.action_newPostFragment_to_takePeopleFragment)
+        }
+
 
 //TODO сделать кнопку очистки для видео и аудио(может использовать уже имеющуюся?) в новом посте
         //TODO Сделать выбор отмеченных пользователей в новом посте
+
+
 
         return binding.root
     }

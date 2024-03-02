@@ -29,15 +29,21 @@ class UsersFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentUsersBinding.inflate(layoutInflater)
-
         val adapter = UsersAdapter(object : OnUsersInteractionListener {
-
-            override fun getUserDetails(user: User) {
+            override fun onUserClicked(user: User) {
                 lifecycleScope.launch {
                     userViewModel.getUserById(user.id).join()
                     requireParentFragment().requireParentFragment().findNavController()
                         .navigate(R.id.action_mainFragment_to_userDetailsFragment)
                 }
+            }
+
+            override fun onUserCheckBoxClicked(user: User) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onUserUnCheckBoxClicked(user: User) {
+                TODO("Not yet implemented")
             }
         })
 

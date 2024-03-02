@@ -167,7 +167,7 @@ class NewEventFragment : Fragment() {
                 arrayOf("Select video", "Select audio")
             pictureDialog.setItems(
                 pictureDialogItems
-            ) { dialog, which ->
+            ) { _, which ->
                 when (which) {
                     0 -> takeVideo()
                     1 -> takeAudio()

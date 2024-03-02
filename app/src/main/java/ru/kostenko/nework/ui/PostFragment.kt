@@ -432,7 +432,6 @@ class PostFragment : Fragment() {
             Toast.makeText(context, "Открываем список упомянутых", Toast.LENGTH_SHORT).show()
         }
 
-
         return binding.root
     }
 

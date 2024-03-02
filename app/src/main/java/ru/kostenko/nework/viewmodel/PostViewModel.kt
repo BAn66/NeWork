@@ -46,7 +46,8 @@ private val empty = Post(
     likeOwnerIds = emptySet(),
     published = "",
     attachment = null,
-    users = mapOf()
+    users = mapOf(),
+
 )
 
 @HiltViewModel
@@ -97,6 +98,8 @@ class PostViewModel @Inject constructor(
     private val _coords = MutableLiveData<Coords?>()
     val coords: LiveData<Coords?>
         get() = _coords
+
+
 
     init {
         loadPosts()
@@ -211,6 +214,9 @@ class PostViewModel @Inject constructor(
     }
 
 
+fun setMentinoed(set: Set<Int>) {
+        edited.value = edited.value?.copy(mentionIds = set)
+    }
 
 
 }

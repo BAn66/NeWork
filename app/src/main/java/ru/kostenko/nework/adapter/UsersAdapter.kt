@@ -8,6 +8,7 @@ import android.graphics.PixelFormat
 import android.graphics.drawable.Drawable
 import android.text.TextPaint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.graphics.ColorUtils
 import androidx.recyclerview.widget.DiffUtil
@@ -22,7 +23,9 @@ import kotlin.random.Random
 
 
 interface OnUsersInteractionListener {
-    fun getUserDetails(user: User)
+    fun onUserClicked(user: User)
+    fun onUserCheckBoxClicked(user: User)
+    fun onUserUnCheckBoxClicked(user: User)
 }
 
 class UserViewHolder(
@@ -56,7 +59,18 @@ class UserViewHolder(
             }
 
             cardUser.setOnClickListener {
-                onUsersInteractionListener.getUserDetails(user)
+                onUsersInteractionListener.onUserClicked(user)
+            }
+
+            setPeople.isChecked = false
+
+            if (user.isTaken){
+                setPeople.visibility = View.VISIBLE
+            }
+
+            setPeople.setOnCheckedChangeListener {buttonView, isChecked ->
+                   if (isChecked) onUsersInteractionListener.onUserCheckBoxClicked(user)
+                else onUsersInteractionListener.onUserUnCheckBoxClicked(user)
             }
         }
     }

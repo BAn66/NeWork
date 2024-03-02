@@ -67,6 +67,9 @@
         <action
             android:id="@+id/action_newPostFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_newPostFragment_to_takePeopleFragment"
+            app:destination="@id/takePeopleFragment" />
     </fragment>
 
     <fragment
@@ -151,6 +154,15 @@
         <action
             android:id="@+id/action_newEventFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/takePeopleFragment"
+        android:name="ru.kostenko.nework.ui.TakePeopleFragment"
+        android:label="fragment_take_people"
+        tools:layout="@layout/fragment_take_people" >
+        <action
+            android:id="@+id/action_takePeopleFragment_to_newPostFragment"
+            app:destination="@id/newPostFragment" />
     </fragment>
 
 </navigation>
