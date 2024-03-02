@@ -127,6 +127,7 @@ class PostViewModel @Inject constructor(
                     content = text,
                     published = OffsetDateTime.now().toString(),
                     coords = _coords.value,
+                    users = mapOf()
                 )
                 try {
                     Log.d("PostTAAAG", "changeEventAndSave viewModel coords: ${_coords.value} ")
