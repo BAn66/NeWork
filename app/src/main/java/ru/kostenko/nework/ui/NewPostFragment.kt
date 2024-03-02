@@ -11,11 +11,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.net.toFile
+import androidx.core.net.toUri
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
@@ -179,6 +181,8 @@ class NewPostFragment : Fragment() {
 
             if (mediaModel.type == AttachmentType.IMAGE) {
                 binding.imageContainer.isVisible = true
+                binding.videoGroup.isGone = true
+                binding.audioGroup.isGone = true
                 binding.preview.setImageURI(mediaModel.uri)
                 postViewModel.setContent(binding.editTextNewPost.text.toString())
 
@@ -186,11 +190,15 @@ class NewPostFragment : Fragment() {
             }
             if (mediaModel.type == AttachmentType.VIDEO) {
                 binding.videoGroup.isVisible = true
+                binding.imageContainer.isGone = true
+                binding.audioGroup.isGone = true
                 postViewModel.setContent(binding.editTextNewPost.text.toString())
 
             }
             if (mediaModel.type == AttachmentType.AUDIO) {
                 binding.audioGroup.isVisible = true
+                binding.imageContainer.isGone = true
+                binding.videoGroup.isGone = true
                 postViewModel.setContent(binding.editTextNewPost.text.toString())
             }
         }
@@ -248,34 +256,30 @@ class NewPostFragment : Fragment() {
             if (editedPost.id != 0) {
                 postViewModel.setContent(editedPost.content)
                 binding.editTextNewPost.requestFocus()
-//                // TODO не редактирует медиа и локацию
-//                editedPost?.let {
-//                    it.attachment?.let { attachment ->
-//                        val type = attachment.type
-//                        val url = attachment.url
-//                        postViewModel.setMedia(url.toUri(), null, type)
-//
-//                        if (type == AttachmentType.IMAGE) {
-//
-//                            binding.imageContainer.visibility = View.VISIBLE
-//
-////                                binding.preview.setImageURI(url.toUri())
-//
-//                            editedPost.attachment?.apply {
-////                                    imageAttach.contentDescription = this.url
-//                                Glide.with(binding.preview)
-//                                    .load(this.url)
-//                                    .placeholder(R.drawable.ic_loading_100dp)
-//                                    .error(R.drawable.ic_error_100dp)
-//                                    .timeout(10_000)
-//                                    .into(binding.preview)
-//                            }
-//
-//                        }
-//                    }
-//                }
+
+                // TODO не редактирует локацию
+                editedPost.attachment?.let { attachment ->
+                        val type = attachment.type
+                        val url = attachment.url
+                        postViewModel.setMedia(url.toUri(), null, type)
+                        if (type == AttachmentType.IMAGE) {
+                            binding.imageContainer.visibility = View.VISIBLE
+//                                binding.preview.setImageURI(url.toUri())
+                            editedPost.attachment.apply {
+//                                    imageAttach.contentDescription = this.url
+                                Glide.with(binding.preview)
+                                    .load(url)
+                                    .placeholder(R.drawable.ic_loading_100dp)
+                                    .error(R.drawable.ic_error_100dp)
+                                    .timeout(10_000)
+                                    .into(binding.preview)
+                            }
+
+                        }
+                    }
+                }
             }
-        }
+
 
 //TODO сделать кнопку очистки для видео и аудио(может использовать уже имеющуюся?) в новом посте
         //TODO Сделать выбор отмеченных пользователей в новом посте

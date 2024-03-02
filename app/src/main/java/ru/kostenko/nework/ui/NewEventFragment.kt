@@ -12,11 +12,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.net.toFile
+import androidx.core.net.toUri
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
@@ -232,32 +234,26 @@ class NewEventFragment : Fragment() {
             if (editedEvent.id != 0) {
                 eventViewModel.setContent(editedEvent.content)
                 binding.editTextNewPost.requestFocus()
-//                // TODO не редактирует медиа и локацию
-//                editedEvent?.let {
-//                    it.attachment?.let { attachment ->
-//                        val type = attachment.type
-//                        val url = attachment.url
-//                        eventViewModel.setMedia(url.toUri(), null, type)
-//
-//                        if (type == AttachmentType.IMAGE) {
-//
-//                            binding.imageContainer.visibility = View.VISIBLE
-//
-////                                binding.preview.setImageURI(url.toUri())
-//
-//                            editedEvent.attachment?.apply {
-////                                    imageAttach.contentDescription = this.url
-//                                Glide.with(binding.preview)
-//                                    .load(this.url)
-//                                    .placeholder(R.drawable.ic_loading_100dp)
-//                                    .error(R.drawable.ic_error_100dp)
-//                                    .timeout(10_000)
-//                                    .into(binding.preview)
-//                            }
-//
-//                        }
-//                    }
-//                }
+                // TODO не редактирует локацию
+                editedEvent.attachment?.let { attachment ->
+                    val type = attachment.type
+                    val url = attachment.url
+                    eventViewModel.setMedia(url.toUri(), null, type)
+                    if (type == AttachmentType.IMAGE) {
+                        binding.imageContainer.visibility = View.VISIBLE
+//                                binding.preview.setImageURI(url.toUri())
+                        editedEvent.attachment.apply {
+//                                    imageAttach.contentDescription = this.url
+                            Glide.with(binding.preview)
+                                .load(url)
+                                .placeholder(R.drawable.ic_loading_100dp)
+                                .error(R.drawable.ic_error_100dp)
+                                .timeout(10_000)
+                                .into(binding.preview)
+                        }
+
+                    }
+                }
             }
         }
 
