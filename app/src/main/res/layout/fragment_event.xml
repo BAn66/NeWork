@@ -367,7 +367,7 @@
                 app:layout_constraintTop_toBottomOf="@id/barrier_speakers" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_like"
+                android:id="@+id/btn_elike"
                 style="@style/Widget.AppTheme.LikeButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -385,16 +385,16 @@
                 tools:text="@sample/posts.json/data/likedCount" />
 
             <LinearLayout
-                android:id="@+id/avatar_layout_like"
+                android:id="@+id/avatar_layout_event_like"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="@id/btn_like"
-                app:layout_constraintStart_toEndOf="@id/btn_like"
-                app:layout_constraintTop_toTopOf="@id/btn_like">
+                app:layout_constraintBottom_toBottomOf="@id/btn_elike"
+                app:layout_constraintStart_toEndOf="@id/btn_elike"
+                app:layout_constraintTop_toTopOf="@id/btn_elike">
 
                 <io.getstream.avatarview.AvatarView
-                    android:id="@+id/avatar_liker_0"
+                    android:id="@+id/avatar_eliker_0"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     app:avatarViewBorderColor="@color/colorWhite"
@@ -408,7 +408,7 @@
                     app:avatarViewShape="circle" />
 
                 <io.getstream.avatarview.AvatarView
-                    android:id="@+id/avatar_liker_1"
+                    android:id="@+id/avatar_eliker_1"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     app:avatarViewBorderColor="@color/colorWhite"
@@ -422,7 +422,7 @@
                     app:avatarViewShape="circle" />
 
                 <io.getstream.avatarview.AvatarView
-                    android:id="@+id/avatar_liker_2"
+                    android:id="@+id/avatar_eliker_2"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     app:avatarViewBorderColor="@color/colorWhite"
@@ -436,7 +436,7 @@
                     app:avatarViewShape="circle" />
 
                 <io.getstream.avatarview.AvatarView
-                    android:id="@+id/avatar_liker_3"
+                    android:id="@+id/avatar_eliker_3"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     app:avatarViewBorderColor="@color/colorWhite"
@@ -450,7 +450,7 @@
                     app:avatarViewShape="circle" />
 
                 <io.getstream.avatarview.AvatarView
-                    android:id="@+id/avatar_liker_4"
+                    android:id="@+id/avatar_eliker_4"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     app:avatarViewBorderColor="@color/colorWhite"
@@ -464,7 +464,7 @@
                     app:avatarViewShape="circle" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_likers_more"
+                    android:id="@+id/btn_elikers_more"
                     style="@style/Widget.AppTheme.LikeButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -481,11 +481,11 @@
             </LinearLayout>
 
             <androidx.constraintlayout.widget.Barrier
-                android:id="@+id/barrier_likers"
+                android:id="@+id/barrier_elikers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:barrierDirection="bottom"
-                app:constraint_referenced_ids="btn_like" />
+                app:constraint_referenced_ids="btn_elike" />
 
             <TextView
                 android:id="@+id/mention_title"
@@ -496,10 +496,10 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/barrier_likers" />
+                app:layout_constraintTop_toBottomOf="@id/barrier_elikers" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_mention"
+                android:id="@+id/btn_emention"
                 style="@style/Widget.AppTheme.LikeButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -517,16 +517,16 @@
                 tools:text="@sample/posts.json/data/likedCount" />
 
             <LinearLayout
-                android:id="@+id/avatar_layout_ment"
+                android:id="@+id/avatar_layout_ement"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="@id/btn_mention"
-                app:layout_constraintStart_toEndOf="@id/btn_mention"
-                app:layout_constraintTop_toTopOf="@id/btn_mention">
+                app:layout_constraintBottom_toBottomOf="@id/btn_emention"
+                app:layout_constraintStart_toEndOf="@id/btn_emention"
+                app:layout_constraintTop_toTopOf="@id/btn_emention">
 
                 <io.getstream.avatarview.AvatarView
-                    android:id="@+id/avatar_ment_0"
+                    android:id="@+id/avatar_ement_0"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     app:avatarViewBorderColor="@color/colorWhite"
@@ -540,7 +540,7 @@
                     app:avatarViewShape="circle" />
 
                 <io.getstream.avatarview.AvatarView
-                    android:id="@+id/avatar_ment_1"
+                    android:id="@+id/avatar_ement_1"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     app:avatarViewBorderColor="@color/colorWhite"
@@ -554,7 +554,7 @@
                     app:avatarViewShape="circle" />
 
                 <io.getstream.avatarview.AvatarView
-                    android:id="@+id/avatar_ment_2"
+                    android:id="@+id/avatar_ement_2"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     app:avatarViewBorderColor="@color/colorWhite"
@@ -568,7 +568,7 @@
                     app:avatarViewShape="circle" />
 
                 <io.getstream.avatarview.AvatarView
-                    android:id="@+id/avatar_ment_3"
+                    android:id="@+id/avatar_ement_3"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     app:avatarViewBorderColor="@color/colorWhite"
@@ -582,7 +582,7 @@
                     app:avatarViewShape="circle" />
 
                 <io.getstream.avatarview.AvatarView
-                    android:id="@+id/avatar_ment_4"
+                    android:id="@+id/avatar_ement_4"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     app:avatarViewBorderColor="@color/colorWhite"
@@ -596,7 +596,7 @@
                     app:avatarViewShape="circle" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_ment_more"
+                    android:id="@+id/btn_ement_more"
                     style="@style/Widget.AppTheme.LikeButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -614,9 +614,8 @@
                 android:id="@+id/barrier_mentioned"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 app:barrierDirection="bottom"
-                app:constraint_referenced_ids="btn_mention" />
+                app:constraint_referenced_ids="btn_emention" />
 
             <com.yandex.mapkit.mapview.MapView
                 android:id="@+id/mapview"

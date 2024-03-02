@@ -6,6 +6,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -220,15 +221,15 @@ class EventFragment : Fragment() {
             }
         }
 
-        binding.btnLike.text = AndroidUtils.eraseZero(
+        binding.btnElike.text = AndroidUtils.eraseZero(
             event.likeOwnerIds.size.toLong()
 
         )
-        binding.btnLike.isChecked = event.likedByMe
+        binding.btnElike.isChecked = event.likedByMe
 
 
         //TODO Проверить работу кнопки лайка внутри события
-        binding.btnLike.setOnClickListener {//анимация лайка
+        binding.btnElike.setOnClickListener {//анимация лайка
             val scaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, 1F, 1.25F, 1F)
             val scaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1F, 1.25F, 1F)
             ObjectAnimator.ofPropertyValuesHolder(it, scaleX, scaleY).apply {
@@ -279,11 +280,16 @@ class EventFragment : Fragment() {
         event.speakerIds.forEach {
             listSpeakersId.add(it)
         }
-        val avatarViewSpkr0: AvatarView = binding.avatarLayoutSpkrs.findViewById(R.id.avatar_spkrs_0)
-        val avatarViewSpkr1: AvatarView = binding.avatarLayoutSpkrs.findViewById(R.id.avatar_spkrs_1)
-        val avatarViewSpkr2: AvatarView = binding.avatarLayoutSpkrs.findViewById(R.id.avatar_spkrs_2)
-        val avatarViewSpkr3: AvatarView = binding.avatarLayoutSpkrs.findViewById(R.id.avatar_spkrs_3)
-        val avatarViewSpkr4: AvatarView = binding.avatarLayoutSpkrs.findViewById(R.id.avatar_spkrs_4)
+        val avatarViewSpkr0: AvatarView =
+            binding.avatarLayoutSpkrs.findViewById(R.id.avatar_spkrs_0)
+        val avatarViewSpkr1: AvatarView =
+            binding.avatarLayoutSpkrs.findViewById(R.id.avatar_spkrs_1)
+        val avatarViewSpkr2: AvatarView =
+            binding.avatarLayoutSpkrs.findViewById(R.id.avatar_spkrs_2)
+        val avatarViewSpkr3: AvatarView =
+            binding.avatarLayoutSpkrs.findViewById(R.id.avatar_spkrs_3)
+        val avatarViewSpkr4: AvatarView =
+            binding.avatarLayoutSpkrs.findViewById(R.id.avatar_spkrs_4)
 
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -294,7 +300,7 @@ class EventFragment : Fragment() {
                 mapAvatarsSpkrs.put(3, Pair(avatarViewSpkr3, null))
                 mapAvatarsSpkrs.put(4, Pair(avatarViewSpkr4, null))
 
-                if (listSpeakersId.size == 0) binding.avatarLayoutLike.visibility = View.GONE
+                if (listSpeakersId.size == 0) binding.avatarLayoutSpkrs.visibility = View.GONE
                 else if (listSpeakersId.size < 6) {
                     for (i in 0..(listSpeakersId.size - 1)) {
                         userViewModel.getUserById(listSpeakersId[i]).join()
@@ -358,34 +364,41 @@ class EventFragment : Fragment() {
         event.likeOwnerIds.forEach {
             listLikersId.add(it)
         }
-        val avatarView0: AvatarView = binding.avatarLayoutLike.findViewById(R.id.avatar_liker_0)
-        val avatarView1: AvatarView = binding.avatarLayoutLike.findViewById(R.id.avatar_liker_1)
-        val avatarView2: AvatarView = binding.avatarLayoutLike.findViewById(R.id.avatar_liker_2)
-        val avatarView3: AvatarView = binding.avatarLayoutLike.findViewById(R.id.avatar_liker_3)
-        val avatarView4: AvatarView = binding.avatarLayoutLike.findViewById(R.id.avatar_liker_4)
+//        val avatarView0: AvatarView = binding.avatarLayoutLike.findViewById(R.id.avatar_eliker_0)
+//        val avatarView1: AvatarView = binding.avatarLayoutLike.findViewById(R.id.avatar_eliker_1)
+//        val avatarView2: AvatarView = binding.avatarLayoutLike.findViewById(R.id.avatar_eliker_2)
+//        val avatarView3: AvatarView = binding.avatarLayoutLike.findViewById(R.id.avatar_eliker_3)
+//        val avatarView4: AvatarView = binding.avatarLayoutLike.findViewById(R.id.avatar_eliker_4)
+
+        val avatarView0: AvatarView = binding.avatarEliker0
+        val avatarView1: AvatarView = binding.avatarEliker1
+        val avatarView2: AvatarView = binding.avatarEliker2
+        val avatarView3: AvatarView = binding.avatarEliker3
+        val avatarView4: AvatarView = binding.avatarEliker4
 
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                val mapAvatarsLikers = mutableMapOf<Int, Pair<AvatarView, String?>>()
-                mapAvatarsLikers.put(0, Pair(avatarView0, null))
-                mapAvatarsLikers.put(1, Pair(avatarView1, null))
-                mapAvatarsLikers.put(2, Pair(avatarView2, null))
-                mapAvatarsLikers.put(3, Pair(avatarView3, null))
-                mapAvatarsLikers.put(4, Pair(avatarView4, null))
+                val mapAvatarsEventLikers = mutableMapOf<Int, Pair<AvatarView, String?>>()
+                mapAvatarsEventLikers.put(0, Pair(avatarView0, null))
+                mapAvatarsEventLikers.put(1, Pair(avatarView1, null))
+                mapAvatarsEventLikers.put(2, Pair(avatarView2, null))
+                mapAvatarsEventLikers.put(3, Pair(avatarView3, null))
+                mapAvatarsEventLikers.put(4, Pair(avatarView4, null))
 
-                if (listLikersId.size == 0) binding.avatarLayoutLike.visibility = View.GONE
+                Log.d("Eventcard", "Avatar likers ids: $listLikersId")
+                if (listLikersId.size == 0) binding.avatarLayoutEventLike.visibility = View.GONE
                 else if (listLikersId.size < 6) {
                     for (i in 0..(listLikersId.size - 1)) {
                         userViewModel.getUserById(listLikersId[i]).join()
                         val userName = userViewModel.user.value?.name
                         val userAvatar = userViewModel.user.value?.avatar
-                        var pair = mapAvatarsLikers.getValue(i)
+                        var pair = mapAvatarsEventLikers.getValue(i)
                         if (userAvatar.isNullOrEmpty()) {
                             pair = pair.copy(second = userName)
-                            mapAvatarsLikers.set(i, pair)
+                            mapAvatarsEventLikers.set(i, pair)
                         } else {
                             pair = pair.copy(second = userAvatar)
-                            mapAvatarsLikers.set(i, pair)
+                            mapAvatarsEventLikers.set(i, pair)
                         }
                     }
 
@@ -395,18 +408,19 @@ class EventFragment : Fragment() {
                         userViewModel.getUserById(listLikersId[i]).join()
                         val userName = userViewModel.user.value?.name
                         val userAvatar = userViewModel.user.value?.avatar
-                        var pair = mapAvatarsLikers.getValue(i)
+                        var pair = mapAvatarsEventLikers.getValue(i)
                         if (userAvatar.isNullOrEmpty()) {
                             pair = pair.copy(second = userName)
-                            mapAvatarsLikers.set(i, pair)
+                            mapAvatarsEventLikers.set(i, pair)
                         } else {
                             pair = pair.copy(second = userAvatar)
-                            mapAvatarsLikers.set(i, pair)
+                            mapAvatarsEventLikers.set(i, pair)
                         }
+                        Log.d("Eventcard", "mapAvatars: ${mapAvatarsEventLikers.getValue(i)}")
                     }
                 }
 
-                mapAvatarsLikers.forEach {
+                mapAvatarsEventLikers.forEach {
                     it.value.first.visibility = View.GONE
                     if (it.value.second != null) {
                         if (it.value.second!!.startsWith("https://")) {
@@ -418,8 +432,7 @@ class EventFragment : Fragment() {
                                 it.value.first.loadImage(R.drawable.post_avatar_drawable)
                             } else {
                                 it.value.first.visibility = View.VISIBLE
-                                it.value.first.avatarInitials =
-                                    it.value.second!!.substring(0, 1).uppercase()
+                                it.value.first.avatarInitials = it.value.second!!.substring(0, 1).uppercase()
                             }
                         }
                     }
@@ -427,8 +440,8 @@ class EventFragment : Fragment() {
             }
         }
 
-        if (event.likeOwnerIds.size <= 5) binding.btnLikersMore.visibility = View.GONE
-        binding.btnLikersMore.setOnClickListener {
+        if (event.likeOwnerIds.size <= 5) binding.btnElikersMore.visibility = View.GONE
+        binding.btnElikersMore.setOnClickListener {
             Toast.makeText(context, "Открываем список лайкеров", Toast.LENGTH_SHORT).show()
         }
 
@@ -437,11 +450,16 @@ class EventFragment : Fragment() {
         event.participantsIds.forEach {
             listMentId.add(it)
         }
-        val avatarViewMent0: AvatarView = binding.avatarLayoutMent.findViewById(R.id.avatar_ment_0)
-        val avatarViewMent1: AvatarView = binding.avatarLayoutMent.findViewById(R.id.avatar_ment_1)
-        val avatarViewMent2: AvatarView = binding.avatarLayoutMent.findViewById(R.id.avatar_ment_2)
-        val avatarViewMent3: AvatarView = binding.avatarLayoutMent.findViewById(R.id.avatar_ment_3)
-        val avatarViewMent4: AvatarView = binding.avatarLayoutMent.findViewById(R.id.avatar_ment_4)
+        val avatarViewMent0: AvatarView =
+            binding.avatarLayoutEment.findViewById(R.id.avatar_ement_0)
+        val avatarViewMent1: AvatarView =
+            binding.avatarLayoutEment.findViewById(R.id.avatar_ement_1)
+        val avatarViewMent2: AvatarView =
+            binding.avatarLayoutEment.findViewById(R.id.avatar_ement_2)
+        val avatarViewMent3: AvatarView =
+            binding.avatarLayoutEment.findViewById(R.id.avatar_ement_3)
+        val avatarViewMent4: AvatarView =
+            binding.avatarLayoutEment.findViewById(R.id.avatar_ement_4)
 
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -452,7 +470,7 @@ class EventFragment : Fragment() {
                 mapAvatarsMentioneds.put(3, Pair(avatarViewMent3, null))
                 mapAvatarsMentioneds.put(4, Pair(avatarViewMent4, null))
 
-                if (listMentId.size == 0) binding.avatarLayoutMent.visibility = View.GONE
+                if (listMentId.size == 0) binding.avatarLayoutEment.visibility = View.GONE
                 else if (listMentId.size < 6) {
                     for (i in 0..(listMentId.size - 1)) {
                         userViewModel.getUserById(listMentId[i]).join()
@@ -504,8 +522,8 @@ class EventFragment : Fragment() {
             }
         }
 
-        if (event.participantsIds.size <= 5) binding.btnMentMore.visibility = View.GONE
-        binding.btnMentMore.setOnClickListener {
+        if (event.participantsIds.size <= 5) binding.btnEmentMore.visibility = View.GONE
+        binding.btnEmentMore.setOnClickListener {
             Toast.makeText(context, "Открываем список упомянутых", Toast.LENGTH_SHORT).show()
         }
 
