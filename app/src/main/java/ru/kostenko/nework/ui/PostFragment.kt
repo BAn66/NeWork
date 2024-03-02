@@ -6,36 +6,28 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.BounceInterpolator
 import android.widget.MediaController
-
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
-
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-
 import androidx.navigation.fragment.findNavController
-
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraPosition
-
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.mapkit.user_location.UserLocationLayer
-
 import com.yandex.runtime.ui_view.ViewProvider
 import dagger.hilt.android.AndroidEntryPoint
 import io.getstream.avatarview.AvatarView
@@ -387,7 +379,7 @@ class PostFragment : Fragment() {
                 if (listMentId.size == 0) binding.avatarLayoutMent.visibility = View.GONE
                 else if (listMentId.size < 6) {
                     for (i in 0..(listMentId.size - 1)) {
-                        userViewModel.getUserById(listLikersId[i]).join()
+                        userViewModel.getUserById(listMentId[i]).join()
                         val userName = userViewModel.user.value?.name
                         val userAvatar = userViewModel.user.value?.avatar
                         var pair = mapAvatarsMentioneds.getValue(i)
@@ -401,7 +393,7 @@ class PostFragment : Fragment() {
                     }
                 } else {
                     for (i in 0..4) {
-                        userViewModel.getUserById(listLikersId[i]).join()
+                        userViewModel.getUserById(listMentId[i]).join()
                         val userName = userViewModel.user.value?.name
                         val userAvatar = userViewModel.user.value?.avatar
                         var pair = mapAvatarsMentioneds.getValue(i)

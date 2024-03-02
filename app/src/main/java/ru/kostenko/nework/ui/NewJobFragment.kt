@@ -18,9 +18,7 @@ import ru.kostenko.nework.R
 import ru.kostenko.nework.authorization.AppAuth
 import ru.kostenko.nework.databinding.FragmentNewJobBinding
 import ru.kostenko.nework.util.AndroidUtils.formatDateForJob
-import ru.kostenko.nework.viewmodel.AuthViewModel
 import ru.kostenko.nework.viewmodel.JobsViewModel
-import ru.kostenko.nework.viewmodel.UserViewModel
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 
@@ -29,9 +27,7 @@ import javax.inject.Inject
 class NewJobFragment : Fragment() {
     @Inject//Внедряем зависимость для авторизации
     lateinit var appAuth: AppAuth
-    private val authViewModel: AuthViewModel by activityViewModels()
     private val jobsViewModel: JobsViewModel by activityViewModels()
-    private val userViewModel: UserViewModel by activityViewModels()
     private lateinit var toolbar: Toolbar
 
     override fun onCreateView(
@@ -71,7 +67,6 @@ class NewJobFragment : Fragment() {
             binding.end.text = end
         }
 
-        //TODO Сделать что то с датами, чтобы отображались в укороченном варианте, а в вьюмодель передавались в полном варианте
         binding.createBtn.setOnClickListener {
             viewLifecycleOwner.lifecycleScope.launch {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {

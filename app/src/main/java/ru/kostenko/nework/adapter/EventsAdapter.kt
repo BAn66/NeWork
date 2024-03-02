@@ -3,7 +3,6 @@ package ru.kostenko.nework.adapter
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,7 +62,7 @@ class EventsAdapter(
                 published.text = OffsetDateTime.parse(event.published)
                     .format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))
 
-                content.setText(event.content)
+                content.text = event.content
                 typeEvent.text = event.type.str
 
 
@@ -142,12 +141,6 @@ class EventsAdapter(
                         //Не забываем добавлять разрешение в андроид манифест на работу с сетью
                         mediaPlayer?.setDataSource(event.attachment!!.url)
                     }.play()
-                }
-
-                pauseButton.setOnClickListener {
-                    if (observer.mediaPlayer != null) {
-                        if (observer.mediaPlayer!!.isPlaying) observer.mediaPlayer?.pause() else observer.mediaPlayer?.start()
-                    }
                 }
 
                 stopButton.setOnClickListener {

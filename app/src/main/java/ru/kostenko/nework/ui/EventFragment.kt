@@ -6,7 +6,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,7 +34,7 @@ import io.getstream.avatarview.coil.loadImage
 import kotlinx.coroutines.launch
 import ru.kostenko.nework.R
 import ru.kostenko.nework.authorization.AppAuth
-import ru.kostenko.nework.databinding.FragmentPostBinding
+import ru.kostenko.nework.databinding.FragmentEventBinding
 import ru.kostenko.nework.databinding.PlaceBinding
 import ru.kostenko.nework.dto.AttachmentType
 import ru.kostenko.nework.util.AndroidUtils
@@ -46,15 +45,15 @@ import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
-class EventFragment: Fragment() {
-@Inject//Внедряем зависимость для авторизации
-lateinit var appAuth: AppAuth
-private val eventViewModel: EventViewModel by activityViewModels()
-private val userViewModel: UserViewModel by activityViewModels()
-private lateinit var toolbar: Toolbar
+class EventFragment : Fragment() {
+    @Inject//Внедряем зависимость для авторизации
+    lateinit var appAuth: AppAuth
+    private val eventViewModel: EventViewModel by activityViewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
+    private lateinit var toolbar: Toolbar
 
-private var mapView: MapView? = null
-private lateinit var userLocation: UserLocationLayer
+    private var mapView: MapView? = null
+    private lateinit var userLocation: UserLocationLayer
 
     private val premissionLauncher = //запрос на разрешение на геолокацию
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
@@ -97,7 +96,7 @@ private lateinit var userLocation: UserLocationLayer
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        val binding = FragmentPostBinding.inflate(inflater, container, false)
+        val binding = FragmentEventBinding.inflate(inflater, container, false)
 
         //Наполняем верхний аппбар
         toolbar = binding.toolbar
@@ -124,17 +123,19 @@ private lateinit var userLocation: UserLocationLayer
                         startActivity(shareIntent)
                         true
                     }
+
                     else -> false
                 }
             }
         }
 
         binding.author.text = event.author
-        binding.published.text = OffsetDateTime.parse(event.published)
+        binding.eventDate.text = OffsetDateTime.parse(event.datetime)
             .format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))
         binding.content.text = event.content
         binding.job.text = if (event.authorJob.isNullOrEmpty()) "В поиске работы"
         else (event.authorJob)
+        binding.eventType.text = event.type.str
 
         Glide.with(binding.avatar)
             .load(event.authorAvatar)
@@ -207,11 +208,11 @@ private lateinit var userLocation: UserLocationLayer
             }.play()
         }
 
-        binding.pauseButton.setOnClickListener {
-            if (observer.mediaPlayer != null) {
-                if (observer.mediaPlayer!!.isPlaying) observer.mediaPlayer?.pause() else observer.mediaPlayer?.start()
-            }
-        }
+//        binding.pauseButton.setOnClickListener {
+//            if (observer.mediaPlayer != null) {
+//                if (observer.mediaPlayer!!.isPlaying) observer.mediaPlayer?.pause() else observer.mediaPlayer?.start()
+//            }
+//        }
 
         binding.stopButton.setOnClickListener {
             if (observer.mediaPlayer != null && observer.mediaPlayer!!.isPlaying) {
@@ -273,7 +274,84 @@ private lateinit var userLocation: UserLocationLayer
                 binding.mapview.visibility = View.GONE
             }
         }
+        //Группа спикеров
+        val listSpeakersId = mutableListOf<Int>()
+        event.speakerIds.forEach {
+            listSpeakersId.add(it)
+        }
+        val avatarViewSpkr0: AvatarView = binding.avatarLayoutSpkrs.findViewById(R.id.avatar_spkrs_0)
+        val avatarViewSpkr1: AvatarView = binding.avatarLayoutSpkrs.findViewById(R.id.avatar_spkrs_1)
+        val avatarViewSpkr2: AvatarView = binding.avatarLayoutSpkrs.findViewById(R.id.avatar_spkrs_2)
+        val avatarViewSpkr3: AvatarView = binding.avatarLayoutSpkrs.findViewById(R.id.avatar_spkrs_3)
+        val avatarViewSpkr4: AvatarView = binding.avatarLayoutSpkrs.findViewById(R.id.avatar_spkrs_4)
 
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                val mapAvatarsSpkrs = mutableMapOf<Int, Pair<AvatarView, String?>>()
+                mapAvatarsSpkrs.put(0, Pair(avatarViewSpkr0, null))
+                mapAvatarsSpkrs.put(1, Pair(avatarViewSpkr1, null))
+                mapAvatarsSpkrs.put(2, Pair(avatarViewSpkr2, null))
+                mapAvatarsSpkrs.put(3, Pair(avatarViewSpkr3, null))
+                mapAvatarsSpkrs.put(4, Pair(avatarViewSpkr4, null))
+
+                if (listSpeakersId.size == 0) binding.avatarLayoutLike.visibility = View.GONE
+                else if (listSpeakersId.size < 6) {
+                    for (i in 0..(listSpeakersId.size - 1)) {
+                        userViewModel.getUserById(listSpeakersId[i]).join()
+                        val userName = userViewModel.user.value?.name
+                        val userAvatar = userViewModel.user.value?.avatar
+                        var pair = mapAvatarsSpkrs.getValue(i)
+                        if (userAvatar.isNullOrEmpty()) {
+                            pair = pair.copy(second = userName)
+                            mapAvatarsSpkrs.set(i, pair)
+                        } else {
+                            pair = pair.copy(second = userAvatar)
+                            mapAvatarsSpkrs.set(i, pair)
+                        }
+                    }
+
+
+                } else {
+                    for (i in 0..4) {
+                        userViewModel.getUserById(listSpeakersId[i]).join()
+                        val userName = userViewModel.user.value?.name
+                        val userAvatar = userViewModel.user.value?.avatar
+                        var pair = mapAvatarsSpkrs.getValue(i)
+                        if (userAvatar.isNullOrEmpty()) {
+                            pair = pair.copy(second = userName)
+                            mapAvatarsSpkrs.set(i, pair)
+                        } else {
+                            pair = pair.copy(second = userAvatar)
+                            mapAvatarsSpkrs.set(i, pair)
+                        }
+                    }
+                }
+
+                mapAvatarsSpkrs.forEach {
+                    it.value.first.visibility = View.GONE
+                    if (it.value.second != null) {
+                        if (it.value.second!!.startsWith("https://")) {
+                            it.value.first.visibility = View.VISIBLE
+                            it.value.first.loadImage(it.value.second)
+                        } else {
+                            if (it.value.second == "") {
+                                it.value.first.visibility = View.VISIBLE
+                                it.value.first.loadImage(R.drawable.post_avatar_drawable)
+                            } else {
+                                it.value.first.visibility = View.VISIBLE
+                                it.value.first.avatarInitials =
+                                    it.value.second!!.substring(0, 1).uppercase()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (event.speakerIds.size <= 5) binding.btnSpkrsMore.visibility = View.GONE
+        binding.btnSpkrsMore.setOnClickListener {
+            Toast.makeText(context, "Открываем список лекторов", Toast.LENGTH_SHORT).show()
+        }
 
         //Группа лайков и лайкеров
         val listLikersId = mutableListOf<Int>()
@@ -340,7 +418,8 @@ private lateinit var userLocation: UserLocationLayer
                                 it.value.first.loadImage(R.drawable.post_avatar_drawable)
                             } else {
                                 it.value.first.visibility = View.VISIBLE
-                                it.value.first.avatarInitials = it.value.second!!.substring(0, 1).uppercase()
+                                it.value.first.avatarInitials =
+                                    it.value.second!!.substring(0, 1).uppercase()
                             }
                         }
                     }
@@ -376,7 +455,7 @@ private lateinit var userLocation: UserLocationLayer
                 if (listMentId.size == 0) binding.avatarLayoutMent.visibility = View.GONE
                 else if (listMentId.size < 6) {
                     for (i in 0..(listMentId.size - 1)) {
-                        userViewModel.getUserById(listLikersId[i]).join()
+                        userViewModel.getUserById(listMentId[i]).join()
                         val userName = userViewModel.user.value?.name
                         val userAvatar = userViewModel.user.value?.avatar
                         var pair = mapAvatarsMentioneds.getValue(i)
@@ -390,7 +469,7 @@ private lateinit var userLocation: UserLocationLayer
                     }
                 } else {
                     for (i in 0..4) {
-                        userViewModel.getUserById(listLikersId[i]).join()
+                        userViewModel.getUserById(listMentId[i]).join()
                         val userName = userViewModel.user.value?.name
                         val userAvatar = userViewModel.user.value?.avatar
                         var pair = mapAvatarsMentioneds.getValue(i)
@@ -416,7 +495,8 @@ private lateinit var userLocation: UserLocationLayer
                                 it.value.first.loadImage(R.drawable.post_avatar_drawable)
                             } else {
                                 it.value.first.visibility = View.VISIBLE
-                                it.value.first.avatarInitials = it.value.second!!.substring(0, 1).uppercase()
+                                it.value.first.avatarInitials =
+                                    it.value.second!!.substring(0, 1).uppercase()
                             }
                         }
                     }
