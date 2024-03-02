@@ -114,7 +114,7 @@ class NewEventFragment : Fragment() {
                         } else {
                             val content = binding.editTextNewPost.text.toString()
                             // Первоначальная заглушка
-                            eventViewModel.changeEventAndSave(content, OffsetDateTime.now().toString(), EventType.ONLINE)
+                            eventViewModel.changeEventAndSave(content, eventViewModel.datetime.toString(), EventType.ONLINE)
                             activity?.invalidateOptionsMenu()
                             findNavController()
                                 .navigate(R.id.action_newEventFragment_to_mainFragment)
@@ -234,7 +234,7 @@ class NewEventFragment : Fragment() {
             if (editedEvent.id != 0) {
                 eventViewModel.setContent(editedEvent.content)
                 binding.editTextNewPost.requestFocus()
-                // TODO не редактирует локацию
+                // TODO не редактирует локацию и если не менять медиа не сохраняет текст
                 editedEvent.attachment?.let { attachment ->
                     val type = attachment.type
                     val url = attachment.url
@@ -261,7 +261,6 @@ class NewEventFragment : Fragment() {
 
         //TODO сделать кнопку очистки для видео и аудио(может использовать уже имеющуюся?) в событии
         //TODO Сделать выбор спикеров в событии
-        //TODO в фрагменте нового события не проигрывается аудио
     }
 
     fun choosePhotoFromGallary() {

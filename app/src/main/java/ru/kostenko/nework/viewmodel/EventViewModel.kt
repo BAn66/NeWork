@@ -2,6 +2,7 @@ package ru.kostenko.nework.viewmodel
 
 import android.annotation.SuppressLint
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -23,8 +24,10 @@ import ru.kostenko.nework.dto.Event
 import ru.kostenko.nework.dto.EventType
 import ru.kostenko.nework.dto.FeedItem
 import ru.kostenko.nework.dto.MediaModel
+import ru.kostenko.nework.dto.Post
 import ru.kostenko.nework.model.FeedModelState
 import ru.kostenko.nework.repository.EventRepositoryImpl
+import ru.kostenko.nework.util.AndroidUtils.formatToInstant
 import ru.kostenko.nework.util.SingleLiveEvent
 import java.io.InputStream
 import java.time.OffsetDateTime
@@ -79,13 +82,17 @@ class EventViewModel @Inject constructor(
     val dataState: LiveData<FeedModelState>
         get() = _dataState
 
+    private val _datetime = SingleLiveEvent<String>()
+    val datetime: LiveData<String>
+        get() = _datetime
+
     val edited = MutableLiveData(empty)
 
     private val _eventCreated = SingleLiveEvent<Unit>()
     val eventCreated: LiveData<Unit>
         get() = _eventCreated
 
-    private val _event = SingleLiveEvent<Event>()
+    private val _event = MutableLiveData<Event>()
     val event: LiveData<Event>
         get() = _event
 
@@ -122,10 +129,11 @@ class EventViewModel @Inject constructor(
                 content = text,
                 published = OffsetDateTime.now().toString(),
                 coords = _coords.value,
-                datetime = dateTime,
+                datetime = _datetime.value.toString(),
                 type = type,
             )
                 try {
+                    Log.d("EventTAAAG", "changeEventAndSave: ${_datetime.value.toString()}  /  ${_datetime.value}  / ${datetime.value}")
                     val mediaModel = _media.value
                     if (mediaModel == null && editEvent.content != text) {
                         repository.saveEvent(eventCopy)
@@ -141,6 +149,7 @@ class EventViewModel @Inject constructor(
                 clearCoords()
                 clearContent()
                 clearMedia()
+                clearDateTime()
             }
         }
             emptyNew()
@@ -198,6 +207,13 @@ class EventViewModel @Inject constructor(
     }
     fun clearCoords(){
         _coords.value = null
+    }
+
+    fun setDateTime(string: String) {
+        _datetime.value = formatToInstant(string)
+    }
+    fun clearDateTime(){
+        _datetime.value = ""
     }
 
     fun getEventById(id: Int) = viewModelScope.launch {

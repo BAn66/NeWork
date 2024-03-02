@@ -63,8 +63,13 @@ class EventsAdapter(
                     .format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))
                 content.setText(event.content)
                 typeEvent.text =event.type.str
-                dateTime.text = OffsetDateTime.parse(event.datetime)
-                    .format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))
+
+                if (event.datetime != null && event.datetime != "1900-01-01T00:00:00Z") {
+                    dateTime.text = OffsetDateTime.parse(event.datetime)
+                        .format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))
+                } else dateTime.text = "без даты"
+
+
 
                 Glide.with(avatar)
                     .load(event.authorAvatar)
