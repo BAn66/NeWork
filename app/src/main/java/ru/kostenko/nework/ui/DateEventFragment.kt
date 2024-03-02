@@ -46,6 +46,8 @@ class DateEventFragment : BottomSheetDialogFragment() {
     {
         val binding = FragmentDateEventBinding.inflate(layoutInflater)
         binding.online.isChecked = true
+        eventViewModel.setEventType(EventType.ONLINE)
+
         val datePicker =
             MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Select date")
@@ -76,18 +78,21 @@ class DateEventFragment : BottomSheetDialogFragment() {
 
         val checkedRadioButtonId = binding.radioGroup.checkedRadioButtonId
         // Returns View.NO_ID if nothing is checked.
-        binding.radioGroup.setOnCheckedChangeListener { group, checkedId ->
-
-        }
+//        binding.radioGroup.setOnCheckedChangeListener { group, checkedId ->
+//
+//        }
 
         binding.online.setOnCheckedChangeListener { buttonView, isChecked ->
-            Toast.makeText(this.context, "онлайн", Toast.LENGTH_LONG).show()
-//            eventViewModel.setTypeEvent.(EventType.ONLINE)
+//            Toast.makeText(this.context, "онлайн", Toast.LENGTH_LONG).show()
+            eventViewModel.setEventType(EventType.OFFLINE)
+            Log.d("EventTAAAG", "dateEventDialog event: ${eventViewModel.eventType.value} ")
         }
 
         binding.offline.setOnCheckedChangeListener { buttonView, isChecked ->
-            Toast.makeText(this.context, "оффлайн", Toast.LENGTH_LONG).show()
-//            eventViewModel.setTypeEvent.(EventType.OFFLINE)
+            eventViewModel.setEventType(EventType.ONLINE)
+            Log.d("EventTAAAG", "dateEventDialog event: ${eventViewModel.eventType.value} ")
+//            Toast.makeText(this.context, "оффлайн", Toast.LENGTH_LONG).show()
+
         }
 
         return binding.root

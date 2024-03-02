@@ -62,15 +62,14 @@ class EventsAdapter(
                 author.text = event.author
                 published.text = OffsetDateTime.parse(event.published)
                     .format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))
-                Log.d("EventTAAAG", "bind event.published: ${event.published.toString()} ")
-                content.setText(event.content)
-                typeEvent.text =event.type.str
 
-                Log.d("EventTAAAG", "bind event.datetime: ${event.datetime.toString()} ")
+                content.setText(event.content)
+                typeEvent.text = event.type.str
+
+
                 if (event.datetime != "1900-01-01T00:00:00Z") {
                     dateTime.text = OffsetDateTime.parse(event.datetime)
                         .format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))
-//                dateTime.text = event.datetime.toString()
                 } else dateTime.text = "без даты"
 
 

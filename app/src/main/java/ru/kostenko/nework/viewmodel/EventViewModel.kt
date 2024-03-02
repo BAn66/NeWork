@@ -60,6 +60,7 @@ class EventViewModel @Inject constructor(
     private val repository: EventRepositoryImpl,
     appAuth: AppAuth
 ) : ViewModel() {
+
     @OptIn(ExperimentalCoroutinesApi::class)
     val data: Flow<PagingData<FeedItem>> = appAuth
         .authStateFlow.flatMapLatest { (myId, _) ->
@@ -104,37 +105,44 @@ class EventViewModel @Inject constructor(
     val coords: LiveData<Coords?>
         get() = _coords
 
+    private val _eventType = MutableLiveData<EventType>()
+    val eventType: LiveData<EventType>
+        get() = _eventType
+
     init {
         loadEvents()
     }
+
     val authorId = appAuth.authStateFlow.value.id.toInt()
 
-    fun loadEvents() = viewModelScope.launch { //Загружаем события c помщью коротюнов и вьюмоделскоуп
-        try {
-            _dataState.value = FeedModelState(loading = true)
-            _dataState.value = FeedModelState()
-        } catch (e: Exception) {
-            _dataState.value = FeedModelState(error = true)
+    fun loadEvents() =
+        viewModelScope.launch { //Загружаем события c помщью коротюнов и вьюмоделскоуп
+            try {
+                _dataState.value = FeedModelState(loading = true)
+                _dataState.value = FeedModelState()
+            } catch (e: Exception) {
+                _dataState.value = FeedModelState(error = true)
+            }
         }
-    }
 
     @SuppressLint("SuspiciousIndentation")
     fun changeEventAndSave(content: String, dateTime: String, type: EventType) {
         val text: String = content.trim()
         //функция изменения и сохранения в репозитории
-        edited.value?.let { editEvent->
+        edited.value?.let { editEvent ->
             viewModelScope.launch {
-            val eventCopy = editEvent.copy(
-                author = repository.getUserById(authorId).name,
-                content = text,
-                published = OffsetDateTime.now().toString(),
-                coords = _coords.value,
-                datetime = dateTime,
-                type = type,
-            )
+                val eventCopy = editEvent.copy(
+                    author = repository.getUserById(authorId).name,
+                    content = text,
+                    published = OffsetDateTime.now().toString(),
+                    coords = _coords.value,
+                    datetime = dateTime,
+                    type = type,
+                )
                 try {
-                    Log.d("EventTAAAG", "changeEventAndSave viewModel: ${_coords.value} ")
-                    Log.d("EventTAAAG", "changeEventAndSave viewModel: ${coords.value}")
+                    Log.d("EventTAAAG", "ventViewModel eventCopy.type: ${eventCopy.type} ")
+                    Log.d("EventTAAAG", "ventViewModel _event: ${_event.value} ")
+                    Log.d("EventTAAAG", "ventViewModel event: ${event.value} ")
                     val mediaModel = _media.value
                     if (mediaModel == null && editEvent.content != text) {
                         repository.saveEvent(eventCopy)
@@ -153,7 +161,7 @@ class EventViewModel @Inject constructor(
                 clearDateTime()
             }
         }
-            emptyNew()
+        emptyNew()
     }
 
     fun emptyNew() {
@@ -191,6 +199,7 @@ class EventViewModel @Inject constructor(
     ) {
         _media.value = MediaModel(uri, inputStream, type)
     }
+
     fun clearMedia() {
         _media.value = null
     }
@@ -199,22 +208,28 @@ class EventViewModel @Inject constructor(
         _content.value = tmpContent
     }
 
-    fun clearContent(){
-        _content.value=""
+    fun clearContent() {
+        _content.value = ""
     }
 
     fun setCoords(latC: Double, LongC: Double) {
         _coords.value = Coords(latC, LongC)
     }
-    fun clearCoords(){
+
+    fun clearCoords() {
         _coords.value = null
     }
 
     fun setDateTime(string: String) {
         _datetime.value = formatToInstant(string)
     }
-    fun clearDateTime(){
+
+    fun clearDateTime() {
         _datetime.value = ""
+    }
+
+    fun setEventType(type: EventType) {
+        _eventType.value = type
     }
 
     fun getEventById(id: Int) = viewModelScope.launch {

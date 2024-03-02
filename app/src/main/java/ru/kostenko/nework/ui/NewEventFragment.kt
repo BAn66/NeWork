@@ -117,10 +117,13 @@ class NewEventFragment : Fragment() {
                             if(eventViewModel.datetime.value.isNullOrEmpty()){
                                 OffsetDateTime.now().toString()
                             } else eventViewModel.datetime.value.toString()
-                            // Первоначальная заглушка
-                            eventViewModel.changeEventAndSave(content, dateTime, EventType.ONLINE)
 
+                            val typeEvent =  if(eventViewModel.eventType.value == null){
+                                EventType.ONLINE
+                            } else  eventViewModel.eventType.value
 
+                            Log.d("EventTAAAG", " Newevent save event type: ${eventViewModel.eventType.value} ")
+                            typeEvent?.let { eventViewModel.changeEventAndSave(content, dateTime, it)}
                             activity?.invalidateOptionsMenu()
                             findNavController()
                                 .navigate(R.id.action_newEventFragment_to_mainFragment)
