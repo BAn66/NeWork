@@ -2,7 +2,6 @@ package ru.kostenko.nework.viewmodel
 
 import android.annotation.SuppressLint
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -24,10 +23,9 @@ import ru.kostenko.nework.dto.Event
 import ru.kostenko.nework.dto.EventType
 import ru.kostenko.nework.dto.FeedItem
 import ru.kostenko.nework.dto.MediaModel
-import ru.kostenko.nework.dto.Post
 import ru.kostenko.nework.model.FeedModelState
 import ru.kostenko.nework.repository.EventRepositoryImpl
-import ru.kostenko.nework.util.AndroidUtils.formatToInstant
+import ru.kostenko.nework.util.AndroidUtils.formatDateForServer
 import ru.kostenko.nework.util.SingleLiveEvent
 import java.io.InputStream
 import java.time.OffsetDateTime
@@ -140,9 +138,6 @@ class EventViewModel @Inject constructor(
                     type = type,
                 )
                 try {
-                    Log.d("EventTAAAG", "ventViewModel eventCopy.type: ${eventCopy.type} ")
-                    Log.d("EventTAAAG", "ventViewModel _event: ${_event.value} ")
-                    Log.d("EventTAAAG", "ventViewModel event: ${event.value} ")
                     val mediaModel = _media.value
                     if (mediaModel == null && editEvent.content != text) {
                         repository.saveEvent(eventCopy)
@@ -221,7 +216,7 @@ class EventViewModel @Inject constructor(
     }
 
     fun setDateTime(string: String) {
-        _datetime.value = formatToInstant(string)
+        _datetime.value = formatDateForServer(string)
     }
 
     fun clearDateTime() {

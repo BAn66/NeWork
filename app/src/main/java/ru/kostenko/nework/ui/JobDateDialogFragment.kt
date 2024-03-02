@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import ru.kostenko.nework.databinding.FragmentJobDateDialogBinding
+import ru.kostenko.nework.util.AndroidUtils
 import java.util.Calendar
 import java.util.GregorianCalendar
 import java.util.Locale
@@ -35,23 +36,35 @@ class JobDateDialogFragment : DialogFragment() {
         }
 
         View.OnClickListener {
-            selectDateDialog(binding.editStart)
+            context?.let { item ->
+                AndroidUtils.pickDateForJob(binding.editStart, item)
+            }
         }
         View.OnClickListener {
-            selectDateDialog(binding.editEnd)
+            context?.let { item ->
+                AndroidUtils.pickDateForJob(binding.editEnd, item)
+            }
         }
 
         binding.startInputLayout.setOnClickListener {
-            selectDateDialog(binding.editStart)
+            context?.let { item ->
+                AndroidUtils.pickDateForJob(binding.editStart, item)
+            }
         }
         binding.endInputLayout.setOnClickListener {
-            selectDateDialog(binding.editEnd)
+            context?.let { item ->
+                AndroidUtils.pickDateForJob(binding.editEnd, item)
+            }
         }
         binding.editStart.setOnClickListener {
-            selectDateDialog(binding.editStart)
+            context?.let { item ->
+                AndroidUtils.pickDateForJob(binding.editStart, item)
+            }
         }
         binding.editEnd.setOnClickListener {
-            selectDateDialog(binding.editEnd)
+            context?.let { item ->
+                AndroidUtils.pickDateForJob(binding.editEnd, item)
+            }
         }
         return binding.root
     }

@@ -42,7 +42,6 @@ class DateEventFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View
-//    = inflater.inflate(R.layout.fragment_date_event, container, false)
     {
         val binding = FragmentDateEventBinding.inflate(layoutInflater)
         binding.online.isChecked = true

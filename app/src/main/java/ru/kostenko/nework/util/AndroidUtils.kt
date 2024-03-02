@@ -10,10 +10,8 @@ import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import java.text.SimpleDateFormat
-import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Locale
-import java.util.TimeZone
 
 object AndroidUtils {
 
@@ -114,18 +112,48 @@ object AndroidUtils {
         ).show()
     }
 
-    fun formatToInstant(value: String) : String {
+    fun formatDateForServer(value: String) : String {
         return if (value != "") {
             val dateTime = SimpleDateFormat(
                 "MM/dd/yyyy HH:mm",
                 Locale.getDefault()
             ).parse(value)
             Log.d("EventTAAAG", " Android utils formatToInstant: $dateTime")
-//            val transform = DateTimeFormatter.ISO_INSTANT
             val transform =
                 SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-//            transform.setTimeZone(TimeZone.getTimeZone("Zulu"))
-//            transform.format(dateTime?.toInstant())
+            transform.format(dateTime)
+        } else "1900-01-01T00:00:00Z"
+    }
+
+    fun pickDateForJob(editText: EditText?, context: Context?) {
+        val datePicker = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+            calendar[Calendar.YEAR] = year
+            calendar[Calendar.MONTH] = monthOfYear
+            calendar[Calendar.DAY_OF_MONTH] = dayOfMonth
+
+            editText?.setText(
+                SimpleDateFormat("dd.MM.yyyy", Locale.ROOT)
+                    .format(calendar.time)
+            )
+        }
+        DatePickerDialog(
+            context!!,
+            datePicker,
+            calendar[Calendar.YEAR],
+            calendar[Calendar.MONTH],
+            calendar[Calendar.DAY_OF_MONTH]
+        ).show()
+    }
+
+    fun formatDateForJob(value: String) : String {
+        return if (value != "") {
+            val dateTime = SimpleDateFormat(
+                "dd.MM.yyyy",
+                Locale.getDefault()
+            ).parse(value)
+            Log.d("JobTAAAG", " Android utils formatToInstant: $dateTime")
+            val transform =
+                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
             transform.format(dateTime)
         } else "1900-01-01T00:00:00Z"
     }

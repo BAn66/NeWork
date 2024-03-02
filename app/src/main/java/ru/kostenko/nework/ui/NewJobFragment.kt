@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 import ru.kostenko.nework.R
 import ru.kostenko.nework.authorization.AppAuth
 import ru.kostenko.nework.databinding.FragmentNewJobBinding
+import ru.kostenko.nework.util.AndroidUtils.formatDateForJob
 import ru.kostenko.nework.viewmodel.AuthViewModel
 import ru.kostenko.nework.viewmodel.JobsViewModel
 import ru.kostenko.nework.viewmodel.UserViewModel
@@ -42,7 +43,7 @@ class NewJobFragment : Fragment() {
         //Наполняем верхний аппбар
         toolbar = binding.toolbar
         toolbar.apply {
-            setTitle("New job")
+            title = "New job"
             setNavigationIcon(R.drawable.arrow_back_24)
             setNavigationOnClickListener {
                 findNavController().popBackStack()
@@ -51,9 +52,9 @@ class NewJobFragment : Fragment() {
 
 
         binding.start.text = OffsetDateTime.now()
-            .format(DateTimeFormatter.ofPattern("dd.MM.yyyy - "))
+            .format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
 
-        binding.end.text = "НВ"
+        binding.end.setText(R.string.until_now)
 
         binding.startEndCard.setOnClickListener {
             val dialog = JobDateDialogFragment()
@@ -91,11 +92,11 @@ class NewJobFragment : Fragment() {
                             } else {
                                 binding.link.text.toString()
                             },
-                            start = binding.start.text.toString(),
+                            start = formatDateForJob(binding.start.text.toString()),
                             finish = if (binding.end.text.isNullOrBlank()) {
                                 "1900-01-01T00:00:00Z"
                             } else {
-                                binding.end.text.toString()
+                                formatDateForJob(binding.end.text.toString())
                             },
                         )
 //Заглушка
