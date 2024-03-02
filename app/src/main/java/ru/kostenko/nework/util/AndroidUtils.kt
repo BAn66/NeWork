@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
+import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
@@ -118,13 +119,14 @@ object AndroidUtils {
             val dateTime = SimpleDateFormat(
                 "MM/dd/yyyy HH:mm",
                 Locale.getDefault()
-            )
-                .parse(value)
+            ).parse(value)
+            Log.d("EventTAAAG", " Android utils formatToInstant: $dateTime")
 //            val transform = DateTimeFormatter.ISO_INSTANT
             val transform =
-                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.'Z'", Locale.getDefault())
-            transform.setTimeZone(TimeZone.getTimeZone("Zulu"))
-            transform.format(dateTime?.toInstant())
+                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+//            transform.setTimeZone(TimeZone.getTimeZone("Zulu"))
+//            transform.format(dateTime?.toInstant())
+            transform.format(dateTime)
         } else "1900-01-01T00:00:00Z"
     }
 }

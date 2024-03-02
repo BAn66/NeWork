@@ -3,6 +3,7 @@ package ru.kostenko.nework.adapter
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -61,13 +62,16 @@ class EventsAdapter(
                 author.text = event.author
                 published.text = OffsetDateTime.parse(event.published)
                     .format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))
+                Log.d("EventTAAAG", "bind event.published: ${event.published.toString()} ")
                 content.setText(event.content)
                 typeEvent.text =event.type.str
 
-//                if (event.datetime != "1900-01-01T00:00:00Z") {
+                Log.d("EventTAAAG", "bind event.datetime: ${event.datetime.toString()} ")
+                if (event.datetime != "1900-01-01T00:00:00Z") {
                     dateTime.text = OffsetDateTime.parse(event.datetime)
                         .format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))
-//                } else dateTime.text = "без даты"
+//                dateTime.text = event.datetime.toString()
+                } else dateTime.text = "без даты"
 
 
 

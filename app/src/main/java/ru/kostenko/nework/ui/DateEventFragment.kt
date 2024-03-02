@@ -22,6 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import ru.kostenko.nework.R
 import ru.kostenko.nework.databinding.FragmentAuthBinding
 import ru.kostenko.nework.databinding.FragmentDateEventBinding
+import ru.kostenko.nework.dto.EventType
 import ru.kostenko.nework.viewmodel.EventViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -67,7 +68,7 @@ class DateEventFragment : BottomSheetDialogFragment() {
             setFragmentResultListener("setTimeEvent") { _, bundle ->
                 val time = bundle.getString("timeEvent")
                 binding.editDateEvent.setText("$date $time")
-//                eventViewModel.setDateTime(binding.editDateEvent.text.toString())
+                eventViewModel.setDateTime(binding.editDateEvent.text.toString())
             }
         }
 
@@ -81,10 +82,12 @@ class DateEventFragment : BottomSheetDialogFragment() {
 
         binding.online.setOnCheckedChangeListener { buttonView, isChecked ->
             Toast.makeText(this.context, "онлайн", Toast.LENGTH_LONG).show()
+//            eventViewModel.setTypeEvent.(EventType.ONLINE)
         }
 
         binding.offline.setOnCheckedChangeListener { buttonView, isChecked ->
             Toast.makeText(this.context, "оффлайн", Toast.LENGTH_LONG).show()
+//            eventViewModel.setTypeEvent.(EventType.OFFLINE)
         }
 
         return binding.root

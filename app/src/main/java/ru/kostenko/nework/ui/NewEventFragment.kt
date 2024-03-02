@@ -113,9 +113,13 @@ class NewEventFragment : Fragment() {
                                 }.show()
                         } else {
                             val content = binding.editTextNewPost.text.toString()
+                            val dateTime =
+                            if(eventViewModel.datetime.value.isNullOrEmpty()){
+                                OffsetDateTime.now().toString()
+                            } else eventViewModel.datetime.value.toString()
                             // Первоначальная заглушка
-                            eventViewModel.changeEventAndSave(content, OffsetDateTime.now().toString(), EventType.ONLINE)
-//                            eventViewModel.changeEventAndSave(content, eventViewModel.datetime.toString(), EventType.ONLINE)
+                            eventViewModel.changeEventAndSave(content, dateTime, EventType.ONLINE)
+
 
                             activity?.invalidateOptionsMenu()
                             findNavController()
