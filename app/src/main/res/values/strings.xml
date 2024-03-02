@@ -40,6 +40,7 @@
     <string name="online">Online</string>
     <string name="remove">Remove</string>
     <string name="newpost">New post</string>
+    <string name="new_event">New event</string>
     <string name="save">Save</string>
     <string name="error_empty_content">"The content field cannot be empty "</string>
     <string name="profile">Profile</string>

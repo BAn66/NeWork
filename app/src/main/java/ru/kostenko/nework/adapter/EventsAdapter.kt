@@ -64,10 +64,10 @@ class EventsAdapter(
                 content.setText(event.content)
                 typeEvent.text =event.type.str
 
-                if (event.datetime != null && event.datetime != "1900-01-01T00:00:00Z") {
+//                if (event.datetime != "1900-01-01T00:00:00Z") {
                     dateTime.text = OffsetDateTime.parse(event.datetime)
                         .format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))
-                } else dateTime.text = "без даты"
+//                } else dateTime.text = "без даты"
 
 
 

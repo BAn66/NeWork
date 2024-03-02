@@ -86,7 +86,7 @@ class NewEventFragment : Fragment() {
         //Верхний аппбар
         toolbar = binding.toolbar
         toolbar.apply {
-            setTitle(R.string.newpost)
+            setTitle(R.string.new_event)
             setNavigationIcon(R.drawable.arrow_back_24)
             setNavigationOnClickListener {
                 if (binding.editTextNewPost.text.isNotBlank()) {
@@ -114,7 +114,9 @@ class NewEventFragment : Fragment() {
                         } else {
                             val content = binding.editTextNewPost.text.toString()
                             // Первоначальная заглушка
-                            eventViewModel.changeEventAndSave(content, eventViewModel.datetime.toString(), EventType.ONLINE)
+                            eventViewModel.changeEventAndSave(content, OffsetDateTime.now().toString(), EventType.ONLINE)
+//                            eventViewModel.changeEventAndSave(content, eventViewModel.datetime.toString(), EventType.ONLINE)
+
                             activity?.invalidateOptionsMenu()
                             findNavController()
                                 .navigate(R.id.action_newEventFragment_to_mainFragment)

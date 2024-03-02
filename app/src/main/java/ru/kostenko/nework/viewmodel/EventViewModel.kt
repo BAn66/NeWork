@@ -129,7 +129,7 @@ class EventViewModel @Inject constructor(
                 content = text,
                 published = OffsetDateTime.now().toString(),
                 coords = _coords.value,
-                datetime = _datetime.value.toString(),
+                datetime = dateTime,
                 type = type,
             )
                 try {
