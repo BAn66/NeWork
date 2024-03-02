@@ -130,7 +130,7 @@ class EventViewModel @Inject constructor(
                     if (mediaModel == null && editEvent.content != text) {
                         repository.saveEvent(eventCopy)
 
-                    } else if (mediaModel != null && editEvent.content != text) {
+                    } else if (mediaModel != null) {
                         repository.saveEventWithAttachment(eventCopy, mediaModel)
                     }
                     _dataState.value = FeedModelState()

@@ -129,7 +129,7 @@ class PostViewModel @Inject constructor(
                     if (mediaModel == null && editedPost.content != text) {
                         repository.savePost(postCopy)
 //                    } else if (mediaModel != null && editedPost.content != text && editedPost.attachment?.url?.toUri() != _media.value?.uri) {
-                    } else if (mediaModel != null && editedPost.content != text) {
+                    } else if (mediaModel != null) {
                         repository.savePostWithAttachment(postCopy, mediaModel)
                     }
                     _dataState.value = FeedModelState()
