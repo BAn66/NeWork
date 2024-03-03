@@ -18,6 +18,7 @@
         <item name="android:navigationBarColor">@color/navigationBarColor</item>
         <!--цвет часов и системных кнопок черный или белый-->
         <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
         <!--цвет ссылок-->
         <item name="android:textColorLink">@color/colorOnSecondary</item>
 
