@@ -30,6 +30,7 @@ interface OnEventInteractionListener {
     fun remove(event: Event)
     fun edit(event: Event)
     fun openEvent(event: Event)
+    fun share(event: Event)
 }
 
 class EventsAdapter(
@@ -60,10 +61,17 @@ class EventsAdapter(
                 author.text = event.author
                 published.text = OffsetDateTime.parse(event.published)
                     .format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))
+
                 content.text = event.content
-                typeEvent.text =event.type.str
-                dateTime.text = OffsetDateTime.parse(event.datetime)
-                    .format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))
+                typeEvent.text = event.type.str
+
+
+                if (event.datetime != "1900-01-01T00:00:00Z") {
+                    dateTime.text = OffsetDateTime.parse(event.datetime)
+                        .format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))
+                } else dateTime.text = "без даты"
+
+
 
                 Glide.with(avatar)
                     .load(event.authorAvatar)
@@ -135,12 +143,6 @@ class EventsAdapter(
                     }.play()
                 }
 
-                pauseButton.setOnClickListener {
-                    if (observer.mediaPlayer != null) {
-                        if (observer.mediaPlayer!!.isPlaying) observer.mediaPlayer?.pause() else observer.mediaPlayer?.start()
-                    }
-                }
-
                 stopButton.setOnClickListener {
                     if (observer.mediaPlayer != null && observer.mediaPlayer!!.isPlaying) {
                         observer.mediaPlayer?.stop()
@@ -161,23 +163,21 @@ class EventsAdapter(
                     onEventInteractionListener.like(event)
                 }
 
-//            btnLike.setOnLongClickListener {
-//                onPostInteractionListener.onOpenLikers(post)
-//                true
-//            }
+                btnShare.setOnClickListener {
+                    onEventInteractionListener.share(event)
+                }
 
                 content.setOnClickListener {
                     println("content clicked")
                     onEventInteractionListener.openEvent(event)
                 }
 
-
-
                 postLayout.setOnClickListener { onEventInteractionListener.openEvent(event) }
                 avatar.setOnClickListener { onEventInteractionListener.openEvent(event) }
                 author.setOnClickListener { onEventInteractionListener.openEvent(event) }
                 published.setOnClickListener { onEventInteractionListener.openEvent(event) }
-//            imageAttach.setOnClickListener { onPostInteractionListener.openImage(post) }
+                content.setOnClickListener { onEventInteractionListener.openEvent(event)  }
+                imageAttach.setOnClickListener { onEventInteractionListener.openEvent(event) }
 
                 menu.isVisible = event.ownedByMe  //Меню видно если пост наш
                 menu.setOnClickListener {

@@ -1,5 +1,6 @@
 package ru.kostenko.nework.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +10,6 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -48,10 +48,10 @@ class PostsFragment : Fragment() {
                 if (authViewModel.authenticated)
                     postViewModel.likePostById(post.id, post.likedByMe)
                 else {
-                    val authDialogFragmentFromPosts = AuthDialogFragmentFromPosts()
+                    val authDialogFragment = AuthDialogFragment()
                     val manager = activity?.supportFragmentManager
                     manager?.let { fragmentManager ->
-                        authDialogFragmentFromPosts.show(
+                        authDialogFragment.show(
                             fragmentManager,
                             "myDialog"
                         )
@@ -64,11 +64,30 @@ class PostsFragment : Fragment() {
             }
 
             override fun edit(post: Post) {
+                postViewModel.clearMedia()
                 postViewModel.editPost(post)
             }
 
             override fun openPost(post: Post) {
-                val resultId = post.id
+                lifecycleScope.launch {
+                    postViewModel.getPostById(post.id).join()
+                    requireParentFragment().requireParentFragment()
+                        .findNavController().navigate(R.id.action_mainFragment_to_postFragment)
+                }
+            }
+
+            override fun share(post: Post) {
+                //создаем актвити Chooser для расшаривания текста поста через Intent
+
+                val intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, post.content)
+                    type = "text/plain"
+                }
+                //startActivity(intent) //Более скромный вариант ниже более симпатичный вариант
+                val shareIntent =
+                    Intent.createChooser(intent, getString(R.string.description_shared))
+                startActivity(shareIntent)
             }
         }, MediaLifecycleObserver())
 
@@ -90,41 +109,27 @@ class PostsFragment : Fragment() {
         }
 
         //TODO Редактирование не работает.
-
-        /*        Работа редактирования через фрагменты (конкретно все в фрагменте NewPost)*/
-        postViewModel.edited.observe(viewLifecycleOwner) { it ->// Начало редактирования
-//            Toast.makeText(this.context, "Переход на карточку поста", Toast.LENGTH_LONG).show()
-            val resultId = it.id
-            setFragmentResult("requestIdForNewPostFragment", bundleOf("id" to resultId))
-            if (it.id != 0) {
+        postViewModel.edited.observe(viewLifecycleOwner) { post->// Начало редактирования
+            if (post.id != 0) {
                 requireParentFragment().requireParentFragment()
                     .findNavController().navigate(R.id.action_mainFragment_to_newPostFragment)
             }
         }
 
-        //TODO временное хранение не работает.
         binding.addPost.setOnClickListener {
-            setFragmentResultListener("requestTmpContent") { key, bundle ->
-                val tmpContent = bundle.getString("tmpContent")
-                setFragmentResult(
-                    "requestSavedTmpContent",
-                    bundleOf("savedTmpContent" to tmpContent)
-                )
-            }
             if (authViewModel.authenticated)
                 requireParentFragment().requireParentFragment()
                     .findNavController().navigate(R.id.action_mainFragment_to_newPostFragment)
             else {
-                val authDialogFragmentFromPosts = AuthDialogFragmentFromPosts()
+                val authDialogFragment = AuthDialogFragment()
                 val manager = activity?.supportFragmentManager
                 manager?.let { fragmentManager ->
-                    authDialogFragmentFromPosts.show(
+                    authDialogFragment.show(
                         fragmentManager,
                         "myDialog"
                     )
                 }
             }
-
         }
         return binding.root
     }

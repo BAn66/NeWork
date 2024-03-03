@@ -9,12 +9,13 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import ru.kostenko.nework.R
 import ru.kostenko.nework.adapter.JobsAdapter
 import ru.kostenko.nework.adapter.OnJobInteractionListener
-import ru.kostenko.nework.adapter.OnPostInteractionListener
 import ru.kostenko.nework.authorization.AppAuth
 import ru.kostenko.nework.databinding.FragmentJobsBinding
 import ru.kostenko.nework.dto.Job
@@ -61,6 +62,17 @@ class JobsFragment : Fragment() {
                 }
             }
 
+            if (authViewModel.authenticated && authViewModel.data.value.id.toInt() == userId){
+                addJob.visibility = View.VISIBLE
+            } else {
+                addJob.visibility = View.GONE
+            }
+
+            addJob.setOnClickListener {
+                    requireParentFragment().requireParentFragment()
+                        .findNavController()
+                        .navigate(R.id.action_userDetailsFragment_to_newJobFragment)
+            }
         }
         return binding.root
     }

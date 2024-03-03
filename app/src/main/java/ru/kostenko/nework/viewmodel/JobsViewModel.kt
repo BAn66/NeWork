@@ -1,10 +1,12 @@
 package ru.kostenko.nework.viewmodel
 
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
@@ -12,7 +14,6 @@ import kotlinx.coroutines.launch
 import ru.kostenko.nework.authorization.AppAuth
 import ru.kostenko.nework.dto.Job
 import ru.kostenko.nework.model.FeedModelState
-import ru.kostenko.nework.repository.JobsRepository
 import ru.kostenko.nework.repository.JobsRepositoryImpl
 import javax.inject.Inject
 
@@ -33,7 +34,8 @@ class JobsViewModel @Inject constructor(
     appAuth: AppAuth,
 ) : ViewModel() {
     private val userId = MutableLiveData<Int>()
-
+    private val edited = MutableLiveData(empty)
+    @OptIn(ExperimentalCoroutinesApi::class)
     val data: Flow<List<Job>> = appAuth.authStateFlow.flatMapLatest { (myId, _) ->
         jobsRepository.data.map {
 //            JobModel()
@@ -60,12 +62,79 @@ class JobsViewModel @Inject constructor(
         }
     }
 
-    fun saveMyJob() {}
-    fun editMyJob() {}
-    fun removeMyJob(id: Int) {}
+    fun removeMyJob(id: Int) {
+        viewModelScope.launch {
+            try {
+                jobsRepository.deleteMyJobs(id)
+                _dataState.value = FeedModelState()
+
+            } catch (e: Exception) {
+                _dataState.value = FeedModelState(error = true)
+
+            }
+        }
+    }
     fun setId(id: Int) {
         userId.value = id
     }
+
+    fun edit(job: Job) {
+        edited.value = job
+    }
+
+    fun save(
+        name: String,
+        position: String,
+        start: String,
+        finish: String,
+        link: String?,
+
+        ) {
+            edited.value?.let {
+            val jobCopy = it.copy(
+                name = name.trim(),
+                position = position.trim(),
+                start = start,
+                finish = finish,
+                link = link?.trim()
+            )
+            viewModelScope.launch {
+                try {
+                    jobsRepository.setMyJob(jobCopy)
+                    _dataState.value = FeedModelState()
+
+                } catch (e: Exception) {
+                    _dataState.value = FeedModelState(error = true)
+
+                }
+            }
+        }
+    }
+
+    fun formateDateString(str: String?):String{
+        var newDate: String?
+        if (str!=null) {
+            val values = str.split("/")
+            val day = values[0]
+            val month = values[1]
+            val year = values[2]
+//        dd/mm/yyyy
+            newDate = "$year-$month-$day'T'00:00:01.667'Z'"
+        }
+        else
+            newDate = "1900-01-01T00:00:00Z"
+        return newDate
+    }
+
+    fun startDate(date: String) {
+        edited.value = edited.value?.copy(start = date)
+    }
+
+    fun endDate(date: String) {
+        edited.value = edited.value?.copy(finish = date)
+    }
+
+
 
     fun clearJobs() {
         viewModelScope.launch {

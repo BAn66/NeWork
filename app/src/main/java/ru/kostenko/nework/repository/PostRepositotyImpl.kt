@@ -1,5 +1,6 @@
 package ru.kostenko.nework.repository
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -50,20 +51,24 @@ class PostRepositoryImpl @Inject constructor(
 
     override val newerPostId: Flow<Int?> = postDao.max()
 
-    override suspend fun savePost(post: Post) {
+    override suspend fun savePost(post: Post, mediaModel: MediaModel?) {
+        Log.d("PostTAAAG", "savePost PostRepository content:${post.content}")
         try {
-            //Запись сначала в БД.
-            //при сохранении поста, в базу вносится интентети с отметкой что оно не сохарнено на сервере
-            postDao.insert(PostEntity.fromDto(post))
-            //Если у поста айди 0 то сервер воспринимает его как новый
-            val response = apiService.savePost(post)
-            //если отвтет с сервера не пришел, то отметка о не записи на сервер по прежнему фолс
-            if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
+            val postWithAttachment = if (mediaModel != null) {
+
+                val media = saveMediaOnServer(mediaModel)
+                post.copy(attachment = Attachment(media.url, requireNotNull(mediaModel.type)))
+
+            } else {
+                post.copy()
             }
-            response.body() ?: throw ApiError(response.code(), response.message())
-            // исключение не брошено меняем отметку о записи на сервере на тру
 
+            val response = apiService.savePost(postWithAttachment)
+
+            // Если код не 200, то body будет null. Не нужны ещё проверки
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+
+            postDao.insert(PostEntity.fromDto(body))
         } catch (e: IOException) {
             throw NetworkError
         } catch (e: Exception) {
@@ -72,19 +77,19 @@ class PostRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun savePostWithAttachment(post: Post, mediaModel: MediaModel) {
-        try {
-            val media = saveMediaOnServer(mediaModel)
-            val postWithAttachment = post.copy(attachment = mediaModel.type?.let { type ->
-                Attachment(media.url, type)
-            })
-            savePost(postWithAttachment)
-        } catch (e: IOException) {
-            throw NetworkError
-        } catch (e: Exception) {
-            throw UnknownError
-        }
-    }
+//    override suspend fun savePostWithAttachment(post: Post, mediaModel: MediaModel) {
+//        try {
+//            val media = saveMediaOnServer(mediaModel)
+//            val postWithAttachment = post.copy(attachment = mediaModel.type?.let { type ->
+//                Attachment(media.url, type)
+//            })
+//            savePost(postWithAttachment)
+//        } catch (e: IOException) {
+//            throw NetworkError
+//        } catch (e: Exception) {
+//            throw UnknownError
+//        }
+//    }
 
     override suspend fun saveMediaOnServer(mediaModel: MediaModel): Media {
         try {
@@ -142,6 +147,22 @@ class PostRepositoryImpl @Inject constructor(
     suspend fun getUserById(id: Int): User {
         try {
             val response = apiService.getUserById(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            return body
+        } catch (e: IOException) {
+            throw NetworkError
+
+        } catch (e: Exception) {
+            throw Exception(e)
+        }
+    }
+
+    suspend fun getPostById(id: Int): Post {
+        try {
+            val response = apiService.getPostById(id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }

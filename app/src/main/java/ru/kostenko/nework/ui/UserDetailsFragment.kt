@@ -8,12 +8,14 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
+import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import ru.kostenko.nework.R
+import ru.kostenko.nework.adapter.TabsAdapter
 import ru.kostenko.nework.authorization.AppAuth
 import ru.kostenko.nework.databinding.FragmentUserDetailsBinding
+import ru.kostenko.nework.viewmodel.AuthViewModel
 import ru.kostenko.nework.viewmodel.JobsViewModel
 import ru.kostenko.nework.viewmodel.UserViewModel
 import ru.kostenko.nework.viewmodel.WallViewModel
@@ -26,7 +28,9 @@ class UserDetailsFragment : Fragment() {
     private val userViewModel: UserViewModel by activityViewModels()
     private val wallViewModel: WallViewModel by activityViewModels()
     private val jobsViewModel: JobsViewModel by activityViewModels()
+    private val authViewModel: AuthViewModel by activityViewModels()
     private lateinit var toolbar: Toolbar
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,12 +40,46 @@ class UserDetailsFragment : Fragment() {
         val binding = FragmentUserDetailsBinding.inflate(inflater, container, false)
         wallViewModel.clearWall()
         jobsViewModel.clearJobs()
-        //Навигация через табы
-        val navController = requireNotNull(
-            childFragmentManager.findFragmentById(R.id.nav_user_fragment_main)
-        ).findNavController()
-        binding.navUserView.setupWithNavController(navController)
+        //Навигация через bottomMenu
+//        val navController = requireNotNull(
+//            childFragmentManager.findFragmentById(R.id.nav_user_fragment_main)
+//        ).findNavController()
+//        binding.navUserView.setupWithNavController(navController)
 
+        //Навигация через Tabs
+//        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+//
+//            override fun onTabSelected(tab: TabLayout.Tab?) {
+//                // Handle tab select
+//            }
+//
+//            override fun onTabReselected(tab: TabLayout.Tab?) {
+//                // Handle tab reselect
+//            }
+//
+//            override fun onTabUnselected(tab: TabLayout.Tab?) {
+//                // Handle tab unselect
+//            }
+//        })
+
+        //TODO Сделай скрытие аватарки при скролле
+
+        val tabLayout = binding.navUserTabs
+        val viewPager = binding.navUserViewP2
+
+        viewPager.adapter = TabsAdapter(this)
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            when (position) {
+                0 -> {
+                    tab.text = "Wall"
+
+                }
+                1 -> {
+                    tab.text = "Jobs"
+
+                }
+            }
+        }.attach()
         //Данные о пользователе из userViewModel
         val user = userViewModel.user
         val nameUser = user.value?.name
@@ -54,6 +92,20 @@ class UserDetailsFragment : Fragment() {
             setNavigationIcon(R.drawable.arrow_back_24)
             setNavigationOnClickListener {
                 findNavController().popBackStack()
+            }
+            if (user.value!!.id == authViewModel.data.value.id.toInt()) {
+                inflateMenu(R.menu.exit_menu)
+            }
+            setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.logout -> {
+                        appAuth.removeAuth()
+                        findNavController().popBackStack()
+                        true
+                    }
+
+                    else -> false
+                }
             }
         }
 

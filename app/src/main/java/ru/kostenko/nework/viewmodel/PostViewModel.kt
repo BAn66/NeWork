@@ -2,6 +2,8 @@ package ru.kostenko.nework.viewmodel
 
 import android.annotation.SuppressLint
 import android.net.Uri
+import android.util.Log
+import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,6 +20,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import ru.kostenko.nework.authorization.AppAuth
 import ru.kostenko.nework.dto.AttachmentType
+import ru.kostenko.nework.dto.Coords
 import ru.kostenko.nework.dto.FeedItem
 import ru.kostenko.nework.dto.MediaModel
 import ru.kostenko.nework.dto.Post
@@ -43,7 +46,8 @@ private val empty = Post(
     likeOwnerIds = emptySet(),
     published = "",
     attachment = null,
-    users = mapOf()
+    users = mapOf(),
+
 )
 
 @HiltViewModel
@@ -82,6 +86,21 @@ class PostViewModel @Inject constructor(
     val postCreated: LiveData<Unit>
         get() = _postCreated
 
+    private val _content = SingleLiveEvent<String>()
+    val content: LiveData<String>
+        get() = _content
+
+
+    private val _post = MutableLiveData<Post>()
+    val post: LiveData<Post>
+        get() = _post
+
+    private val _coords = MutableLiveData<Coords?>()
+    val coords: LiveData<Coords?>
+        get() = _coords
+
+
+
     init {
         loadPosts()
     }
@@ -101,27 +120,29 @@ class PostViewModel @Inject constructor(
     fun changePostAndSave(content: String) {
         val text: String = content.trim()
         //функция изменения и сохранения в репозитории
-
-        edited.value?.let {
+        edited.value?.let { editedPost ->
             viewModelScope.launch {
-            val postCopy = it.copy(
-                author = repository.getUserById(authorId).name,
-                content = text,
-                published = OffsetDateTime.now().toString(),
-            )
+                val postCopy = editedPost.copy(
+                    author = repository.getUserById(authorId).name,
+                    content = text,
+                    published = OffsetDateTime.now().toString(),
+                    coords = _coords.value,
+                    users = mapOf()
+                )
                 try {
+                    Log.d("PostTAAAG", "changeEventAndSave viewModel coords: ${_coords.value} ")
+                    Log.d("PostTAAAG", "changeEventAndSave viewModel coords: ${coords.value}")
+                    Log.d("PostTAAAG", "changeEventAndSave newPostFragment content: ${text} / ${postCopy.content}")
                     val mediaModel = _media.value
-                    if (mediaModel == null && it.content != text) {
-                        repository.savePost(postCopy)
-
-                    } else if (mediaModel != null && it.content != text) {
-                        repository.savePostWithAttachment(postCopy, mediaModel)
-                    }
+                    repository.savePost(postCopy, mediaModel)
                     _dataState.value = FeedModelState()
                     _postCreated.value = Unit
                 } catch (e: Exception) {
                     _dataState.value = FeedModelState(error = true)
                 }
+                clearCoords()
+                clearContent()
+                clearMedia()
             }
         }
         emptyNew()
@@ -158,7 +179,7 @@ class PostViewModel @Inject constructor(
     }
 
     fun setMedia(
-        uri: Uri, inputStream: InputStream, type: AttachmentType
+        uri: Uri, inputStream: InputStream?, type: AttachmentType
     ) {
         _media.value = MediaModel(uri, inputStream, type)
     }
@@ -166,4 +187,37 @@ class PostViewModel @Inject constructor(
     fun clearMedia() {
         _media.value = null
     }
+
+
+    fun setContent(tmpContent: String) {
+        _content.value = tmpContent
+    }
+
+    fun clearContent() {
+        _content.value = ""
+    }
+
+    fun setCoords(latC: Double, LongC: Double) {
+        _coords.value = Coords(latC, LongC)
+    }
+    fun clearCoords(){
+        _coords.value = null
+    }
+
+    fun getPostById(id: Int) = viewModelScope.launch {
+        _dataState.postValue(FeedModelState(loading = true))
+        try {
+            _post.value = repository.getPostById(id)
+            _dataState.value = FeedModelState()
+        } catch (e: Exception) {
+            _dataState.value = FeedModelState(error = true)
+        }
+    }
+
+
+fun setMentinoed(set: Set<Int>) {
+        edited.value = edited.value?.copy(mentionIds = set)
+    }
+
+
 }

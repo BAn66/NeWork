@@ -1,0 +1,630 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.EventFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/bar_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            style="@style/NeworkToolbarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:minHeight="?attr/actionBarSize"
+            app:contentInsetEnd="0dp"
+            app:contentInsetStart="0dp" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/bar_id">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/postLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/common_margin">
+
+            <ImageView
+                android:id="@+id/avatar"
+                android:layout_width="@dimen/posts_avatar_size"
+                android:layout_height="@dimen/posts_avatar_size"
+                android:layout_margin="@dimen/common_margin"
+                android:contentDescription="@string/description_post_author_avatar"
+                app:layout_constraintBottom_toTopOf="@id/barrierAvatar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/post_avatar_drawable" />
+
+            <TextView
+                android:id="@+id/author"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/common_pudding"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/job"
+                app:layout_constraintStart_toEndOf="@id/avatar"
+                app:layout_constraintTop_toTopOf="@id/avatar"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="@sample/posts.json/data/author" />
+
+            <TextView
+                android:id="@+id/job"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/common_pudding"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@id/avatar"
+                app:layout_constraintStart_toEndOf="@id/avatar"
+                app:layout_constraintTop_toBottomOf="@id/author"
+                tools:text="Manager" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrierAvatar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="job,avatar,author" />
+
+
+            <ImageView
+                android:id="@+id/image_attach"
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
+                android:contentDescription="@string/description_post_author_avatar"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/barrierVideo"
+                app:layout_constraintTop_toBottomOf="@id/barrierAvatar"
+                tools:visibility="gone" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/video_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="video_content, play, video_holder"
+                tools:visibility="gone" />
+
+            <VideoView
+                android:id="@+id/video_content"
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
+                app:layout_constraintBottom_toTopOf="@id/barrierVideo"
+                app:layout_constraintTop_toBottomOf="@id/barrierAvatar" />
+
+            <ImageView
+                android:id="@+id/video_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/VideoHolder"
+                app:layout_constraintBottom_toTopOf="@id/barrierVideo"
+                app:layout_constraintTop_toBottomOf="@id/barrierAvatar" />
+            <!--        android:background="@drawable/video_holder"-->
+
+            <Button
+                android:id="@+id/play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/play"
+                app:icon="@drawable/ic_play_80dp"
+                app:layout_constraintBottom_toBottomOf="@id/video_content"
+                app:layout_constraintEnd_toEndOf="@id/video_content"
+                app:layout_constraintStart_toStartOf="@id/video_content"
+                app:layout_constraintTop_toTopOf="@id/video_content" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrierVideo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="video_content" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/audio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="audio_bar, audio_control"
+                tools:visibility="gone" />
+
+            <SeekBar
+                android:id="@+id/audio_bar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/common_pudding_8dp"
+                android:indeterminate="false"
+                android:progress="0"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/barrierVideo" />
+
+            <LinearLayout
+                android:id="@+id/audio_control"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/common_pudding_8dp"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/audio_bar">
+
+                <ImageButton
+                    android:id="@+id/play_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:contentDescription="@string/play"
+                    android:src="@drawable/ic_play_48"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/audio_bar" />
+
+<!--                <ImageButton-->
+<!--                    android:id="@+id/pause_button"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:clickable="true"-->
+<!--                    android:contentDescription="@string/pause"-->
+<!--                    android:src="@drawable/ic_pause_48"-->
+<!--                    app:layout_constraintStart_toEndOf="@id/play_button"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/audio_bar" />-->
+
+                <ImageButton
+                    android:id="@+id/stop_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:contentDescription="@string/stop"
+                    android:src="@drawable/ic_stop_48"
+                    app:layout_constraintStart_toEndOf="@id/play_button"
+                    app:layout_constraintTop_toBottomOf="@id/audio_bar" />
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier_audio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="audio_control" />
+
+            <TextView
+                android:id="@+id/event_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/common_pudding"
+                tools:text="Online"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/barrier_audio" />
+
+            <TextView
+                android:id="@+id/event_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/common_pudding"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/event_type"
+                tools:text="@sample/posts.json/data/published" />
+
+            <TextView
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/common_margin"
+                android:autoLink="all"
+                app:layout_constraintTop_toBottomOf="@id/event_date"
+                tools:text="@sample/posts.json/data/content" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="content" />
+
+            <TextView
+                android:id="@+id/speakers_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/common_pudding"
+                android:text="@string/speakers_label"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/barrier_content" />
+
+
+            <LinearLayout
+                android:id="@+id/avatar_layout_spkrs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/common_pudding"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/speakers_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/likers_title">
+
+                <io.getstream.avatarview.AvatarView
+                    android:id="@+id/avatar_spkrs_0"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    app:avatarViewBorderColor="@color/colorWhite"
+                    app:avatarViewBorderWidth="2dp"
+                    app:avatarViewInitialsBackgroundColor="@color/colorOnSurface"
+                    app:avatarViewInitialsTextColor="@color/colorWhite"
+                    app:avatarViewInitialsTextSize="16sp"
+                    app:avatarViewInitialsTextSizeRatio="0.33"
+                    app:avatarViewInitialsTextStyle="bold"
+                    app:avatarViewPlaceholder="@drawable/account_24"
+                    app:avatarViewShape="circle" />
+
+                <io.getstream.avatarview.AvatarView
+                    android:id="@+id/avatar_spkrs_1"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    app:avatarViewBorderColor="@color/colorWhite"
+                    app:avatarViewBorderWidth="2dp"
+                    app:avatarViewInitialsBackgroundColor="@color/colorOnSurface"
+                    app:avatarViewInitialsTextColor="@color/colorWhite"
+                    app:avatarViewInitialsTextSize="16sp"
+                    app:avatarViewInitialsTextSizeRatio="0.33"
+                    app:avatarViewInitialsTextStyle="bold"
+                    app:avatarViewPlaceholder="@drawable/account_24"
+                    app:avatarViewShape="circle" />
+
+                <io.getstream.avatarview.AvatarView
+                    android:id="@+id/avatar_spkrs_2"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    app:avatarViewBorderColor="@color/colorWhite"
+                    app:avatarViewBorderWidth="2dp"
+                    app:avatarViewInitialsBackgroundColor="@color/colorOnSurface"
+                    app:avatarViewInitialsTextColor="@color/colorWhite"
+                    app:avatarViewInitialsTextSize="16sp"
+                    app:avatarViewInitialsTextSizeRatio="0.33"
+                    app:avatarViewInitialsTextStyle="bold"
+                    app:avatarViewPlaceholder="@drawable/account_24"
+                    app:avatarViewShape="circle" />
+
+                <io.getstream.avatarview.AvatarView
+                    android:id="@+id/avatar_spkrs_3"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    app:avatarViewBorderColor="@color/colorWhite"
+                    app:avatarViewBorderWidth="2dp"
+                    app:avatarViewInitialsBackgroundColor="@color/colorOnSurface"
+                    app:avatarViewInitialsTextColor="@color/colorWhite"
+                    app:avatarViewInitialsTextSize="16sp"
+                    app:avatarViewInitialsTextSizeRatio="0.33"
+                    app:avatarViewInitialsTextStyle="bold"
+                    app:avatarViewPlaceholder="@drawable/account_24"
+                    app:avatarViewShape="circle" />
+
+                <io.getstream.avatarview.AvatarView
+                    android:id="@+id/avatar_spkrs_4"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    app:avatarViewBorderColor="@color/colorWhite"
+                    app:avatarViewBorderWidth="2dp"
+                    app:avatarViewInitialsBackgroundColor="@color/colorOnSurface"
+                    app:avatarViewInitialsTextColor="@color/colorWhite"
+                    app:avatarViewInitialsTextSize="16sp"
+                    app:avatarViewInitialsTextSizeRatio="0.33"
+                    app:avatarViewInitialsTextStyle="bold"
+                    app:avatarViewPlaceholder="@drawable/account_24"
+                    app:avatarViewShape="circle" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_spkrs_more"
+                    style="@style/Widget.AppTheme.LikeButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:contentDescription="@string/liked_more"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:minHeight="0dp"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    app:icon="@drawable/add_circle_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/likers_title" />
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier_speakers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="avatar_layout_spkrs" />
+
+            <TextView
+                android:id="@+id/likers_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/common_pudding"
+                android:text="@string/likers_label"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/barrier_speakers" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_elike"
+                style="@style/Widget.AppTheme.LikeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:checkable="true"
+                android:contentDescription="@string/description_liked_count"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:minHeight="0dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                app:icon="@drawable/ic_like_selector"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/likers_title"
+                tools:text="@sample/posts.json/data/likedCount" />
+
+            <LinearLayout
+                android:id="@+id/avatar_layout_event_like"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="@id/btn_elike"
+                app:layout_constraintStart_toEndOf="@id/btn_elike"
+                app:layout_constraintTop_toTopOf="@id/btn_elike">
+
+                <io.getstream.avatarview.AvatarView
+                    android:id="@+id/avatar_eliker_0"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    app:avatarViewBorderColor="@color/colorWhite"
+                    app:avatarViewBorderWidth="2dp"
+                    app:avatarViewInitialsBackgroundColor="@color/colorOnSurface"
+                    app:avatarViewInitialsTextColor="@color/colorWhite"
+                    app:avatarViewInitialsTextSize="16sp"
+                    app:avatarViewInitialsTextSizeRatio="0.33"
+                    app:avatarViewInitialsTextStyle="bold"
+                    app:avatarViewPlaceholder="@drawable/account_24"
+                    app:avatarViewShape="circle" />
+
+                <io.getstream.avatarview.AvatarView
+                    android:id="@+id/avatar_eliker_1"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    app:avatarViewBorderColor="@color/colorWhite"
+                    app:avatarViewBorderWidth="2dp"
+                    app:avatarViewInitialsBackgroundColor="@color/colorOnSurface"
+                    app:avatarViewInitialsTextColor="@color/colorWhite"
+                    app:avatarViewInitialsTextSize="16sp"
+                    app:avatarViewInitialsTextSizeRatio="0.33"
+                    app:avatarViewInitialsTextStyle="bold"
+                    app:avatarViewPlaceholder="@drawable/account_24"
+                    app:avatarViewShape="circle" />
+
+                <io.getstream.avatarview.AvatarView
+                    android:id="@+id/avatar_eliker_2"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    app:avatarViewBorderColor="@color/colorWhite"
+                    app:avatarViewBorderWidth="2dp"
+                    app:avatarViewInitialsBackgroundColor="@color/colorOnSurface"
+                    app:avatarViewInitialsTextColor="@color/colorWhite"
+                    app:avatarViewInitialsTextSize="16sp"
+                    app:avatarViewInitialsTextSizeRatio="0.33"
+                    app:avatarViewInitialsTextStyle="bold"
+                    app:avatarViewPlaceholder="@drawable/account_24"
+                    app:avatarViewShape="circle" />
+
+                <io.getstream.avatarview.AvatarView
+                    android:id="@+id/avatar_eliker_3"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    app:avatarViewBorderColor="@color/colorWhite"
+                    app:avatarViewBorderWidth="2dp"
+                    app:avatarViewInitialsBackgroundColor="@color/colorOnSurface"
+                    app:avatarViewInitialsTextColor="@color/colorWhite"
+                    app:avatarViewInitialsTextSize="16sp"
+                    app:avatarViewInitialsTextSizeRatio="0.33"
+                    app:avatarViewInitialsTextStyle="bold"
+                    app:avatarViewPlaceholder="@drawable/account_24"
+                    app:avatarViewShape="circle" />
+
+                <io.getstream.avatarview.AvatarView
+                    android:id="@+id/avatar_eliker_4"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    app:avatarViewBorderColor="@color/colorWhite"
+                    app:avatarViewBorderWidth="2dp"
+                    app:avatarViewInitialsBackgroundColor="@color/colorOnSurface"
+                    app:avatarViewInitialsTextColor="@color/colorWhite"
+                    app:avatarViewInitialsTextSize="16sp"
+                    app:avatarViewInitialsTextSizeRatio="0.33"
+                    app:avatarViewInitialsTextStyle="bold"
+                    app:avatarViewPlaceholder="@drawable/account_24"
+                    app:avatarViewShape="circle" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_elikers_more"
+                    style="@style/Widget.AppTheme.LikeButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:contentDescription="@string/liked_more"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:minHeight="0dp"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    app:icon="@drawable/add_circle_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/likers_title" />
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier_elikers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="btn_elike" />
+
+            <TextView
+                android:id="@+id/mention_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/common_pudding"
+                android:text="@string/participants_label"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/barrier_elikers" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_emention"
+                style="@style/Widget.AppTheme.LikeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/common_pudding"
+                android:checkable="true"
+                android:contentDescription="@string/description_mention_count"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:minHeight="0dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                app:icon="@drawable/ic_mention_select"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mention_title"
+                tools:text="@sample/posts.json/data/likedCount" />
+
+            <LinearLayout
+                android:id="@+id/avatar_layout_ement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="@id/btn_emention"
+                app:layout_constraintStart_toEndOf="@id/btn_emention"
+                app:layout_constraintTop_toTopOf="@id/btn_emention">
+
+                <io.getstream.avatarview.AvatarView
+                    android:id="@+id/avatar_ement_0"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    app:avatarViewBorderColor="@color/colorWhite"
+                    app:avatarViewBorderWidth="2dp"
+                    app:avatarViewInitialsBackgroundColor="@color/colorOnSurface"
+                    app:avatarViewInitialsTextColor="@color/colorWhite"
+                    app:avatarViewInitialsTextSize="16sp"
+                    app:avatarViewInitialsTextSizeRatio="0.33"
+                    app:avatarViewInitialsTextStyle="bold"
+                    app:avatarViewPlaceholder="@drawable/account_24"
+                    app:avatarViewShape="circle" />
+
+                <io.getstream.avatarview.AvatarView
+                    android:id="@+id/avatar_ement_1"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    app:avatarViewBorderColor="@color/colorWhite"
+                    app:avatarViewBorderWidth="2dp"
+                    app:avatarViewInitialsBackgroundColor="@color/colorOnSurface"
+                    app:avatarViewInitialsTextColor="@color/colorWhite"
+                    app:avatarViewInitialsTextSize="16sp"
+                    app:avatarViewInitialsTextSizeRatio="0.33"
+                    app:avatarViewInitialsTextStyle="bold"
+                    app:avatarViewPlaceholder="@drawable/account_24"
+                    app:avatarViewShape="circle" />
+
+                <io.getstream.avatarview.AvatarView
+                    android:id="@+id/avatar_ement_2"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    app:avatarViewBorderColor="@color/colorWhite"
+                    app:avatarViewBorderWidth="2dp"
+                    app:avatarViewInitialsBackgroundColor="@color/colorOnSurface"
+                    app:avatarViewInitialsTextColor="@color/colorWhite"
+                    app:avatarViewInitialsTextSize="16sp"
+                    app:avatarViewInitialsTextSizeRatio="0.33"
+                    app:avatarViewInitialsTextStyle="bold"
+                    app:avatarViewPlaceholder="@drawable/account_24"
+                    app:avatarViewShape="circle" />
+
+                <io.getstream.avatarview.AvatarView
+                    android:id="@+id/avatar_ement_3"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    app:avatarViewBorderColor="@color/colorWhite"
+                    app:avatarViewBorderWidth="2dp"
+                    app:avatarViewInitialsBackgroundColor="@color/colorOnSurface"
+                    app:avatarViewInitialsTextColor="@color/colorWhite"
+                    app:avatarViewInitialsTextSize="16sp"
+                    app:avatarViewInitialsTextSizeRatio="0.33"
+                    app:avatarViewInitialsTextStyle="bold"
+                    app:avatarViewPlaceholder="@drawable/account_24"
+                    app:avatarViewShape="circle" />
+
+                <io.getstream.avatarview.AvatarView
+                    android:id="@+id/avatar_ement_4"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    app:avatarViewBorderColor="@color/colorWhite"
+                    app:avatarViewBorderWidth="2dp"
+                    app:avatarViewInitialsBackgroundColor="@color/colorOnSurface"
+                    app:avatarViewInitialsTextColor="@color/colorWhite"
+                    app:avatarViewInitialsTextSize="16sp"
+                    app:avatarViewInitialsTextSizeRatio="0.33"
+                    app:avatarViewInitialsTextStyle="bold"
+                    app:avatarViewPlaceholder="@drawable/account_24"
+                    app:avatarViewShape="circle" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_ement_more"
+                    style="@style/Widget.AppTheme.LikeButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:contentDescription="@string/ment_more"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:minHeight="0dp"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    app:icon="@drawable/add_circle_24" />
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier_mentioned"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="btn_emention" />
+
+            <com.yandex.mapkit.mapview.MapView
+                android:id="@+id/mapview"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:layout_marginTop="@dimen/common_pudding_8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/barrier_mentioned" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</LinearLayout>

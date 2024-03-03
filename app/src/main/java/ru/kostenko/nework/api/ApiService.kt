@@ -155,4 +155,30 @@ interface ApiService {
 
     @DELETE("my/jobs/{id}")
     suspend fun deleteMyJobs(@Path("id") jobId: Int): Response<Unit>
+
+    //MyWall
+    @POST("my/wall/{id}/likes")
+    suspend fun likePostByIdOnMyWall(@Path("id") id: Int): Response<Post>
+
+    @DELETE("my/wall/{id}/likes")
+    suspend fun dislikePostByIdOnMyWall(@Path("id") id: Int): Response<Post>
+
+    @GET("my/wall")
+    suspend fun getMyWall(): Response<List<Post>>
+
+    @GET("my/wall/{id}/newer")
+    suspend fun getNewerPostsOnMyWall(@Path("id") id: Int): Response<List<Post>>
+
+    @GET("my/wall/{id}/before") //Загружает посты до
+    suspend fun getBeforePostOnMyWall(@Path("id") id: Int, @Query("count") count: Int): Response<List<Post>>
+
+    @GET("my/wall/{id}/after") //Загружает посты после
+    suspend fun getAfterPostOnMyWall(@Path("id") id: Int, @Query("count") count: Int): Response<List<Post>>
+
+    @GET("my/wall/{id}")
+    suspend fun getPostByIdOnMyWall(@Path("id") id: Int): Response<Post>
+
+    @GET("my/wall/latest")
+    suspend fun getLatestPostsOnMyWall(@Query("count") count: Int): Response<List<Post>>
+
 }

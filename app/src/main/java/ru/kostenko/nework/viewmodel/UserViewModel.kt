@@ -7,6 +7,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import ru.kostenko.nework.dto.User
 import ru.kostenko.nework.model.FeedModelState
@@ -22,6 +23,12 @@ class UserViewModel @Inject constructor(
         userRepositoryImpl.data
             .asLiveData(Dispatchers.Default)
 
+  val dataTakeble: LiveData<List<User>> =
+      userRepositoryImpl.data.map { list ->
+          list.map { user ->
+              user.copy(isTaken = true)
+          }
+      }.asLiveData(Dispatchers.Default)
 
     private val _dataState = MutableLiveData<FeedModelState>()
     val dataState: LiveData<FeedModelState>
@@ -61,4 +68,12 @@ class UserViewModel @Inject constructor(
 
     fun getUsersIds(set: Set<Int>) =
         viewModelScope.launch { _userIds.value = set }
+
+    fun getTakeble(): LiveData<List<User>> =
+        userRepositoryImpl.data.map { list ->
+            list.map { user ->
+                user.copy(isTaken = true)
+            }
+        }.asLiveData(Dispatchers.Default)
+
 }

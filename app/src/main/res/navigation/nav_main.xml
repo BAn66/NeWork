@@ -16,14 +16,20 @@
             android:id="@+id/action_mainFragment_to_newPostFragment"
             app:destination="@id/newPostFragment" />
         <action
-            android:id="@+id/action_mainFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
-        <action
             android:id="@+id/action_mainFragment_to_registrationFragment"
             app:destination="@id/registrationFragment" />
         <action
             android:id="@+id/action_mainFragment_to_userDetailsFragment"
             app:destination="@id/userDetailsFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_postFragment"
+            app:destination="@id/postFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_eventFragment"
+            app:destination="@id/eventFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_newEventFragment"
+            app:destination="@id/newEventFragment" />
     </fragment>
 
     <fragment
@@ -58,13 +64,14 @@
         <action
             android:id="@+id/action_newPostFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_newPostFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_newPostFragment_to_takePeopleFragment"
+            app:destination="@id/takePeopleFragment" />
     </fragment>
 
-    <fragment
-        android:id="@+id/profileFragment"
-        android:name="ru.kostenko.nework.ui.ProfileFragment"
-        android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/userDetailsFragment"
         android:name="ru.kostenko.nework.ui.UserDetailsFragment"
@@ -79,5 +86,83 @@
         <action
             android:id="@+id/action_userDetailsFragment_to_registrationFragment"
             app:destination="@id/registrationFragment" />
+        <action
+            android:id="@+id/action_userDetailsFragment_to_newJobFragment"
+            app:destination="@id/newJobFragment" />
+        <action
+            android:id="@+id/action_userDetailsFragment_to_newPostFragment"
+            app:destination="@id/newPostFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/newJobFragment"
+        android:name="ru.kostenko.nework.ui.NewJobFragment"
+        android:label="fragment_new_job"
+        tools:layout="@layout/fragment_new_job" >
+        <action
+            android:id="@+id/action_newJobFragment_to_userDetailsFragment"
+            app:destination="@id/userDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/postFragment"
+        android:name="ru.kostenko.nework.ui.PostFragment"
+        android:label="fragment_post"
+        tools:layout="@layout/fragment_post" >
+        <action
+            android:id="@+id/action_postFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="ru.kostenko.nework.ui.MapFragment"
+        android:label="MapFragment" >
+        <action
+            android:id="@+id/action_mapFragment_to_newPostFragment"
+            app:destination="@id/newPostFragment" />
+        <action
+            android:id="@+id/action_mapFragment_to_newEventFragment"
+            app:destination="@id/newEventFragment" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/addPlace"
+        android:name="ru.kostenko.nework.ui.AddPlaceDialog"
+        android:label="@string/add_place"
+        >
+        <action
+            android:id="@+id/action_addPlace_to_newPostFragment"
+            app:destination="@id/newPostFragment" />
+        <action
+            android:id="@+id/action_addPlace_to_newEventFragment"
+            app:destination="@id/newEventFragment" />
+    </dialog>
+    <fragment
+        android:id="@+id/eventFragment"
+        android:name="ru.kostenko.nework.ui.EventFragment"
+        android:label="fragment_event"
+        tools:layout="@layout/fragment_event" >
+        <action
+            android:id="@+id/action_eventFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newEventFragment"
+        android:name="ru.kostenko.nework.ui.NewEventFragment"
+        android:label="NewEventFragment" >
+        <action
+            android:id="@+id/action_newEventFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_newEventFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/takePeopleFragment"
+        android:name="ru.kostenko.nework.ui.TakePeopleFragment"
+        android:label="fragment_take_people"
+        tools:layout="@layout/fragment_take_people" >
+        <action
+            android:id="@+id/action_takePeopleFragment_to_newPostFragment"
+            app:destination="@id/newPostFragment" />
+    </fragment>
+
 </navigation>

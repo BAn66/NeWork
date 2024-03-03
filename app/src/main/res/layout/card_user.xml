@@ -37,6 +37,17 @@
 
         </androidx.cardview.widget.CardView>
 
+        <CheckBox
+            android:id="@+id/set_people"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:visibility="visible"
+            />
+
         <TextView
             android:id="@+id/user_name"
             android:layout_width="0dp"
@@ -68,6 +79,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/avatar_card_view"
             app:layout_constraintTop_toBottomOf="@id/user_name" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

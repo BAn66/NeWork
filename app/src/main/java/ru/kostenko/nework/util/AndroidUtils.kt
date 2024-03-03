@@ -1,12 +1,21 @@
 package ru.kostenko.nework.util
 
 import android.app.Activity
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
+import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 object AndroidUtils {
+
+    private val calendar = Calendar.getInstance()
     fun hideKeyboard(view: View) { //скрываем клавиатуру
         val inputMethodManager = view.context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
@@ -63,6 +72,90 @@ object AndroidUtils {
                     .replace(".0", "") + "M"
         }
         return s
+    }
+
+    fun pickDate(editText: EditText?, context: Context?) {
+        val datePicker = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+            calendar[Calendar.YEAR] = year
+            calendar[Calendar.MONTH] = monthOfYear
+            calendar[Calendar.DAY_OF_MONTH] = dayOfMonth
+
+            editText?.setText(
+                SimpleDateFormat("MM/dd/yyyy", Locale.ROOT)
+                    .format(calendar.time)
+            )
+        }
+        DatePickerDialog(
+            context!!,
+            datePicker,
+            calendar[Calendar.YEAR],
+            calendar[Calendar.MONTH],
+            calendar[Calendar.DAY_OF_MONTH]
+        ).show()
+    }
+    fun pickTime(editText: EditText, context: Context) {
+        val timePicker = TimePickerDialog.OnTimeSetListener { _, hour, minute ->
+            calendar[Calendar.HOUR_OF_DAY] = hour
+            calendar[Calendar.MINUTE] = minute
+
+            editText.setText(
+                SimpleDateFormat("HH:mm", Locale.ROOT)
+                    .format(calendar.time)
+            )
+        }
+        TimePickerDialog(
+            context,
+            timePicker,
+            calendar[Calendar.HOUR_OF_DAY],
+            calendar[Calendar.MINUTE],
+            true
+        ).show()
+    }
+
+    fun formatDateForServer(value: String) : String {
+        return if (value != "") {
+            val dateTime = SimpleDateFormat(
+                "MM/dd/yyyy HH:mm",
+                Locale.getDefault()
+            ).parse(value)
+            Log.d("EventTAAAG", " Android utils formatToInstant: $dateTime")
+            val transform =
+                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+            transform.format(dateTime)
+        } else "1900-01-01T00:00:00Z"
+    }
+
+    fun pickDateForJob(editText: EditText?, context: Context?) {
+        val datePicker = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+            calendar[Calendar.YEAR] = year
+            calendar[Calendar.MONTH] = monthOfYear
+            calendar[Calendar.DAY_OF_MONTH] = dayOfMonth
+
+            editText?.setText(
+                SimpleDateFormat("dd.MM.yyyy", Locale.ROOT)
+                    .format(calendar.time)
+            )
+        }
+        DatePickerDialog(
+            context!!,
+            datePicker,
+            calendar[Calendar.YEAR],
+            calendar[Calendar.MONTH],
+            calendar[Calendar.DAY_OF_MONTH]
+        ).show()
+    }
+
+    fun formatDateForJob(value: String) : String {
+        return if (value != "") {
+            val dateTime = SimpleDateFormat(
+                "dd.MM.yyyy",
+                Locale.getDefault()
+            ).parse(value)
+            Log.d("JobTAAAG", " Android utils formatToInstant: $dateTime")
+            val transform =
+                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+            transform.format(dateTime)
+        } else "1900-01-01T00:00:00Z"
     }
 }
 

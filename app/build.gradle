@@ -132,7 +132,7 @@ dependencies {
     implementation "androidx.room:room-paging:2.6.1" //для room with Pagging3
 
     implementation 'com.github.dhaval2404:imagepicker:2.1'    //для работы с картинками
-
     implementation 'com.yandex.android:maps.mobile:4.5.0-lite'//для ЯндексКарт
-
+    //https://github.com/GetStream/avatarview-android
+    implementation "io.getstream:avatarview-coil:1.0.7" //avatars
 }

@@ -1,17 +1,17 @@
 package ru.kostenko.nework.entity
 
-import androidx.room.Entity
+
 import ru.kostenko.nework.dto.Coords
 
 data class CoordsEntity(
-    val coordslat: Int = 0,
-    val coordslong: Int = 0,
+    val latitude: Double,
+    val longtitude: Double,
 ) {
-    fun toDto() = Coords(coordslat, coordslong)
+    fun toDto() = Coords(latitude, longtitude)
 
     companion object {
         fun fromDto(dto: Coords?): CoordsEntity? {
-            return if (dto != null) CoordsEntity(dto.latC, dto.longC) else null
+            return if (dto != null) CoordsEntity(dto.lat, dto.long) else null
         }
     }
 }

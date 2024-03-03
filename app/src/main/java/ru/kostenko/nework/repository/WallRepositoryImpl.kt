@@ -51,12 +51,47 @@ class WallRepositoryImpl @Inject constructor(
             pagingData.map(WallEntity::toDto)
         }
 
+
     override suspend fun likePostById(authorId: Int, id: Int, likedByMe: Boolean) {
         try {
             wallDao.likeById(id)
             val response =
                 apiService.let {
                     if (likedByMe) it.dislikePostByIdOnWall(authorId, id) else it.likePostByIdOnWall(authorId, id)
+                }
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            wallDao.insert(WallEntity.fromDto(body))
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
+    }
+    @OptIn(ExperimentalPagingApi::class)
+    override fun getMyWallPosts(): Flow<PagingData<FeedItem>> = Pager(
+        config = PagingConfig(pageSize = 10, enablePlaceholders = true),
+        pagingSourceFactory = { wallDao.getPagingSource() },
+        remoteMediator = WallRemoteMediator(
+            apiService = apiService,
+            wallDao = wallDao,
+            remoteKeyDao = remoteKeyDao,
+            appDb = appDb,
+            authorId = 0
+        )
+    ).flow
+        .map { pagingData ->
+            pagingData.map(WallEntity::toDto)
+        }
+
+    override suspend fun likeMyPostById(id: Int, likedByMe: Boolean) {
+        try {
+            wallDao.likeById(id)
+            val response =
+                apiService.let {
+                    if (likedByMe) it.dislikePostByIdOnMyWall(id) else it.likePostByIdOnMyWall( id)
                 }
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())

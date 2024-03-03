@@ -31,12 +31,12 @@ interface OnPostInteractionListener {
     fun remove(post: Post)
     fun edit(post: Post)
     fun openPost(post: Post)
-//    fun onOpenLikers(post: Post) Это в детальную карточку поста надо
+    fun share(post: Post)
 }
 
 class PostsAdapter(
     private val onPostIteractionLister: OnPostInteractionListener,
-    private val observer : MediaLifecycleObserver
+    private val observer: MediaLifecycleObserver
 ) : PagingDataAdapter<FeedItem, PostViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
@@ -55,8 +55,8 @@ class PostsAdapter(
 class PostViewHolder(
     private val binding: CardPostBinding,
     private val onPostInteractionListener: OnPostInteractionListener,
-    private val observer :MediaLifecycleObserver
-) : RecyclerView.ViewHolder(binding.root){
+    private val observer: MediaLifecycleObserver
+) : RecyclerView.ViewHolder(binding.root) {
     @SuppressLint("SetTextI18n")
     fun bind(post: Post) {
         binding.apply {
@@ -113,26 +113,26 @@ class PostViewHolder(
 //            } else author.text = post.author
 
             play.setOnClickListener {
-                    videoContent.apply{
-                        setMediaController(MediaController( context))
-                        setVideoURI(
-                            Uri.parse(post.attachment!!.url)
-                        )
-                        setOnPreparedListener {
-                            start()
-                        }
-                        setOnCompletionListener {
-                            stopPlayback()
-                        }
+                videoContent.apply {
+                    setMediaController(MediaController(context))
+                    setVideoURI(
+                        Uri.parse(post.attachment!!.url)
+                    )
+                    setOnPreparedListener {
+                        start()
+                    }
+                    setOnCompletionListener {
+                        stopPlayback()
                     }
                 }
+            }
 
-
+            //TODO при нажатии на паузу аудиоплеера и повторном плэй падает
             playButton.setOnClickListener {
                 observer.apply {
                     //Не забываем добавлять разрешение в андроид манифест на работу с сетью
                     val url = post.attachment!!.url
-                    mediaPlayer?.setDataSource(url) //TODO при нажатии на паузу аудиоплеера и повторном плэй падает
+                    mediaPlayer?.setDataSource(url)
                 }.play()
             }
 
@@ -143,8 +143,8 @@ class PostViewHolder(
             }
 
             stopButton.setOnClickListener {
-                if (observer.mediaPlayer != null &&  observer.mediaPlayer!!.isPlaying) {
-                   observer.mediaPlayer?.stop()
+                if (observer.mediaPlayer != null && observer.mediaPlayer!!.isPlaying) {
+                    observer.mediaPlayer?.stop()
                 }
             }
 
@@ -162,23 +162,21 @@ class PostViewHolder(
                 onPostInteractionListener.like(post)
             }
 
-//            btnLike.setOnLongClickListener {
-//                onPostInteractionListener.onOpenLikers(post)
-//                true
-//            }
+            btnShare.setOnClickListener {
+                onPostInteractionListener.share(post)
+            }
 
             content.setOnClickListener {
                 println("content clicked")
                 onPostInteractionListener.openPost(post)
             }
 
-
-
             postLayout.setOnClickListener { onPostInteractionListener.openPost(post) }
             avatar.setOnClickListener { onPostInteractionListener.openPost(post) }
             author.setOnClickListener { onPostInteractionListener.openPost(post) }
             published.setOnClickListener { onPostInteractionListener.openPost(post) }
-//            imageAttach.setOnClickListener { onPostInteractionListener.openImage(post) }
+            content.setOnClickListener { onPostInteractionListener.openPost(post) }
+            imageAttach.setOnClickListener { onPostInteractionListener.openPost(post) }
 
             menu.isVisible = post.ownedByMe  //Меню видно если пост наш
             menu.setOnClickListener {
@@ -190,10 +188,12 @@ class PostViewHolder(
                                 onPostInteractionListener.remove(post)
                                 true
                             }
+
                             R.id.edit -> {
                                 onPostInteractionListener.edit(post)
                                 true
                             }
+
                             else -> false
                         }
                     }
@@ -201,6 +201,8 @@ class PostViewHolder(
             }
         }
     }
+
+
 }
 
 
