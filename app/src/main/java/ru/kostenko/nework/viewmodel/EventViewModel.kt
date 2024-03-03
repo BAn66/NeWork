@@ -134,13 +134,8 @@ class EventViewModel @Inject constructor(
                     type = type,
                 )
                 try {
-                    val mediaModel = _media.value
-                    if (mediaModel == null && editEvent.content != text) {
-                        repository.saveEvent(eventCopy)
-
-                    } else if (mediaModel != null) {
-                        repository.saveEventWithAttachment(eventCopy, mediaModel)
-                    }
+                    val mediaModel = if (_media.value?.inputStream != null) _media.value else null
+                    repository.saveEvent(eventCopy, mediaModel)
                     _dataState.value = FeedModelState()
                 } catch (e: Exception) {
                     _dataState.value = FeedModelState(error = true)

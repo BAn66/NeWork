@@ -111,8 +111,6 @@ class NewPostFragment : Fragment() {
                         } else {
                             val content = binding.editTextNewPost.text.toString()
                             postViewModel.changePostAndSave(content)
-                            Log.d("PostTAAAG", "changeEventAndSave newPostFragment content: ${postViewModel.content.value}")
-                            Log.d("PostTAAAG", "changeEventAndSave newPostFragment coords: ${postViewModel.coords.value}")
                             activity?.invalidateOptionsMenu()
                             requireParentFragment().findNavController()
                                 .navigate(R.id.action_newPostFragment_to_mainFragment)

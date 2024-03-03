@@ -20,6 +20,7 @@ import ru.kostenko.nework.dto.Media
 import ru.kostenko.nework.dto.MediaModel
 import ru.kostenko.nework.dto.User
 import ru.kostenko.nework.entity.EventEntity
+import ru.kostenko.nework.entity.PostEntity
 import ru.kostenko.nework.error.ApiError
 import ru.kostenko.nework.error.NetworkError
 import ru.kostenko.nework.error.UnknownError
@@ -48,14 +49,23 @@ class EventRepositoryImpl @Inject constructor(
             pagingData.map(EventEntity::toDto)
         }
 
-    override suspend fun saveEvent(event: Event) {
+    override suspend fun saveEvent(event: Event, mediaModel: MediaModel?) {
         try {
-            eventDao.insert(EventEntity.fromDto(event))
-            val response = apiService.saveEvent(event)
+            val eventWithAttachment = if (mediaModel != null) {
+                val media = saveMediaOnServer(mediaModel)
+                event.copy(attachment = Attachment(media.url, requireNotNull(mediaModel.type)))
+            } else {
+                event.copy()
+            }
+
+            val response = apiService.saveEvent(eventWithAttachment)
+
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
-            response.body() ?: throw ApiError(response.code(), response.message())
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            eventDao.insert(EventEntity.fromDto(body))
+
         } catch (e: IOException) {
             throw NetworkError
         } catch (e: Exception) {
@@ -63,19 +73,19 @@ class EventRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun saveEventWithAttachment(event: Event, mediaModel: MediaModel) {
-        try {
-            val media = saveMediaOnServer(mediaModel)
-            val eventWithAttachment = event.copy(attachment = mediaModel.type?.let { type ->
-                Attachment(media.url, type)
-            })
-            saveEvent(eventWithAttachment)
-        } catch (e: IOException) {
-            throw NetworkError
-        } catch (e: Exception) {
-            throw UnknownError
-        }
-    }
+//    override suspend fun saveEventWithAttachment(event: Event, mediaModel: MediaModel) {
+//        try {
+//            val media = saveMediaOnServer(mediaModel)
+//            val eventWithAttachment = event.copy(attachment = mediaModel.type?.let { type ->
+//                Attachment(media.url, type)
+//            })
+//            saveEvent(eventWithAttachment)
+//        } catch (e: IOException) {
+//            throw NetworkError
+//        } catch (e: Exception) {
+//            throw UnknownError
+//        }
+//    }
 
     override suspend fun saveMediaOnServer(mediaModel: MediaModel): Media {
         try {

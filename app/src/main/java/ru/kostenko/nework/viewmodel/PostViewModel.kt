@@ -130,10 +130,7 @@ class PostViewModel @Inject constructor(
                     users = mapOf()
                 )
                 try {
-                    Log.d("PostTAAAG", "changeEventAndSave viewModel coords: ${_coords.value} ")
-                    Log.d("PostTAAAG", "changeEventAndSave viewModel coords: ${coords.value}")
-                    Log.d("PostTAAAG", "changeEventAndSave newPostFragment content: ${text} / ${postCopy.content}")
-                    val mediaModel = _media.value
+                    val mediaModel = if(_media.value?.inputStream != null)_media.value else null
                     repository.savePost(postCopy, mediaModel)
                     _dataState.value = FeedModelState()
                     _postCreated.value = Unit

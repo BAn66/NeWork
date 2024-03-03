@@ -73,10 +73,11 @@ class WallFragment : Fragment() {
                 }
 
                 override fun remove(post: Post) {
-                    TODO("Not yet implemented")
+                    postViewModel.removePostById(post.id)
                 }
 
                 override fun edit(post: Post) {
+                    postViewModel.clearMedia()
                     postViewModel.editPost(post)
                 }
 
