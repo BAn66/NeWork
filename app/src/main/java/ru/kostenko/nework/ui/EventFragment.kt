@@ -357,7 +357,9 @@ class EventFragment : Fragment() {
 
         if (event.speakerIds.size <= 5) binding.btnSpkrsMore.visibility = View.GONE
         binding.btnSpkrsMore.setOnClickListener {
-            Toast.makeText(context, "Открываем список лекторов", Toast.LENGTH_SHORT).show()
+            userViewModel.setSetIds(event.speakerIds)
+            requireParentFragment().findNavController()
+                .navigate(R.id.action_eventFragment_to_likersMentMoreFragment)
         }
 
         //Группа лайков и лайкеров
@@ -365,11 +367,6 @@ class EventFragment : Fragment() {
         event.likeOwnerIds.forEach {
             listLikersId.add(it)
         }
-//        val avatarView0: AvatarView = binding.avatarLayoutLike.findViewById(R.id.avatar_eliker_0)
-//        val avatarView1: AvatarView = binding.avatarLayoutLike.findViewById(R.id.avatar_eliker_1)
-//        val avatarView2: AvatarView = binding.avatarLayoutLike.findViewById(R.id.avatar_eliker_2)
-//        val avatarView3: AvatarView = binding.avatarLayoutLike.findViewById(R.id.avatar_eliker_3)
-//        val avatarView4: AvatarView = binding.avatarLayoutLike.findViewById(R.id.avatar_eliker_4)
 
         val avatarView0: AvatarView = binding.avatarEliker0
         val avatarView1: AvatarView = binding.avatarEliker1
@@ -443,8 +440,11 @@ class EventFragment : Fragment() {
 
         if (event.likeOwnerIds.size <= 5) binding.btnElikersMore.visibility = View.GONE
         binding.btnElikersMore.setOnClickListener {
-            Toast.makeText(context, "Открываем список лайкеров", Toast.LENGTH_SHORT).show()
-        }
+                userViewModel.setSetIds(event.likeOwnerIds)
+                requireParentFragment().findNavController()
+                    .navigate(R.id.action_eventFragment_to_likersMentMoreFragment)
+            }
+
 
         //Упомянутые и все все все
         val listMentId = mutableListOf<Int>()
@@ -525,7 +525,9 @@ class EventFragment : Fragment() {
 
         if (event.participantsIds.size <= 5) binding.btnEmentMore.visibility = View.GONE
         binding.btnEmentMore.setOnClickListener {
-            Toast.makeText(context, "Открываем список упомянутых", Toast.LENGTH_SHORT).show()
+            userViewModel.setSetIds(event.participantsIds)
+            requireParentFragment().findNavController()
+                .navigate(R.id.action_eventFragment_to_likersMentMoreFragment)
         }
 
         //TODO сделать так чтобы кнопка выступающих была активна если я выступающий

@@ -88,4 +88,5 @@
     <string name="select_audio">Select audio</string>
     <string name="select_gallary">Select gallary</string>
     <string name="select_camera">Select camera</string>
+    <string name="speakers_more">Speakers more</string>
 </resources>

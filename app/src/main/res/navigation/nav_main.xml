@@ -110,6 +110,9 @@
         <action
             android:id="@+id/action_postFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_postFragment_to_likersMentMoreFragment"
+            app:destination="@id/likersMentMoreFragment" />
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
@@ -143,6 +146,9 @@
         <action
             android:id="@+id/action_eventFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_eventFragment_to_likersMentMoreFragment"
+            app:destination="@id/likersMentMoreFragment" />
     </fragment>
     <fragment
         android:id="@+id/newEventFragment"
@@ -188,5 +194,10 @@
             android:id="@+id/action_takeSpeakersFragment_to_newEventFragment"
             app:destination="@id/newEventFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/likersMentMoreFragment"
+        android:name="ru.kostenko.nework.ui.LikersMentMoreFragment"
+        android:label="fragment_likers_mentioned_more"
+        tools:layout="@layout/fragment_likers_mentioned_more" />
 
 </navigation>

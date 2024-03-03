@@ -30,6 +30,13 @@ class UserViewModel @Inject constructor(
           }
       }.asLiveData(Dispatchers.Default)
 
+    val dataSetPeople: LiveData<List<User>> =
+        userRepositoryImpl.data.map { list ->
+            list.mapNotNull { user ->
+                if(userIds.value?.contains(user.id)!!) user else null
+            }
+        }.asLiveData(Dispatchers.Default)
+
     private val _dataState = MutableLiveData<FeedModelState>()
     val dataState: LiveData<FeedModelState>
         get() = _dataState
@@ -75,5 +82,9 @@ class UserViewModel @Inject constructor(
                 user.copy(isTaken = true)
             }
         }.asLiveData(Dispatchers.Default)
+
+    fun setSetIds(set: Set<Int>) {
+        _userIds.value = set
+    }
 
 }

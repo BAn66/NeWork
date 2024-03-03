@@ -89,4 +89,5 @@
     <string name="select_audio">Выберите аудио</string>
     <string name="select_gallary">Изображение из галереи</string>
     <string name="select_camera">Изображение с камеры</string>
+    <string name="speakers_more">Speakers more</string>
 </resources>

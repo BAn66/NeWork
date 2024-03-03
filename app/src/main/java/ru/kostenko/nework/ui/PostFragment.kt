@@ -355,7 +355,9 @@ class PostFragment : Fragment() {
 
         if (post.likeOwnerIds.size <= 5) binding.btnLikersMore.visibility = View.GONE
         binding.btnLikersMore.setOnClickListener {
-            Toast.makeText(context, "Открываем список лайкеров", Toast.LENGTH_SHORT).show()
+            userViewModel.setSetIds(post.likeOwnerIds)
+            requireParentFragment().findNavController()
+                .navigate(R.id.action_postFragment_to_likersMentMoreFragment)
         }
 
         //Упомянутые и все все все
@@ -431,8 +433,11 @@ class PostFragment : Fragment() {
 
         if (post.mentionIds.size <= 5) binding.btnMentMore.visibility = View.GONE
         binding.btnMentMore.setOnClickListener {
-            Toast.makeText(context, "Открываем список упомянутых", Toast.LENGTH_SHORT).show()
+                userViewModel.setSetIds(post.mentionIds)
+                requireParentFragment().findNavController()
+                    .navigate(R.id.action_postFragment_to_likersMentMoreFragment)
         }
+
 
         return binding.root
     }
