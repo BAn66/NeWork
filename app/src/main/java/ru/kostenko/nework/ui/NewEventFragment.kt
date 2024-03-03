@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.MediaController
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
@@ -77,7 +76,7 @@ class NewEventFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        val observer = MediaLifecycleObserver()
+
         val binding = FragmentNewEventBinding.inflate(layoutInflater)
 
         binding.editTextNewPost.setText(eventViewModel.content.value)
@@ -114,16 +113,25 @@ class NewEventFragment : Fragment() {
                         } else {
                             val content = binding.editTextNewPost.text.toString()
                             val dateTime =
-                            if(eventViewModel.datetime.value.isNullOrEmpty()){
-                                OffsetDateTime.now().toString()
-                            } else eventViewModel.datetime.value.toString()
+                                if (eventViewModel.datetime.value.isNullOrEmpty()) {
+                                    OffsetDateTime.now().toString()
+                                } else eventViewModel.datetime.value.toString()
 
-                            val typeEvent =  if(eventViewModel.eventType.value == null){
+                            val typeEvent = if (eventViewModel.eventType.value == null) {
                                 EventType.ONLINE
-                            } else  eventViewModel.eventType.value
+                            } else eventViewModel.eventType.value
 
-                            Log.d("EventTAAAG", " Newevent save event type: ${eventViewModel.eventType.value} ")
-                            typeEvent?.let { eventViewModel.changeEventAndSave(content, dateTime, it)}
+                            Log.d(
+                                "EventTAAAG",
+                                " Newevent save event type: ${eventViewModel.eventType.value} "
+                            )
+                            typeEvent?.let {
+                                eventViewModel.changeEventAndSave(
+                                    content,
+                                    dateTime,
+                                    it
+                                )
+                            }
                             activity?.invalidateOptionsMenu()
                             findNavController()
                                 .navigate(R.id.action_newEventFragment_to_mainFragment)
@@ -144,9 +152,11 @@ class NewEventFragment : Fragment() {
         binding.takePhoto.setOnClickListener { //Берем фотку через галерею
             eventViewModel.clearMedia()
             val pictureDialog = AlertDialog.Builder(it.context)
-            pictureDialog.setTitle("Select Action")
+            pictureDialog.setTitle(R.string.select_action)
+            val str1 = getString(R.string.select_gallary)
+            val str2 = getString(R.string.select_camera)
             val pictureDialogItems =
-                arrayOf("Select photo from gallery", "Capture photo from camera")
+                arrayOf(str1, str2)
             pictureDialog.setItems(
                 pictureDialogItems
             ) { _, which ->
@@ -162,9 +172,11 @@ class NewEventFragment : Fragment() {
         binding.takeFile.setOnClickListener {
             eventViewModel.clearMedia()
             val pictureDialog = AlertDialog.Builder(it.context)
-            pictureDialog.setTitle("Select Action")
+            pictureDialog.setTitle(R.string.select_action)
+            val str1 = getString(R.string.select_video)
+            val str2 = getString(R.string.select_audio)
             val pictureDialogItems =
-                arrayOf("Select video", "Select audio")
+                arrayOf(str1, str2)
             pictureDialog.setItems(
                 pictureDialogItems
             ) { _, which ->
@@ -229,7 +241,6 @@ class NewEventFragment : Fragment() {
         }
 
 
-
         //Вызов диалога для установки даты и вида событий
         binding.addDateEvent.setOnClickListener {
             val modalBottomSheet = DateEventFragment()
@@ -265,10 +276,31 @@ class NewEventFragment : Fragment() {
             }
         }
 
+        binding.takePeople.setOnClickListener {
+            eventViewModel.setContent(binding.editTextNewPost.text.toString())
+            val peopleDialog = AlertDialog.Builder(it.context)
+            peopleDialog.setTitle(R.string.select_action)
+            val str1 = getString(R.string.select_ment)
+            val str2 = getString(R.string.select_spk)
+            val peopleDialogItems = arrayOf(str1, str2)
+            peopleDialog.setItems(
+                peopleDialogItems
+            ) { _, which ->
+                when (which) {
+                    0 -> requireParentFragment().findNavController()
+                        .navigate(R.id.action_newEventFragment_to_takeParticipantsFragment)
+
+                    1 -> requireParentFragment().findNavController()
+                        .navigate(R.id.action_newEventFragment_to_takeSpeakersFragment)
+                }
+            }
+            peopleDialog.show()
+        }
+
         return binding.root
 
         //TODO сделать кнопку очистки для видео и аудио(может использовать уже имеющуюся?) в событии
-        //TODO Сделать выбор спикеров в событии
+
     }
 
     fun choosePhotoFromGallary() {

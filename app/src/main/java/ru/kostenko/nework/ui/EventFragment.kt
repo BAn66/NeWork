@@ -1,7 +1,5 @@
 package ru.kostenko.nework.ui
 
-import android.animation.ObjectAnimator
-import android.animation.PropertyValuesHolder
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
@@ -10,7 +8,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.BounceInterpolator
 import android.widget.MediaController
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -223,22 +220,26 @@ class EventFragment : Fragment() {
 
         binding.btnElike.text = AndroidUtils.eraseZero(
             event.likeOwnerIds.size.toLong()
-
         )
         binding.btnElike.isChecked = event.likedByMe
+        binding.btnElike.isCheckable = false
 
-
-        //TODO Проверить работу кнопки лайка внутри события
-        binding.btnElike.setOnClickListener {//анимация лайка
-            val scaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, 1F, 1.25F, 1F)
-            val scaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1F, 1.25F, 1F)
-            ObjectAnimator.ofPropertyValuesHolder(it, scaleX, scaleY).apply {
-                duration = 500
+        binding.btnEmention.text = AndroidUtils.eraseZero(
+            event.participantsIds.size.toLong()
+        )
+        binding.btnEmention.isChecked = event.participatedByMe
+        binding.btnEmention.isCheckable = false
+//        //TODO Проверить работу кнопки лайка внутри события
+//        binding.btnElike.setOnClickListener {//анимация лайка
+//            val scaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, 1F, 1.25F, 1F)
+//            val scaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1F, 1.25F, 1F)
+//            ObjectAnimator.ofPropertyValuesHolder(it, scaleX, scaleY).apply {
+//                duration = 500
 //                    repeatCount = 100
-                interpolator = BounceInterpolator()
-            }.start()
-            eventViewModel.likeEventById(event.id, event.likedByMe)
-        }
+//                interpolator = BounceInterpolator()
+//            }.start()
+//            eventViewModel.likeEventById(event.id, event.likedByMe)
+//        }
 
         //Для карты
         mapView = binding.mapview.apply {

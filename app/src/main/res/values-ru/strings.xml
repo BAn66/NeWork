@@ -82,4 +82,11 @@
     <string name="video_holder">Заставка</string>
     <string name="speakers_label">Выступающие</string>
     <string name="take_people">Выбрать пользователей</string>
+    <string name="select_action">Выберите действие</string>
+    <string name="select_ment">Отметить пользователей</string>
+    <string name="select_spk">Отметить выступающих</string>
+    <string name="select_video">Выберите видео</string>
+    <string name="select_audio">Выберите аудио</string>
+    <string name="select_gallary">Изображение из галереи</string>
+    <string name="select_camera">Изображение с камеры</string>
 </resources>

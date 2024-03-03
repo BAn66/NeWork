@@ -87,10 +87,6 @@ class EventViewModel @Inject constructor(
 
     val edited = MutableLiveData(empty)
 
-    private val _eventCreated = SingleLiveEvent<Unit>()
-    val eventCreated: LiveData<Unit>
-        get() = _eventCreated
-
     private val _event = MutableLiveData<Event>()
     val event: LiveData<Event>
         get() = _event
@@ -146,7 +142,6 @@ class EventViewModel @Inject constructor(
                         repository.saveEventWithAttachment(eventCopy, mediaModel)
                     }
                     _dataState.value = FeedModelState()
-                    _eventCreated.value = Unit
                 } catch (e: Exception) {
                     _dataState.value = FeedModelState(error = true)
                 }
@@ -234,6 +229,25 @@ class EventViewModel @Inject constructor(
             _dataState.value = FeedModelState()
         } catch (e: Exception) {
             _dataState.value = FeedModelState(error = true)
+        }
+    }
+
+    fun setParticipants(set: Set<Int>) {
+        edited.value = edited.value?.copy(participantsIds = set)
+    }
+
+    fun setSpeakers(set: Set<Int>) {
+        edited.value = edited.value?.copy(speakerIds = set)
+    }
+
+    fun participate(id: Int, participatedByMe: Boolean) {
+        viewModelScope.launch {
+            try {
+                repository.participateById(id, participatedByMe)
+                _dataState.value = FeedModelState()
+            } catch (e: Exception) {
+                _dataState.value = FeedModelState(error = true)
+            }
         }
     }
 

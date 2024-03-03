@@ -154,6 +154,12 @@
         <action
             android:id="@+id/action_newEventFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_newEventFragment_to_takeParticipantsFragment"
+            app:destination="@id/takeParticipantsFragment" />
+        <action
+            android:id="@+id/action_newEventFragment_to_takeSpeakersFragment"
+            app:destination="@id/takeSpeakersFragment" />
     </fragment>
     <fragment
         android:id="@+id/takePeopleFragment"
@@ -163,6 +169,24 @@
         <action
             android:id="@+id/action_takePeopleFragment_to_newPostFragment"
             app:destination="@id/newPostFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/takeParticipantsFragment"
+        android:name="ru.kostenko.nework.ui.TakeParticipantsFragment"
+        android:label="fragment_take_participants"
+        tools:layout="@layout/fragment_take_participants" >
+        <action
+            android:id="@+id/action_takeParticipantsFragment_to_newEventFragment"
+            app:destination="@id/newEventFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/takeSpeakersFragment"
+        android:name="ru.kostenko.nework.ui.TakeSpeakersFragment"
+        android:label="fragment_take_speakers"
+        tools:layout="@layout/fragment_take_speakers" >
+        <action
+            android:id="@+id/action_takeSpeakersFragment_to_newEventFragment"
+            app:destination="@id/newEventFragment" />
     </fragment>
 
 </navigation>

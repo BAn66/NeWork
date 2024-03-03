@@ -15,4 +15,5 @@ interface EventRepository {
     suspend fun saveMediaOnServer(mediaModel: MediaModel): Media
     suspend fun removeEventById(id: Int)
     suspend fun likeEventById(id: Int, likedByMe: Boolean)
+    suspend fun participateById(id: Int, participatedByMe: Boolean)
 }

@@ -55,7 +55,7 @@ class EventRepositoryImpl @Inject constructor(
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            response.body() ?: throw ApiError(response.code(), response.message())
         } catch (e: IOException) {
             throw NetworkError
         } catch (e: Exception) {
@@ -117,6 +117,25 @@ class EventRepositoryImpl @Inject constructor(
             val response =
                 apiService.let {
                     if (likedByMe) it.dislikeEventById(id) else it.likeEventById(id)
+                }
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            eventDao.insert(EventEntity.fromDto(body))
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
+    }
+
+    override suspend fun participateById(id: Int, participatedByMe: Boolean) {
+        try {
+            eventDao.likeById(id)
+            val response =
+                apiService.let {
+                    if (participatedByMe) it.deleteEventParticipants(id) else it.saveEventParticipants(id)
                 }
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())

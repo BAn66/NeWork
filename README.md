@@ -63,3 +63,10 @@
 
 ![UsersJobs](https://github.com/BAn66/NeWork/blob/master/sceenshots/userDetailsJobs.JPG?raw=true)
 ![NewJob](https://github.com/BAn66/NeWork/blob/master/sceenshots/NewJob.JPG?raw=true)
+
+### Реализована локализация на русский и английский языки.
+
+## Разработано Костенко Константином.
+telegramm: [@NMAdminAstra](https://t.me/NMAdminAstra)
+github: [BAn66](https://github.com/BAn66)
+e-mail: thetanqel@gmail.com
