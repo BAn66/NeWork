@@ -136,7 +136,7 @@ class EventViewModel @Inject constructor(
                 )
                 try {
                     val mediaModel = if (_media.value?.inputStream != null) _media.value else null
-                    Log.d("EventTAAAG", "changeEventAndSave model view: $eventCopy")
+                    Log.d("PartTAAAG", "VieModel Participants save : ${eventCopy.participantsIds}")
                     repository.saveEvent(eventCopy, mediaModel)
                     _dataState.value = FeedModelState()
                 } catch (e: Exception) {
@@ -231,6 +231,7 @@ class EventViewModel @Inject constructor(
 
     fun setParticipants(set: Set<Int>) {
         edited.value = edited.value?.copy(participantsIds = set)
+        Log.d("PartTAAAG", "VieModel setParticipants : ${edited.value?.participantsIds}")
     }
 
     fun setSpeakers(set: Set<Int>) {

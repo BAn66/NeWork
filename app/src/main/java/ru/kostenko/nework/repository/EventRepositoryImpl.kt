@@ -50,14 +50,15 @@ class EventRepositoryImpl @Inject constructor(
         }
 
     override suspend fun saveEvent(event: Event, mediaModel: MediaModel?) {
-        Log.d("EventTAAAG", "SaveEvent repository out try: $event")
-        Log.d("EventTAAAG", "SaveEvent repository out try mediaModel: $mediaModel")
+        Log.d("PartTAAAG", "repository setParticipants out try: ${ event.copy().participantsIds}")
         try {
+            Log.d("PartTAAAG", "repository setParticipants in try1: ${ event.copy().participantsIds}")
             val eventWithAttachment = if (mediaModel != null) {
                 val media = saveMediaOnServer(mediaModel)
-                Log.d("EventTAAAG", "SaveEvent repository in try: $event.copy(attachment = Attachment(media.url, requireNotNull(mediaModel.type)))")
+                Log.d("PartTAAAG", "repository setParticipants in try2: ${ event.copy().participantsIds}")
                 event.copy(attachment = Attachment(media.url, requireNotNull(mediaModel.type)))
             } else {
+                Log.d("PartTAAAG", "repository setParticipants in try3: ${ event.copy().participantsIds}")
                 event.copy()
             }
 

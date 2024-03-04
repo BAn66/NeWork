@@ -117,15 +117,21 @@ class NewEventFragment : Fragment() {
                                 EventType.ONLINE
                             } else eventViewModel.eventType.value
 
-                            Log.d("EventTAAAG", "changeEventAndSave fragment before: ${eventViewModel.edited}")
-                            typeEvent?.let {type ->
+                            Log.d(
+                                "PartTAAAG",
+                                "changeEventAndSave Eventfragment before: ${eventViewModel.edited.value?.participantsIds}"
+                            )
+                            typeEvent?.let { type ->
                                 eventViewModel.changeEventAndSave(
                                     content,
                                     dateTime,
                                     type
                                 )
                             }
-                            Log.d("EventTAAAG", "changeEventAndSave fragment after: ${eventViewModel.edited}")
+                            Log.d(
+                                "PartTAAAG",
+                                "changeEventAndSave Eventfragment after: ${eventViewModel.edited.value?.participantsIds}"
+                            )
                             activity?.invalidateOptionsMenu()
                             findNavController()
                                 .navigate(R.id.action_newEventFragment_to_mainFragment)
@@ -133,6 +139,7 @@ class NewEventFragment : Fragment() {
                         }
                         true
                     }
+
                     else -> false
                 }
             }
@@ -275,30 +282,32 @@ class NewEventFragment : Fragment() {
             }
         }
 
+        //Выбираем выступающих
         binding.takePeople.setOnClickListener {
-            eventViewModel.setContent(binding.editTextNewPost.text.toString())
-            val peopleDialog = AlertDialog.Builder(it.context)
-            peopleDialog.setTitle(R.string.select_action)
-            val str1 = getString(R.string.select_participate)
-            val str2 = getString(R.string.select_spk)
-            val peopleDialogItems = arrayOf(str1, str2)
-            peopleDialog.setItems(
-                peopleDialogItems
-            ) { _, which ->
-                when (which) {
-                    0 -> requireParentFragment().findNavController()
-                        .navigate(R.id.action_newEventFragment_to_takeParticipantsFragment)
+            requireParentFragment().findNavController()
+                .navigate(R.id.action_newEventFragment_to_takeSpeakersFragment)
 
-                    1 -> requireParentFragment().findNavController()
-                        .navigate(R.id.action_newEventFragment_to_takeSpeakersFragment)
-                }
-            }
-            peopleDialog.show()
+//            eventViewModel.setContent(binding.editTextNewPost.text.toString())
+//            val peopleDialog = AlertDialog.Builder(it.context)
+//            peopleDialog.setTitle(R.string.select_action)
+//            val str1 = getString(R.string.select_spk)
+//            val str2 = getString(R.string.select_participate)
+//            val peopleDialogItems = arrayOf(str1, str2)
+//            peopleDialog.setItems(
+//                peopleDialogItems
+//            ) { _, which ->
+//                when (which) {
+//                    0 -> requireParentFragment().findNavController()
+//                        .navigate(R.id.action_newEventFragment_to_takeSpeakersFragment)
+//
+//                    1 -> requireParentFragment().findNavController()
+//                        .navigate(R.id.action_newEventFragment_to_takeParticipantsFragment)
+//                }
+//            }
+//            peopleDialog.show()
         }
 
         return binding.root
-
-        //TODO сделать кнопку очистки для видео и аудио(может использовать уже имеющуюся?) в событии
 
     }
 

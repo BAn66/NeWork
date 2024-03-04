@@ -46,8 +46,8 @@ class TakeSpeakersFragment : Fragment() {
                 when (it.itemId) {
                     R.id.save -> {
                         lifecycleScope.launch {
-                            if(tmpSpeakersIds.isNotEmpty()) eventViewModel.setSpeakers(tmpSpeakersIds)
-                            Log.d("MentTAAAG", "save : $tmpSpeakersIds")
+                            if(tmpSpeakersIds.isNotEmpty())
+                                eventViewModel.setSpeakers(tmpSpeakersIds)
                             findNavController().popBackStack()
                         }
                         true
@@ -64,12 +64,10 @@ class TakeSpeakersFragment : Fragment() {
 
             override fun onUserCheckBoxClicked(user: User) {
                 if (!tmpSpeakersIds.contains(user.id)) tmpSpeakersIds.add(user.id)
-                Log.d("MentTAAAG", "onUserCheckBoxClicked +: $tmpSpeakersIds ")
             }
 
             override fun onUserUnCheckBoxClicked(user: User) {
                 if (tmpSpeakersIds.contains(user.id)) tmpSpeakersIds.remove(user.id)
-                Log.d("MentTAAAG", "onUserUnCheckBoxClicked -: $tmpSpeakersIds ")
             }
         })
 

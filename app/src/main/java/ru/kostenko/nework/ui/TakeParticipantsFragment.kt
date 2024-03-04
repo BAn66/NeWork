@@ -46,8 +46,9 @@ class TakeParticipantsFragment : Fragment() {
                 when (it.itemId) {
                     R.id.save -> {
                         lifecycleScope.launch {
-                            if(tmpParticipantsIds.isNotEmpty()) eventViewModel.setParticipants(tmpParticipantsIds)
-                            Log.d("MentTAAAG", "save : $tmpParticipantsIds")
+                            if(tmpParticipantsIds.isNotEmpty())
+                                eventViewModel.setParticipants(tmpParticipantsIds)
+                            Log.d("PartTAAAG", "Fragment Take Partc save : $tmpParticipantsIds")
                             findNavController().popBackStack()
                         }
                         true
@@ -64,12 +65,12 @@ class TakeParticipantsFragment : Fragment() {
 
             override fun onUserCheckBoxClicked(user: User) {
                 if (!tmpParticipantsIds.contains(user.id)) tmpParticipantsIds.add(user.id)
-                Log.d("MentTAAAG", "onUserCheckBoxClicked +: $tmpParticipantsIds ")
+                Log.d("PartTAAAG", "Fragment Take Partc onUserCheckBoxClicked +: $tmpParticipantsIds ")
             }
 
             override fun onUserUnCheckBoxClicked(user: User) {
                 if (tmpParticipantsIds.contains(user.id)) tmpParticipantsIds.remove(user.id)
-                Log.d("MentTAAAG", "onUserUnCheckBoxClicked -: $tmpParticipantsIds ")
+                Log.d("PartTAAAG", "Fragment Take Partc onUserUnCheckBoxClicked -: $tmpParticipantsIds ")
             }
         })
 
