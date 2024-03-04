@@ -1,7 +1,6 @@
 package ru.kostenko.nework.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,12 +47,10 @@ class TakeParticipantsFragment : Fragment() {
                         lifecycleScope.launch {
                             if(tmpParticipantsIds.isNotEmpty())
                                 eventViewModel.setParticipants(tmpParticipantsIds)
-                            Log.d("PartTAAAG", "Fragment Take Partc save : $tmpParticipantsIds")
                             findNavController().popBackStack()
                         }
                         true
                     }
-
                     else -> false
                 }
             }
@@ -65,12 +62,10 @@ class TakeParticipantsFragment : Fragment() {
 
             override fun onUserCheckBoxClicked(user: User) {
                 if (!tmpParticipantsIds.contains(user.id)) tmpParticipantsIds.add(user.id)
-                Log.d("PartTAAAG", "Fragment Take Partc onUserCheckBoxClicked +: $tmpParticipantsIds ")
             }
 
             override fun onUserUnCheckBoxClicked(user: User) {
                 if (tmpParticipantsIds.contains(user.id)) tmpParticipantsIds.remove(user.id)
-                Log.d("PartTAAAG", "Fragment Take Partc onUserUnCheckBoxClicked -: $tmpParticipantsIds ")
             }
         })
 

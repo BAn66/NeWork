@@ -1,5 +1,6 @@
 package ru.kostenko.nework.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -85,7 +86,15 @@ class WallFragment : Fragment() {
                 }
 
                 override fun share(post: Post) {
-                    TODO("Not yet implemented")
+                    //создаем актвити Chooser для расшаривания текста поста через Intent
+                    val intent = Intent().apply {
+                        action = Intent.ACTION_SEND
+                        putExtra(Intent.EXTRA_TEXT, post.content)
+                        type = "text/plain"
+                    }
+                    val shareIntent =
+                        Intent.createChooser(intent, getString(R.string.description_shared))
+                    startActivity(shareIntent)
                 }
             }, MediaLifecycleObserver())
 

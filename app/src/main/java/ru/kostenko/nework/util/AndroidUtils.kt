@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 object AndroidUtils {
@@ -121,7 +122,7 @@ object AndroidUtils {
             Log.d("EventTAAAG", " Android utils formatToInstant: $dateTime")
             val transform =
                 SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-            transform.format(dateTime)
+            transform.format(dateTime as Date)
         } else "1900-01-01T00:00:00Z"
     }
 
@@ -154,7 +155,7 @@ object AndroidUtils {
             Log.d("JobTAAAG", " Android utils formatToInstant: $dateTime")
             val transform =
                 SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-            transform.format(dateTime)
+            transform.format(dateTime as Date)
         } else "1900-01-01T00:00:00Z"
     }
 }

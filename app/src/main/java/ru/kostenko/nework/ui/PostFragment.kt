@@ -80,7 +80,6 @@ class PostFragment : Fragment() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-
             }
         }
 
@@ -175,14 +174,6 @@ class PostFragment : Fragment() {
                 .into(binding.imageAttach)
         }
 
-//            if (post.authorJob != null) {
-//                author.text = itemView.context.getString(
-//                    R.string.author_job,
-//                    post.author,
-//                    post.authorJob
-//                )
-//            } else author.text = post.author
-
         binding.play.setOnClickListener {
             binding.videoContent.apply {
                 setMediaController(MediaController(context))
@@ -207,12 +198,6 @@ class PostFragment : Fragment() {
             }.play()
         }
 
-        binding.pauseButton.setOnClickListener {
-            if (observer.mediaPlayer != null) {
-                if (observer.mediaPlayer!!.isPlaying) observer.mediaPlayer?.pause() else observer.mediaPlayer?.start()
-            }
-        }
-
         binding.stopButton.setOnClickListener {
             if (observer.mediaPlayer != null && observer.mediaPlayer!!.isPlaying) {
                 observer.mediaPlayer?.stop()
@@ -230,17 +215,6 @@ class PostFragment : Fragment() {
         )
         binding.btnMention.isChecked = post.mentionedMe
         binding.btnMention.isCheckable = false
-
-//        binding.btnLike.setOnClickListener {//анимация лайка
-//            val scaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, 1F, 1.25F, 1F)
-//            val scaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1F, 1.25F, 1F)
-//            ObjectAnimator.ofPropertyValuesHolder(it, scaleX, scaleY).apply {
-//                duration = 500
-////                    repeatCount = 100
-//                interpolator = BounceInterpolator()
-//            }.start()
-//            postViewModel.likePostById(post.id, post.likedByMe)
-//        }
 
         //Для карты
         mapView = binding.mapview.apply {

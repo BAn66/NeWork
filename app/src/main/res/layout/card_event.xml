@@ -154,7 +154,7 @@
             android:contentDescription="@string/video_holder"
             app:layout_constraintBottom_toTopOf="@id/barrierVideo"
             app:layout_constraintTop_toBottomOf="@id/barrierAvatar" />
-        <!--        android:background="@drawable/video_holder"-->
+
 
         <Button
             android:id="@+id/play"
@@ -211,7 +211,6 @@
                 android:src="@drawable/ic_play_48"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/audio_bar" />
-
 
             <ImageButton
                 android:id="@+id/stop_button"

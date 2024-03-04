@@ -2,7 +2,6 @@ package ru.kostenko.nework.ui
 
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,7 +47,6 @@ class TakePeopleFragment : Fragment() {
                     R.id.save -> {
                         lifecycleScope.launch {
                             if(tmpMentionIds.isNotEmpty()) postViewModel.setMentinoed(tmpMentionIds)
-                            Log.d("MentTAAAG", "save : $tmpMentionIds")
                             findNavController().popBackStack()
                         }
                         true
@@ -65,12 +63,10 @@ class TakePeopleFragment : Fragment() {
 
             override fun onUserCheckBoxClicked(user: User) {
                 if (!tmpMentionIds.contains(user.id)) tmpMentionIds.add(user.id)
-                Log.d("MentTAAAG", "onUserCheckBoxClicked +: $tmpMentionIds ")
             }
 
             override fun onUserUnCheckBoxClicked(user: User) {
                 if (tmpMentionIds.contains(user.id)) tmpMentionIds.remove(user.id)
-                Log.d("MentTAAAG", "onUserUnCheckBoxClicked -: $tmpMentionIds ")
             }
         })
 

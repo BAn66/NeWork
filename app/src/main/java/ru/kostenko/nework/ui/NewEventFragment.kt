@@ -26,6 +26,7 @@ import ru.kostenko.nework.R
 import ru.kostenko.nework.databinding.FragmentNewEventBinding
 import ru.kostenko.nework.dto.AttachmentType
 import ru.kostenko.nework.dto.EventType
+import ru.kostenko.nework.util.MediaLifecycleObserver
 import ru.kostenko.nework.util.StringArg
 import ru.kostenko.nework.viewmodel.EventViewModel
 import java.time.OffsetDateTime
@@ -75,6 +76,7 @@ class NewEventFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentNewEventBinding.inflate(layoutInflater)
+        val observer = MediaLifecycleObserver()
 
         binding.editTextNewPost.setText(eventViewModel.content.value)
         binding.editTextNewPost.requestFocus()
@@ -145,13 +147,13 @@ class NewEventFragment : Fragment() {
             }
         }
 
-//Кнопка очистки фото
+        //Кнопка очистки фото
         binding.remove.setOnClickListener {
             eventViewModel.clearMedia()
         }
 
         //Выбираем фото
-        binding.takePhoto.setOnClickListener { //Берем фотку через галерею
+        binding.takePhoto.setOnClickListener {
             eventViewModel.clearMedia()
             val pictureDialog = AlertDialog.Builder(it.context)
             pictureDialog.setTitle(R.string.select_action)
@@ -239,6 +241,21 @@ class NewEventFragment : Fragment() {
             }
         }
 
+        //Кнопки аудио плеера
+        binding.playButton.setOnClickListener {
+            observer.apply {
+                //Не забываем добавлять разрешение в андроид манифест на работу с сетью
+                val uri = eventViewModel.media.value?.uri
+                observer.mediaPlayer?.setDataSource(uri.toString())
+            }.play()
+        }
+
+        binding.stopButton.setOnClickListener {
+            if (observer.mediaPlayer != null && observer.mediaPlayer!!.isPlaying) {
+                observer.mediaPlayer?.stop()
+            }
+        }
+
         //Переход на экран с картой
         binding.takeLocation.setOnClickListener {
             eventViewModel.setContent(binding.editTextNewPost.text.toString())
@@ -251,7 +268,6 @@ class NewEventFragment : Fragment() {
         binding.addDateEvent.setOnClickListener {
             val modalBottomSheet = DateEventFragment()
             modalBottomSheet.show(parentFragmentManager, DateEventFragment.TAG)
-//            findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
         }
 
         //Для редактирования поста
@@ -276,7 +292,6 @@ class NewEventFragment : Fragment() {
                                 .timeout(10_000)
                                 .into(binding.preview)
                         }
-
                     }
                 }
             }
@@ -287,6 +302,7 @@ class NewEventFragment : Fragment() {
             requireParentFragment().findNavController()
                 .navigate(R.id.action_newEventFragment_to_takeSpeakersFragment)
 
+//            Меню если понадобится добавить участвующих в событие
 //            eventViewModel.setContent(binding.editTextNewPost.text.toString())
 //            val peopleDialog = AlertDialog.Builder(it.context)
 //            peopleDialog.setTitle(R.string.select_action)

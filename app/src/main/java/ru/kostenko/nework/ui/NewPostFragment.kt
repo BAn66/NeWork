@@ -231,19 +231,13 @@ class NewPostFragment : Fragment() {
             }
         }
 
+        //Кнопки аудио плеера
         binding.playButton.setOnClickListener {
             observer.apply {
                 //Не забываем добавлять разрешение в андроид манифест на работу с сетью
                 val uri = postViewModel.media.value?.uri
-//                    observer.mediaPlayer?.setDataSource(requireContext(), uri)
                 observer.mediaPlayer?.setDataSource(uri.toString())
             }.play()
-        }
-
-        binding.pauseButton.setOnClickListener {
-            if (observer.mediaPlayer != null) {
-                if (observer.mediaPlayer!!.isPlaying) observer.mediaPlayer?.pause() else observer.mediaPlayer?.start()
-            }
         }
 
         binding.stopButton.setOnClickListener {
@@ -252,7 +246,7 @@ class NewPostFragment : Fragment() {
             }
         }
 
-
+        //Выбор локации
         binding.takeLocation.setOnClickListener {
             postViewModel.setContent(binding.editTextNewPost.text.toString())
             requireParentFragment()
@@ -265,36 +259,30 @@ class NewPostFragment : Fragment() {
                 postViewModel.setContent(editedPost.content)
                 binding.editTextNewPost.requestFocus()
 
-//                editedPost.coords?.let {
-//                    postViewModel.setCoords(editedPost.coords.lat, editedPost.coords.long)
-//                    Log.d("PostSaveTAAAG", "при редаткировании поста coords: ${postViewModel.coords.value}).")
-//                }
-
                 editedPost.attachment?.let { attachment ->
-                        val type = attachment.type
-                        val url = attachment.url
-                        postViewModel.setMedia(url.toUri(), null, type)
-                        if (type == AttachmentType.IMAGE) {
-                            binding.imageContainer.visibility = View.VISIBLE
-//                                binding.preview.setImageURI(url.toUri())
-                            editedPost.attachment.apply {
-//                                    imageAttach.contentDescription = this.url
-                                Glide.with(binding.preview)
-                                    .load(url)
-                                    .placeholder(R.drawable.ic_loading_100dp)
-                                    .error(R.drawable.ic_error_100dp)
-                                    .timeout(10_000)
-                                    .into(binding.preview)
-                            }
-
+                    val type = attachment.type
+                    val url = attachment.url
+                    postViewModel.setMedia(url.toUri(), null, type)
+                    if (type == AttachmentType.IMAGE) {
+                        binding.imageContainer.visibility = View.VISIBLE
+                        editedPost.attachment.apply {
+                            Glide.with(binding.preview)
+                                .load(url)
+                                .placeholder(R.drawable.ic_loading_100dp)
+                                .error(R.drawable.ic_error_100dp)
+                                .timeout(10_000)
+                                .into(binding.preview)
                         }
+
                     }
                 }
             }
+        }
 
         binding.takePeople.setOnClickListener {
             postViewModel.setContent(binding.editTextNewPost.text.toString())
-            requireParentFragment().findNavController().navigate(R.id.action_newPostFragment_to_takePeopleFragment)
+            requireParentFragment().findNavController()
+                .navigate(R.id.action_newPostFragment_to_takePeopleFragment)
         }
 
         return binding.root

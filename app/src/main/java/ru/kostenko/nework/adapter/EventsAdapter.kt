@@ -113,14 +113,6 @@ class EventsAdapter(
                         .into(imageAttach)
                 }
 
-//            if (post.authorJob != null) {
-//                author.text = itemView.context.getString(
-//                    R.string.author_job,
-//                    post.author,
-//                    post.authorJob
-//                )
-//            } else author.text = post.author
-
                 play.setOnClickListener {
                     videoContent.apply {
                         setMediaController(MediaController(context))

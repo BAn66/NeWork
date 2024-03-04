@@ -1,6 +1,5 @@
 package ru.kostenko.nework.repository
 
-import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -50,15 +49,11 @@ class EventRepositoryImpl @Inject constructor(
         }
 
     override suspend fun saveEvent(event: Event, mediaModel: MediaModel?) {
-        Log.d("PartTAAAG", "repository setParticipants out try: ${ event.copy().participantsIds}")
         try {
-            Log.d("PartTAAAG", "repository setParticipants in try1: ${ event.copy().participantsIds}")
             val eventWithAttachment = if (mediaModel != null) {
                 val media = saveMediaOnServer(mediaModel)
-                Log.d("PartTAAAG", "repository setParticipants in try2: ${ event.copy().participantsIds}")
                 event.copy(attachment = Attachment(media.url, requireNotNull(mediaModel.type)))
             } else {
-                Log.d("PartTAAAG", "repository setParticipants in try3: ${ event.copy().participantsIds}")
                 event.copy()
             }
 
@@ -76,20 +71,6 @@ class EventRepositoryImpl @Inject constructor(
             throw UnknownError
         }
     }
-
-//    override suspend fun saveEventWithAttachment(event: Event, mediaModel: MediaModel) {
-//        try {
-//            val media = saveMediaOnServer(mediaModel)
-//            val eventWithAttachment = event.copy(attachment = mediaModel.type?.let { type ->
-//                Attachment(media.url, type)
-//            })
-//            saveEvent(eventWithAttachment)
-//        } catch (e: IOException) {
-//            throw NetworkError
-//        } catch (e: Exception) {
-//            throw UnknownError
-//        }
-//    }
 
     override suspend fun saveMediaOnServer(mediaModel: MediaModel): Media {
         try {

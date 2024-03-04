@@ -26,7 +26,6 @@ class MainFragment : Fragment() {
     private val authViewModel: AuthViewModel by activityViewModels()
     private val userViewModel: UserViewModel by activityViewModels()
     private lateinit var toolbar: Toolbar
-    private val tmpContent: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,7 +55,6 @@ class MainFragment : Fragment() {
                                     .findNavController()
                                     .navigate(R.id.action_mainFragment_to_userDetailsFragment)
                             }
-
                         } else {
                             requireParentFragment()
                                 .findNavController()
@@ -64,7 +62,6 @@ class MainFragment : Fragment() {
                         }
                         true
                     }
-
                     else -> false
                 }
             }

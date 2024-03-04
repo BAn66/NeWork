@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -174,14 +173,6 @@ class EventFragment : Fragment() {
                 .into(binding.imageAttach)
         }
 
-//            if (post.authorJob != null) {
-//                author.text = itemView.context.getString(
-//                    R.string.author_job,
-//                    post.author,
-//                    post.authorJob
-//                )
-//            } else author.text = post.author
-
         binding.play.setOnClickListener {
             binding.videoContent.apply {
                 setMediaController(MediaController(context))
@@ -206,12 +197,6 @@ class EventFragment : Fragment() {
             }.play()
         }
 
-//        binding.pauseButton.setOnClickListener {
-//            if (observer.mediaPlayer != null) {
-//                if (observer.mediaPlayer!!.isPlaying) observer.mediaPlayer?.pause() else observer.mediaPlayer?.start()
-//            }
-//        }
-
         binding.stopButton.setOnClickListener {
             if (observer.mediaPlayer != null && observer.mediaPlayer!!.isPlaying) {
                 observer.mediaPlayer?.stop()
@@ -229,17 +214,6 @@ class EventFragment : Fragment() {
         )
         binding.btnEmention.isChecked = event.participatedByMe
         binding.btnEmention.isCheckable = false
-//        //TODO Проверить работу кнопки лайка внутри события
-//        binding.btnElike.setOnClickListener {//анимация лайка
-//            val scaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, 1F, 1.25F, 1F)
-//            val scaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1F, 1.25F, 1F)
-//            ObjectAnimator.ofPropertyValuesHolder(it, scaleX, scaleY).apply {
-//                duration = 500
-//                    repeatCount = 100
-//                interpolator = BounceInterpolator()
-//            }.start()
-//            eventViewModel.likeEventById(event.id, event.likedByMe)
-//        }
 
         //Для карты
         mapView = binding.mapview.apply {
@@ -272,7 +246,6 @@ class EventFragment : Fragment() {
                     null
                 )
             } else {
-                //При входе в приложение показываем текущее местоположение
                 binding.mapview.visibility = View.GONE
             }
         }
@@ -383,7 +356,6 @@ class EventFragment : Fragment() {
                 mapAvatarsEventLikers.put(3, Pair(avatarView3, null))
                 mapAvatarsEventLikers.put(4, Pair(avatarView4, null))
 
-                Log.d("Eventcard", "Avatar likers ids: $listLikersId")
                 if (listLikersId.size == 0) binding.avatarLayoutEventLike.visibility = View.GONE
                 else if (listLikersId.size < 6) {
                     for (i in 0..(listLikersId.size - 1)) {
@@ -414,7 +386,6 @@ class EventFragment : Fragment() {
                             pair = pair.copy(second = userAvatar)
                             mapAvatarsEventLikers.set(i, pair)
                         }
-                        Log.d("Eventcard", "mapAvatars: ${mapAvatarsEventLikers.getValue(i)}")
                     }
                 }
 
@@ -529,8 +500,6 @@ class EventFragment : Fragment() {
             requireParentFragment().findNavController()
                 .navigate(R.id.action_eventFragment_to_likersMentMoreFragment)
         }
-
-        //TODO сделать так чтобы кнопка выступающих была активна если я выступающий
 
         return binding.root
     }
