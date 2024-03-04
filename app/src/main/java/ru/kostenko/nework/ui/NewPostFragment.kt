@@ -251,9 +251,6 @@ class NewPostFragment : Fragment() {
 
         binding.takeLocation.setOnClickListener {
             postViewModel.setContent(binding.editTextNewPost.text.toString())
-
-            Log.d("PostSaveTAAAG", "to Map - postViewModel.coords: ${postViewModel.coords.value}).")
-            Log.d("PostSaveTAAAG", "to Map - edited.coords: ${postViewModel.edited.value?.coords}).")
             requireParentFragment()
                 .findNavController().navigate(R.id.action_newPostFragment_to_mapFragment)
         }
@@ -264,11 +261,11 @@ class NewPostFragment : Fragment() {
                 postViewModel.setContent(editedPost.content)
                 binding.editTextNewPost.requestFocus()
 
-                editedPost.coords?.let {
-                    postViewModel.setCoords(editedPost.coords.lat, editedPost.coords.long)
-                    Log.d("PostSaveTAAAG", "при редаткировании поста coords: ${postViewModel.coords.value}).")
-                }
-                // TODO не редактирует локацию
+//                editedPost.coords?.let {
+//                    postViewModel.setCoords(editedPost.coords.lat, editedPost.coords.long)
+//                    Log.d("PostSaveTAAAG", "при редаткировании поста coords: ${postViewModel.coords.value}).")
+//                }
+
                 editedPost.attachment?.let { attachment ->
                         val type = attachment.type
                         val url = attachment.url
@@ -295,9 +292,6 @@ class NewPostFragment : Fragment() {
             postViewModel.setContent(binding.editTextNewPost.text.toString())
             requireParentFragment().findNavController().navigate(R.id.action_newPostFragment_to_takePeopleFragment)
         }
-
-
-//TODO сделать кнопку очистки для видео и аудио(может использовать уже имеющуюся?) в новом посте
 
         return binding.root
     }

@@ -2,8 +2,6 @@ package ru.kostenko.nework.viewmodel
 
 import android.annotation.SuppressLint
 import android.net.Uri
-import android.util.Log
-import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -62,14 +60,12 @@ class PostViewModel @Inject constructor(
             repository.dataPosts.map { pagingData ->
                 pagingData.map { post ->
                     if (post is Post) {
-//                        maxId.value = maxOf(post.id, maxId.value)// сравнение текущего макс.ид и ид в паггинге
                         post.copy(ownedByMe = post.authorId.toLong() == myId)
                     } else {
                         post
                     }
                 }
             }
-//                .catch { throw Exception() }
         }.flowOn(Dispatchers.Default)
 
     private val _media = MutableLiveData<MediaModel?>(null)  //Для картинок, видео, аудио
@@ -81,10 +77,6 @@ class PostViewModel @Inject constructor(
         get() = _dataState
 
     val edited = MutableLiveData(empty)
-
-    private val _postCreated = SingleLiveEvent<Unit>()
-    val postCreated: LiveData<Unit>
-        get() = _postCreated
 
     private val _content = SingleLiveEvent<String>()
     val content: LiveData<String>
@@ -126,14 +118,12 @@ class PostViewModel @Inject constructor(
                     author = repository.getUserById(authorId).name,
                     content = text,
                     published = OffsetDateTime.now().toString(),
-                    coords = _coords.value,
                     users = mapOf()
                 )
                 try {
                     val mediaModel = if(_media.value?.inputStream != null)_media.value else null
                     repository.savePost(postCopy, mediaModel)
                     _dataState.value = FeedModelState()
-                    _postCreated.value = Unit
                 } catch (e: Exception) {
                     _dataState.value = FeedModelState(error = true)
                 }
@@ -195,7 +185,7 @@ class PostViewModel @Inject constructor(
     }
 
     fun setCoords(latC: Double, LongC: Double) {
-        _coords.value = Coords(latC, LongC)
+        edited.value = edited.value?.copy(coords = Coords(latC, LongC))
     }
     fun clearCoords(){
         _coords.value = null
@@ -210,7 +200,6 @@ class PostViewModel @Inject constructor(
             _dataState.value = FeedModelState(error = true)
         }
     }
-
 
 fun setMentinoed(set: Set<Int>) {
         edited.value = edited.value?.copy(mentionIds = set)
