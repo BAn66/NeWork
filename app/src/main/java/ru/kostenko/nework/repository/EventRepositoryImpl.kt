@@ -1,5 +1,6 @@
 package ru.kostenko.nework.repository
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -20,7 +21,6 @@ import ru.kostenko.nework.dto.Media
 import ru.kostenko.nework.dto.MediaModel
 import ru.kostenko.nework.dto.User
 import ru.kostenko.nework.entity.EventEntity
-import ru.kostenko.nework.entity.PostEntity
 import ru.kostenko.nework.error.ApiError
 import ru.kostenko.nework.error.NetworkError
 import ru.kostenko.nework.error.UnknownError
@@ -50,9 +50,12 @@ class EventRepositoryImpl @Inject constructor(
         }
 
     override suspend fun saveEvent(event: Event, mediaModel: MediaModel?) {
+        Log.d("EventTAAAG", "SaveEvent repository out try: $event")
+        Log.d("EventTAAAG", "SaveEvent repository out try mediaModel: $mediaModel")
         try {
             val eventWithAttachment = if (mediaModel != null) {
                 val media = saveMediaOnServer(mediaModel)
+                Log.d("EventTAAAG", "SaveEvent repository in try: $event.copy(attachment = Attachment(media.url, requireNotNull(mediaModel.type)))")
                 event.copy(attachment = Attachment(media.url, requireNotNull(mediaModel.type)))
             } else {
                 event.copy()

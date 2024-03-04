@@ -2,7 +2,6 @@ package ru.kostenko.nework.ui
 
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -138,9 +137,11 @@ class NewPostFragment : Fragment() {
             postViewModel.setContent(binding.editTextNewPost.text.toString())
             postViewModel.clearMedia()
             val pictureDialog = AlertDialog.Builder(it.context)
-            pictureDialog.setTitle("Select Action")
+            pictureDialog.setTitle(R.string.select_action)
+            val str1 = getString(R.string.select_gallary)
+            val str2 = getString(R.string.select_camera)
             val pictureDialogItems =
-                arrayOf("Select photo from gallery", "Capture photo from camera")
+                arrayOf(str1, str2)
             pictureDialog.setItems(
                 pictureDialogItems
             ) { _, which ->
@@ -155,23 +156,26 @@ class NewPostFragment : Fragment() {
         binding.editTextNewPost.setOnClickListener {
             postViewModel.setContent(binding.editTextNewPost.text.toString())
         }
+
         //Выбираем видео или аудио
         binding.takeFile.setOnClickListener {
             postViewModel.setContent(binding.editTextNewPost.text.toString())
             postViewModel.clearMedia()
-            val pictureDialog = AlertDialog.Builder(it.context)
-            pictureDialog.setTitle("Select Action")
-            val pictureDialogItems =
-                arrayOf("Select video", "Select audio")
-            pictureDialog.setItems(
-                pictureDialogItems
+            val videoDialog = AlertDialog.Builder(it.context)
+            videoDialog.setTitle(R.string.select_action)
+            val str1 = getString(R.string.select_video)
+            val str2 = getString(R.string.select_audio)
+            val videoDialogItems =
+                arrayOf(str1, str2)
+            videoDialog.setItems(
+                videoDialogItems
             ) { _, which ->
                 when (which) {
                     0 -> takeVideo()
                     1 -> takeAudio()
                 }
             }
-            pictureDialog.show()
+            videoDialog.show()
 
         }
 

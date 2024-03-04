@@ -2,6 +2,7 @@ package ru.kostenko.nework.viewmodel
 
 import android.annotation.SuppressLint
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -129,12 +130,13 @@ class EventViewModel @Inject constructor(
                     author = repository.getUserById(authorId).name,
                     content = text,
                     published = OffsetDateTime.now().toString(),
-                    coords = _coords.value,
                     datetime = dateTime,
                     type = type,
+                    users = mapOf(),
                 )
                 try {
                     val mediaModel = if (_media.value?.inputStream != null) _media.value else null
+                    Log.d("EventTAAAG", "changeEventAndSave model view: $eventCopy")
                     repository.saveEvent(eventCopy, mediaModel)
                     _dataState.value = FeedModelState()
                 } catch (e: Exception) {
@@ -198,7 +200,7 @@ class EventViewModel @Inject constructor(
     }
 
     fun setCoords(latC: Double, LongC: Double) {
-        _coords.value = Coords(latC, LongC)
+            edited.value = edited.value?.copy(coords = Coords(latC, LongC))
     }
 
     fun clearCoords() {

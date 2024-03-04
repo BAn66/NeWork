@@ -26,7 +26,6 @@ import ru.kostenko.nework.R
 import ru.kostenko.nework.databinding.FragmentNewEventBinding
 import ru.kostenko.nework.dto.AttachmentType
 import ru.kostenko.nework.dto.EventType
-import ru.kostenko.nework.util.MediaLifecycleObserver
 import ru.kostenko.nework.util.StringArg
 import ru.kostenko.nework.viewmodel.EventViewModel
 import java.time.OffsetDateTime
@@ -75,8 +74,6 @@ class NewEventFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-
         val binding = FragmentNewEventBinding.inflate(layoutInflater)
 
         binding.editTextNewPost.setText(eventViewModel.content.value)
@@ -93,7 +90,6 @@ class NewEventFragment : Fragment() {
                 } else {
                     eventViewModel.setContent("")
                 }
-                eventViewModel.clearCoords()
                 requireParentFragment().findNavController()
                     .navigate(R.id.action_newEventFragment_to_mainFragment)
             }
@@ -121,28 +117,27 @@ class NewEventFragment : Fragment() {
                                 EventType.ONLINE
                             } else eventViewModel.eventType.value
 
-                            Log.d(
-                                "EventTAAAG",
-                                " Newevent save event type: ${eventViewModel.eventType.value} "
-                            )
-                            typeEvent?.let {
+                            Log.d("EventTAAAG", "changeEventAndSave fragment before: ${eventViewModel.edited}")
+                            typeEvent?.let {type ->
                                 eventViewModel.changeEventAndSave(
                                     content,
                                     dateTime,
-                                    it
+                                    type
                                 )
                             }
+                            Log.d("EventTAAAG", "changeEventAndSave fragment after: ${eventViewModel.edited}")
                             activity?.invalidateOptionsMenu()
                             findNavController()
                                 .navigate(R.id.action_newEventFragment_to_mainFragment)
+
                         }
                         true
                     }
-
                     else -> false
                 }
             }
         }
+
 //Кнопка очистки фото
         binding.remove.setOnClickListener {
             eventViewModel.clearMedia()
@@ -168,24 +163,28 @@ class NewEventFragment : Fragment() {
             pictureDialog.show()
         }
 
+        binding.editTextNewPost.setOnClickListener {
+            eventViewModel.setContent(binding.editTextNewPost.text.toString())
+        }
+
         //Выбираем видео или аудио
         binding.takeFile.setOnClickListener {
             eventViewModel.clearMedia()
-            val pictureDialog = AlertDialog.Builder(it.context)
-            pictureDialog.setTitle(R.string.select_action)
+            val videoDialog = AlertDialog.Builder(it.context)
+            videoDialog.setTitle(R.string.select_action)
             val str1 = getString(R.string.select_video)
             val str2 = getString(R.string.select_audio)
-            val pictureDialogItems =
+            val videoDialogItems =
                 arrayOf(str1, str2)
-            pictureDialog.setItems(
-                pictureDialogItems
+            videoDialog.setItems(
+                videoDialogItems
             ) { _, which ->
                 when (which) {
                     0 -> takeVideo()
                     1 -> takeAudio()
                 }
             }
-            pictureDialog.show()
+            videoDialog.show()
         }
         eventViewModel.media.observe(viewLifecycleOwner) { mediaModel ->
             if (mediaModel == null) {
@@ -253,7 +252,7 @@ class NewEventFragment : Fragment() {
             if (editedEvent.id != 0) {
                 eventViewModel.setContent(editedEvent.content)
                 binding.editTextNewPost.requestFocus()
-                // TODO не редактирует локацию и если не менять медиа не сохраняет текст
+
                 editedEvent.attachment?.let { attachment ->
                     val type = attachment.type
                     val url = attachment.url
@@ -280,7 +279,7 @@ class NewEventFragment : Fragment() {
             eventViewModel.setContent(binding.editTextNewPost.text.toString())
             val peopleDialog = AlertDialog.Builder(it.context)
             peopleDialog.setTitle(R.string.select_action)
-            val str1 = getString(R.string.select_ment)
+            val str1 = getString(R.string.select_participate)
             val str2 = getString(R.string.select_spk)
             val peopleDialogItems = arrayOf(str1, str2)
             peopleDialog.setItems(
