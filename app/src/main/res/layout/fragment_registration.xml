@@ -55,6 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            app:passwordToggleEnabled="false"
             app:endIconMode="password_toggle"
             app:helperTextEnabled="true">
 
@@ -62,6 +63,7 @@
                 android:id="@+id/editPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textPassword"
                 android:hint="@string/password" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -70,6 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            app:passwordToggleEnabled="false"
             app:endIconMode="password_toggle"
             app:helperTextEnabled="true">
 
@@ -77,6 +80,7 @@
                 android:id="@+id/editPasswordRepeat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textPassword"
                 android:hint="@string/password" />
         </com.google.android.material.textfield.TextInputLayout>
 
