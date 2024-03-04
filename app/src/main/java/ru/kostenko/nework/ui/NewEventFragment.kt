@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.MediaController
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
@@ -76,9 +75,8 @@ class NewEventFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        val observer = MediaLifecycleObserver()
         val binding = FragmentNewEventBinding.inflate(layoutInflater)
+        val observer = MediaLifecycleObserver()
 
         binding.editTextNewPost.setText(eventViewModel.content.value)
         binding.editTextNewPost.requestFocus()
@@ -94,7 +92,6 @@ class NewEventFragment : Fragment() {
                 } else {
                     eventViewModel.setContent("")
                 }
-                eventViewModel.clearCoords()
                 requireParentFragment().findNavController()
                     .navigate(R.id.action_newEventFragment_to_mainFragment)
             }
@@ -114,19 +111,33 @@ class NewEventFragment : Fragment() {
                         } else {
                             val content = binding.editTextNewPost.text.toString()
                             val dateTime =
-                            if(eventViewModel.datetime.value.isNullOrEmpty()){
-                                OffsetDateTime.now().toString()
-                            } else eventViewModel.datetime.value.toString()
+                                if (eventViewModel.datetime.value.isNullOrEmpty()) {
+                                    OffsetDateTime.now().toString()
+                                } else eventViewModel.datetime.value.toString()
 
-                            val typeEvent =  if(eventViewModel.eventType.value == null){
+                            val typeEvent = if (eventViewModel.eventType.value == null) {
                                 EventType.ONLINE
-                            } else  eventViewModel.eventType.value
+                            } else eventViewModel.eventType.value
 
-                            Log.d("EventTAAAG", " Newevent save event type: ${eventViewModel.eventType.value} ")
-                            typeEvent?.let { eventViewModel.changeEventAndSave(content, dateTime, it)}
+                            Log.d(
+                                "PartTAAAG",
+                                "changeEventAndSave Eventfragment before: ${eventViewModel.edited.value?.participantsIds}"
+                            )
+                            typeEvent?.let { type ->
+                                eventViewModel.changeEventAndSave(
+                                    content,
+                                    dateTime,
+                                    type
+                                )
+                            }
+                            Log.d(
+                                "PartTAAAG",
+                                "changeEventAndSave Eventfragment after: ${eventViewModel.edited.value?.participantsIds}"
+                            )
                             activity?.invalidateOptionsMenu()
                             findNavController()
                                 .navigate(R.id.action_newEventFragment_to_mainFragment)
+
                         }
                         true
                     }
@@ -135,18 +146,21 @@ class NewEventFragment : Fragment() {
                 }
             }
         }
-//Кнопка очистки фото
+
+        //Кнопка очистки фото
         binding.remove.setOnClickListener {
             eventViewModel.clearMedia()
         }
 
         //Выбираем фото
-        binding.takePhoto.setOnClickListener { //Берем фотку через галерею
+        binding.takePhoto.setOnClickListener {
             eventViewModel.clearMedia()
             val pictureDialog = AlertDialog.Builder(it.context)
-            pictureDialog.setTitle("Select Action")
+            pictureDialog.setTitle(R.string.select_action)
+            val str1 = getString(R.string.select_gallary)
+            val str2 = getString(R.string.select_camera)
             val pictureDialogItems =
-                arrayOf("Select photo from gallery", "Capture photo from camera")
+                arrayOf(str1, str2)
             pictureDialog.setItems(
                 pictureDialogItems
             ) { _, which ->
@@ -158,22 +172,28 @@ class NewEventFragment : Fragment() {
             pictureDialog.show()
         }
 
+        binding.editTextNewPost.setOnClickListener {
+            eventViewModel.setContent(binding.editTextNewPost.text.toString())
+        }
+
         //Выбираем видео или аудио
         binding.takeFile.setOnClickListener {
             eventViewModel.clearMedia()
-            val pictureDialog = AlertDialog.Builder(it.context)
-            pictureDialog.setTitle("Select Action")
-            val pictureDialogItems =
-                arrayOf("Select video", "Select audio")
-            pictureDialog.setItems(
-                pictureDialogItems
+            val videoDialog = AlertDialog.Builder(it.context)
+            videoDialog.setTitle(R.string.select_action)
+            val str1 = getString(R.string.select_video)
+            val str2 = getString(R.string.select_audio)
+            val videoDialogItems =
+                arrayOf(str1, str2)
+            videoDialog.setItems(
+                videoDialogItems
             ) { _, which ->
                 when (which) {
                     0 -> takeVideo()
                     1 -> takeAudio()
                 }
             }
-            pictureDialog.show()
+            videoDialog.show()
         }
         eventViewModel.media.observe(viewLifecycleOwner) { mediaModel ->
             if (mediaModel == null) {
@@ -221,6 +241,21 @@ class NewEventFragment : Fragment() {
             }
         }
 
+        //Кнопки аудио плеера
+        binding.playButton.setOnClickListener {
+            observer.apply {
+                //Не забываем добавлять разрешение в андроид манифест на работу с сетью
+                val uri = eventViewModel.media.value?.uri
+                observer.mediaPlayer?.setDataSource(uri.toString())
+            }.play()
+        }
+
+        binding.stopButton.setOnClickListener {
+            if (observer.mediaPlayer != null && observer.mediaPlayer!!.isPlaying) {
+                observer.mediaPlayer?.stop()
+            }
+        }
+
         //Переход на экран с картой
         binding.takeLocation.setOnClickListener {
             eventViewModel.setContent(binding.editTextNewPost.text.toString())
@@ -229,12 +264,10 @@ class NewEventFragment : Fragment() {
         }
 
 
-
         //Вызов диалога для установки даты и вида событий
         binding.addDateEvent.setOnClickListener {
             val modalBottomSheet = DateEventFragment()
             modalBottomSheet.show(parentFragmentManager, DateEventFragment.TAG)
-//            findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
         }
 
         //Для редактирования поста
@@ -242,7 +275,7 @@ class NewEventFragment : Fragment() {
             if (editedEvent.id != 0) {
                 eventViewModel.setContent(editedEvent.content)
                 binding.editTextNewPost.requestFocus()
-                // TODO не редактирует локацию и если не менять медиа не сохраняет текст
+
                 editedEvent.attachment?.let { attachment ->
                     val type = attachment.type
                     val url = attachment.url
@@ -259,16 +292,39 @@ class NewEventFragment : Fragment() {
                                 .timeout(10_000)
                                 .into(binding.preview)
                         }
-
                     }
                 }
             }
         }
 
+        //Выбираем выступающих
+        binding.takePeople.setOnClickListener {
+            requireParentFragment().findNavController()
+                .navigate(R.id.action_newEventFragment_to_takeSpeakersFragment)
+
+//            Меню если понадобится добавить участвующих в событие
+//            eventViewModel.setContent(binding.editTextNewPost.text.toString())
+//            val peopleDialog = AlertDialog.Builder(it.context)
+//            peopleDialog.setTitle(R.string.select_action)
+//            val str1 = getString(R.string.select_spk)
+//            val str2 = getString(R.string.select_participate)
+//            val peopleDialogItems = arrayOf(str1, str2)
+//            peopleDialog.setItems(
+//                peopleDialogItems
+//            ) { _, which ->
+//                when (which) {
+//                    0 -> requireParentFragment().findNavController()
+//                        .navigate(R.id.action_newEventFragment_to_takeSpeakersFragment)
+//
+//                    1 -> requireParentFragment().findNavController()
+//                        .navigate(R.id.action_newEventFragment_to_takeParticipantsFragment)
+//                }
+//            }
+//            peopleDialog.show()
+        }
+
         return binding.root
 
-        //TODO сделать кнопку очистки для видео и аудио(может использовать уже имеющуюся?) в событии
-        //TODO Сделать выбор спикеров в событии
     }
 
     fun choosePhotoFromGallary() {

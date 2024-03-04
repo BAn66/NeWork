@@ -7,8 +7,6 @@ import androidx.room.Query
 import androidx.room.OnConflictStrategy
 import kotlinx.coroutines.flow.Flow
 import ru.kostenko.nework.entity.EventEntity
-import ru.kostenko.nework.entity.PostEntity
-
 
 @Dao
 interface EventDao {
@@ -41,8 +39,5 @@ interface EventDao {
 
     @Query("SELECT * FROM EventEntity WHERE id = :id")
     suspend fun getEventById(id: Int): EventEntity
-
-//    @Query("SELECT MAX(id) FROM EventEntity")
-//    fun max(): Flow<Int?>
 
 }

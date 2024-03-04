@@ -121,23 +121,4 @@ sealed interface AuthResultCode {
     data object UnknownError : AuthResultCode
 }
 
-//    override suspend fun requestToken(login: String, password: String): Token {
-//        try {
-//            val response = apiService.updateUser(login, password)
-//            statusCode = response.code()
-//            Log.d("APIerrCODE", "requestToken Repository: ${statusCode}")
-//            AuthResult.Success
-//            if (!response.isSuccessful) {
-//                throw ApiError(response.code(), response.message())
-//            }
-//            val body = response.body() ?: throw ApiError(response.code(), response.message())
-//            return body
-//
-//        } catch (e: IOException) {
-//            throw NetworkError
-//
-//        } catch (e: Exception) {
-//            throw UnknownError
-//        }
-//    }
 

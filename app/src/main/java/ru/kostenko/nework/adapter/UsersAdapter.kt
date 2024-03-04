@@ -62,13 +62,14 @@ class UserViewHolder(
                 onUsersInteractionListener.onUserClicked(user)
             }
 
-            setPeople.isChecked = false
+            //TODO при прокрутке снимаются галки если ставить setPeople.isChecked=false, а если удалить то галки остаются на следующей странице пагинации.
+
 
             if (user.isTaken){
                 setPeople.visibility = View.VISIBLE
             }
 
-            setPeople.setOnCheckedChangeListener {buttonView, isChecked ->
+            setPeople.setOnCheckedChangeListener {_, isChecked ->
                    if (isChecked) onUsersInteractionListener.onUserCheckBoxClicked(user)
                 else onUsersInteractionListener.onUserUnCheckBoxClicked(user)
             }
@@ -138,7 +139,8 @@ class TextIconDrawable : Drawable() {
         textPaint.colorFilter = colorFilter
     }
 
+    @Deprecated("Deprecated in Java")
     override fun getOpacity(): Int = PixelFormat.TRANSLUCENT
 
-    private fun generateRandomColor() = Random.nextInt(0xFF000000.toInt(), 0xFFFFFFFF.toInt())
+//    private fun generateRandomColor() = Random.nextInt(0xFF000000.toInt(), 0xFFFFFFFF.toInt())
 }

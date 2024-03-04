@@ -1,7 +1,5 @@
 package ru.kostenko.nework.ui
 
-import android.animation.ObjectAnimator
-import android.animation.PropertyValuesHolder
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
@@ -9,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.BounceInterpolator
 import android.widget.MediaController
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -45,7 +42,6 @@ import ru.kostenko.nework.viewmodel.UserViewModel
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
-
 
 @AndroidEntryPoint
 class PostFragment : Fragment() {
@@ -84,7 +80,6 @@ class PostFragment : Fragment() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-
             }
         }
 
@@ -179,14 +174,6 @@ class PostFragment : Fragment() {
                 .into(binding.imageAttach)
         }
 
-//            if (post.authorJob != null) {
-//                author.text = itemView.context.getString(
-//                    R.string.author_job,
-//                    post.author,
-//                    post.authorJob
-//                )
-//            } else author.text = post.author
-
         binding.play.setOnClickListener {
             binding.videoContent.apply {
                 setMediaController(MediaController(context))
@@ -211,12 +198,6 @@ class PostFragment : Fragment() {
             }.play()
         }
 
-        binding.pauseButton.setOnClickListener {
-            if (observer.mediaPlayer != null) {
-                if (observer.mediaPlayer!!.isPlaying) observer.mediaPlayer?.pause() else observer.mediaPlayer?.start()
-            }
-        }
-
         binding.stopButton.setOnClickListener {
             if (observer.mediaPlayer != null && observer.mediaPlayer!!.isPlaying) {
                 observer.mediaPlayer?.stop()
@@ -225,20 +206,15 @@ class PostFragment : Fragment() {
 
         binding.btnLike.text = AndroidUtils.eraseZero(
             post.likeOwnerIds.size.toLong()
-
         )
         binding.btnLike.isChecked = post.likedByMe
+        binding.btnLike.isCheckable = false
 
-        binding.btnLike.setOnClickListener {//анимация лайка
-            val scaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, 1F, 1.25F, 1F)
-            val scaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1F, 1.25F, 1F)
-            ObjectAnimator.ofPropertyValuesHolder(it, scaleX, scaleY).apply {
-                duration = 500
-//                    repeatCount = 100
-                interpolator = BounceInterpolator()
-            }.start()
-            postViewModel.likePostById(post.id, post.likedByMe)
-        }
+        binding.btnMention.text = AndroidUtils.eraseZero(
+            post.mentionIds.size.toLong()
+        )
+        binding.btnMention.isChecked = post.mentionedMe
+        binding.btnMention.isCheckable = false
 
         //Для карты
         mapView = binding.mapview.apply {
@@ -353,7 +329,9 @@ class PostFragment : Fragment() {
 
         if (post.likeOwnerIds.size <= 5) binding.btnLikersMore.visibility = View.GONE
         binding.btnLikersMore.setOnClickListener {
-            Toast.makeText(context, "Открываем список лайкеров", Toast.LENGTH_SHORT).show()
+            userViewModel.setSetIds(post.likeOwnerIds)
+            requireParentFragment().findNavController()
+                .navigate(R.id.action_postFragment_to_likersMentMoreFragment)
         }
 
         //Упомянутые и все все все
@@ -429,8 +407,11 @@ class PostFragment : Fragment() {
 
         if (post.mentionIds.size <= 5) binding.btnMentMore.visibility = View.GONE
         binding.btnMentMore.setOnClickListener {
-            Toast.makeText(context, "Открываем список упомянутых", Toast.LENGTH_SHORT).show()
+                userViewModel.setSetIds(post.mentionIds)
+                requireParentFragment().findNavController()
+                    .navigate(R.id.action_postFragment_to_likersMentMoreFragment)
         }
+
 
         return binding.root
     }

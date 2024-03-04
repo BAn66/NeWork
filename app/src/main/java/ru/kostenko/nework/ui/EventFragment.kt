@@ -1,16 +1,12 @@
 package ru.kostenko.nework.ui
 
-import android.animation.ObjectAnimator
-import android.animation.PropertyValuesHolder
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.BounceInterpolator
 import android.widget.MediaController
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -177,14 +173,6 @@ class EventFragment : Fragment() {
                 .into(binding.imageAttach)
         }
 
-//            if (post.authorJob != null) {
-//                author.text = itemView.context.getString(
-//                    R.string.author_job,
-//                    post.author,
-//                    post.authorJob
-//                )
-//            } else author.text = post.author
-
         binding.play.setOnClickListener {
             binding.videoContent.apply {
                 setMediaController(MediaController(context))
@@ -209,12 +197,6 @@ class EventFragment : Fragment() {
             }.play()
         }
 
-//        binding.pauseButton.setOnClickListener {
-//            if (observer.mediaPlayer != null) {
-//                if (observer.mediaPlayer!!.isPlaying) observer.mediaPlayer?.pause() else observer.mediaPlayer?.start()
-//            }
-//        }
-
         binding.stopButton.setOnClickListener {
             if (observer.mediaPlayer != null && observer.mediaPlayer!!.isPlaying) {
                 observer.mediaPlayer?.stop()
@@ -223,22 +205,15 @@ class EventFragment : Fragment() {
 
         binding.btnElike.text = AndroidUtils.eraseZero(
             event.likeOwnerIds.size.toLong()
-
         )
         binding.btnElike.isChecked = event.likedByMe
+        binding.btnElike.isCheckable = false
 
-
-        //TODO Проверить работу кнопки лайка внутри события
-        binding.btnElike.setOnClickListener {//анимация лайка
-            val scaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, 1F, 1.25F, 1F)
-            val scaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1F, 1.25F, 1F)
-            ObjectAnimator.ofPropertyValuesHolder(it, scaleX, scaleY).apply {
-                duration = 500
-//                    repeatCount = 100
-                interpolator = BounceInterpolator()
-            }.start()
-            eventViewModel.likeEventById(event.id, event.likedByMe)
-        }
+        binding.btnEmention.text = AndroidUtils.eraseZero(
+            event.participantsIds.size.toLong()
+        )
+        binding.btnEmention.isChecked = event.participatedByMe
+        binding.btnEmention.isCheckable = false
 
         //Для карты
         mapView = binding.mapview.apply {
@@ -271,7 +246,6 @@ class EventFragment : Fragment() {
                     null
                 )
             } else {
-                //При входе в приложение показываем текущее местоположение
                 binding.mapview.visibility = View.GONE
             }
         }
@@ -356,7 +330,9 @@ class EventFragment : Fragment() {
 
         if (event.speakerIds.size <= 5) binding.btnSpkrsMore.visibility = View.GONE
         binding.btnSpkrsMore.setOnClickListener {
-            Toast.makeText(context, "Открываем список лекторов", Toast.LENGTH_SHORT).show()
+            userViewModel.setSetIds(event.speakerIds)
+            requireParentFragment().findNavController()
+                .navigate(R.id.action_eventFragment_to_likersMentMoreFragment)
         }
 
         //Группа лайков и лайкеров
@@ -364,11 +340,6 @@ class EventFragment : Fragment() {
         event.likeOwnerIds.forEach {
             listLikersId.add(it)
         }
-//        val avatarView0: AvatarView = binding.avatarLayoutLike.findViewById(R.id.avatar_eliker_0)
-//        val avatarView1: AvatarView = binding.avatarLayoutLike.findViewById(R.id.avatar_eliker_1)
-//        val avatarView2: AvatarView = binding.avatarLayoutLike.findViewById(R.id.avatar_eliker_2)
-//        val avatarView3: AvatarView = binding.avatarLayoutLike.findViewById(R.id.avatar_eliker_3)
-//        val avatarView4: AvatarView = binding.avatarLayoutLike.findViewById(R.id.avatar_eliker_4)
 
         val avatarView0: AvatarView = binding.avatarEliker0
         val avatarView1: AvatarView = binding.avatarEliker1
@@ -385,7 +356,6 @@ class EventFragment : Fragment() {
                 mapAvatarsEventLikers.put(3, Pair(avatarView3, null))
                 mapAvatarsEventLikers.put(4, Pair(avatarView4, null))
 
-                Log.d("Eventcard", "Avatar likers ids: $listLikersId")
                 if (listLikersId.size == 0) binding.avatarLayoutEventLike.visibility = View.GONE
                 else if (listLikersId.size < 6) {
                     for (i in 0..(listLikersId.size - 1)) {
@@ -416,7 +386,6 @@ class EventFragment : Fragment() {
                             pair = pair.copy(second = userAvatar)
                             mapAvatarsEventLikers.set(i, pair)
                         }
-                        Log.d("Eventcard", "mapAvatars: ${mapAvatarsEventLikers.getValue(i)}")
                     }
                 }
 
@@ -442,8 +411,11 @@ class EventFragment : Fragment() {
 
         if (event.likeOwnerIds.size <= 5) binding.btnElikersMore.visibility = View.GONE
         binding.btnElikersMore.setOnClickListener {
-            Toast.makeText(context, "Открываем список лайкеров", Toast.LENGTH_SHORT).show()
-        }
+                userViewModel.setSetIds(event.likeOwnerIds)
+                requireParentFragment().findNavController()
+                    .navigate(R.id.action_eventFragment_to_likersMentMoreFragment)
+            }
+
 
         //Упомянутые и все все все
         val listMentId = mutableListOf<Int>()
@@ -524,10 +496,10 @@ class EventFragment : Fragment() {
 
         if (event.participantsIds.size <= 5) binding.btnEmentMore.visibility = View.GONE
         binding.btnEmentMore.setOnClickListener {
-            Toast.makeText(context, "Открываем список упомянутых", Toast.LENGTH_SHORT).show()
+            userViewModel.setSetIds(event.participantsIds)
+            requireParentFragment().findNavController()
+                .navigate(R.id.action_eventFragment_to_likersMentMoreFragment)
         }
-
-        //TODO сделать так чтобы кнопка выступающих была активна если я выступающий
 
         return binding.root
     }

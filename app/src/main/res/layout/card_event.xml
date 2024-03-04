@@ -130,7 +130,7 @@
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/barrierVideo"
             app:layout_constraintTop_toBottomOf="@id/barrierAvatar"
-            tools:visibility="visible" />
+            tools:visibility="gone" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/video_group"
@@ -138,7 +138,7 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             app:constraint_referenced_ids="video_content, play, video_holder"
-            tools:visibility="visible" />
+            tools:visibility="gone" />
 
         <VideoView
             android:id="@+id/video_content"
@@ -154,7 +154,7 @@
             android:contentDescription="@string/video_holder"
             app:layout_constraintBottom_toTopOf="@id/barrierVideo"
             app:layout_constraintTop_toBottomOf="@id/barrierAvatar" />
-        <!--        android:background="@drawable/video_holder"-->
+
 
         <Button
             android:id="@+id/play"
@@ -181,7 +181,7 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             app:constraint_referenced_ids="audio_bar, audio_control"
-            tools:visibility="visible" />
+            tools:visibility="gone" />
 
         <SeekBar
             android:id="@+id/audio_bar"
@@ -211,7 +211,6 @@
                 android:src="@drawable/ic_play_48"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/audio_bar" />
-
 
             <ImageButton
                 android:id="@+id/stop_button"
@@ -246,6 +245,24 @@
             android:paddingBottom="0dp"
             app:icon="@drawable/ic_like_selector"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/barrierContent"
+            tools:text="@sample/posts.json/data/likedCount" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_participate"
+            style="@style/Widget.AppTheme.LikeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/common_pudding"
+            android:checkable="true"
+            android:contentDescription="@string/description_liked_count"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:minHeight="0dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
+            app:icon="@drawable/ic_mention_select"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/barrierContent"
             tools:text="@sample/posts.json/data/likedCount" />
 

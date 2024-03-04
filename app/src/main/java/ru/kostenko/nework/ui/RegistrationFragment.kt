@@ -57,9 +57,7 @@ class RegistrationFragment : Fragment() {
             }
         }
 
-
         binding.avatar.setOnClickListener {
-
             val pictureDialog = AlertDialog.Builder(it.context)
             pictureDialog.setTitle("Select Action")
             val pictureDialogItems =

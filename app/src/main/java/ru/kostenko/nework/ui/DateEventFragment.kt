@@ -1,33 +1,18 @@
 package ru.kostenko.nework.ui
 
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioButton
-import android.widget.TextView
-import android.widget.TimePicker
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
-import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.timepicker.MaterialTimePicker
-import com.google.android.material.timepicker.TimeFormat
 import dagger.hilt.android.AndroidEntryPoint
-import ru.kostenko.nework.R
-import ru.kostenko.nework.databinding.FragmentAuthBinding
 import ru.kostenko.nework.databinding.FragmentDateEventBinding
 import ru.kostenko.nework.dto.EventType
 import ru.kostenko.nework.viewmodel.EventViewModel
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.GregorianCalendar
-import java.util.Locale
 
 @AndroidEntryPoint
 class DateEventFragment : BottomSheetDialogFragment() {
@@ -37,6 +22,7 @@ class DateEventFragment : BottomSheetDialogFragment() {
         const val TAG = "ModalBottomSheet"
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -64,34 +50,23 @@ class DateEventFragment : BottomSheetDialogFragment() {
             dialog.show(parentFragmentManager, null)
         }
 
-        setFragmentResultListener("setDateEvent") { _, bundle ->
-            val date = bundle.getString("dateEvent")
-            setFragmentResultListener("setTimeEvent") { _, bundle ->
-                val time = bundle.getString("timeEvent")
+        setFragmentResultListener("setDateEvent") { _, bundle1 ->
+            val date = bundle1.getString("dateEvent")
+            setFragmentResultListener("setTimeEvent") { _, bundle2 ->
+                val time = bundle2.getString("timeEvent")
                 binding.editDateEvent.setText("$date $time")
                 eventViewModel.setDateTime(binding.editDateEvent.text.toString())
             }
         }
 
+        binding.radioGroup.checkedRadioButtonId
 
-
-        val checkedRadioButtonId = binding.radioGroup.checkedRadioButtonId
-        // Returns View.NO_ID if nothing is checked.
-//        binding.radioGroup.setOnCheckedChangeListener { group, checkedId ->
-//
-//        }
-
-        binding.online.setOnCheckedChangeListener { buttonView, isChecked ->
-//            Toast.makeText(this.context, "онлайн", Toast.LENGTH_LONG).show()
+        binding.online.setOnCheckedChangeListener { _, _ ->
             eventViewModel.setEventType(EventType.OFFLINE)
-            Log.d("EventTAAAG", "dateEventDialog event: ${eventViewModel.eventType.value} ")
         }
 
-        binding.offline.setOnCheckedChangeListener { buttonView, isChecked ->
+        binding.offline.setOnCheckedChangeListener { _, _ ->
             eventViewModel.setEventType(EventType.ONLINE)
-            Log.d("EventTAAAG", "dateEventDialog event: ${eventViewModel.eventType.value} ")
-//            Toast.makeText(this.context, "оффлайн", Toast.LENGTH_LONG).show()
-
         }
 
         return binding.root

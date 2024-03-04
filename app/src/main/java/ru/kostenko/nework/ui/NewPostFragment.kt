@@ -2,7 +2,6 @@ package ru.kostenko.nework.ui
 
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -111,8 +110,6 @@ class NewPostFragment : Fragment() {
                         } else {
                             val content = binding.editTextNewPost.text.toString()
                             postViewModel.changePostAndSave(content)
-                            Log.d("PostTAAAG", "changeEventAndSave newPostFragment content: ${postViewModel.content.value}")
-                            Log.d("PostTAAAG", "changeEventAndSave newPostFragment coords: ${postViewModel.coords.value}")
                             activity?.invalidateOptionsMenu()
                             requireParentFragment().findNavController()
                                 .navigate(R.id.action_newPostFragment_to_mainFragment)
@@ -140,9 +137,11 @@ class NewPostFragment : Fragment() {
             postViewModel.setContent(binding.editTextNewPost.text.toString())
             postViewModel.clearMedia()
             val pictureDialog = AlertDialog.Builder(it.context)
-            pictureDialog.setTitle("Select Action")
+            pictureDialog.setTitle(R.string.select_action)
+            val str1 = getString(R.string.select_gallary)
+            val str2 = getString(R.string.select_camera)
             val pictureDialogItems =
-                arrayOf("Select photo from gallery", "Capture photo from camera")
+                arrayOf(str1, str2)
             pictureDialog.setItems(
                 pictureDialogItems
             ) { _, which ->
@@ -157,23 +156,26 @@ class NewPostFragment : Fragment() {
         binding.editTextNewPost.setOnClickListener {
             postViewModel.setContent(binding.editTextNewPost.text.toString())
         }
+
         //Выбираем видео или аудио
         binding.takeFile.setOnClickListener {
             postViewModel.setContent(binding.editTextNewPost.text.toString())
             postViewModel.clearMedia()
-            val pictureDialog = AlertDialog.Builder(it.context)
-            pictureDialog.setTitle("Select Action")
-            val pictureDialogItems =
-                arrayOf("Select video", "Select audio")
-            pictureDialog.setItems(
-                pictureDialogItems
+            val videoDialog = AlertDialog.Builder(it.context)
+            videoDialog.setTitle(R.string.select_action)
+            val str1 = getString(R.string.select_video)
+            val str2 = getString(R.string.select_audio)
+            val videoDialogItems =
+                arrayOf(str1, str2)
+            videoDialog.setItems(
+                videoDialogItems
             ) { _, which ->
                 when (which) {
                     0 -> takeVideo()
                     1 -> takeAudio()
                 }
             }
-            pictureDialog.show()
+            videoDialog.show()
 
         }
 
@@ -229,19 +231,13 @@ class NewPostFragment : Fragment() {
             }
         }
 
+        //Кнопки аудио плеера
         binding.playButton.setOnClickListener {
             observer.apply {
                 //Не забываем добавлять разрешение в андроид манифест на работу с сетью
                 val uri = postViewModel.media.value?.uri
-//                    observer.mediaPlayer?.setDataSource(requireContext(), uri)
                 observer.mediaPlayer?.setDataSource(uri.toString())
             }.play()
-        }
-
-        binding.pauseButton.setOnClickListener {
-            if (observer.mediaPlayer != null) {
-                if (observer.mediaPlayer!!.isPlaying) observer.mediaPlayer?.pause() else observer.mediaPlayer?.start()
-            }
         }
 
         binding.stopButton.setOnClickListener {
@@ -250,12 +246,9 @@ class NewPostFragment : Fragment() {
             }
         }
 
-
+        //Выбор локации
         binding.takeLocation.setOnClickListener {
             postViewModel.setContent(binding.editTextNewPost.text.toString())
-
-            Log.d("PostSaveTAAAG", "to Map - postViewModel.coords: ${postViewModel.coords.value}).")
-            Log.d("PostSaveTAAAG", "to Map - edited.coords: ${postViewModel.edited.value?.coords}).")
             requireParentFragment()
                 .findNavController().navigate(R.id.action_newPostFragment_to_mapFragment)
         }
@@ -266,43 +259,31 @@ class NewPostFragment : Fragment() {
                 postViewModel.setContent(editedPost.content)
                 binding.editTextNewPost.requestFocus()
 
-                editedPost.coords?.let {
-                    postViewModel.setCoords(editedPost.coords.lat, editedPost.coords.long)
-                    Log.d("PostSaveTAAAG", "при редаткировании поста coords: ${postViewModel.coords.value}).")
-                }
-                // TODO не редактирует локацию
                 editedPost.attachment?.let { attachment ->
-                        val type = attachment.type
-                        val url = attachment.url
-                        postViewModel.setMedia(url.toUri(), null, type)
-                        if (type == AttachmentType.IMAGE) {
-                            binding.imageContainer.visibility = View.VISIBLE
-//                                binding.preview.setImageURI(url.toUri())
-                            editedPost.attachment.apply {
-//                                    imageAttach.contentDescription = this.url
-                                Glide.with(binding.preview)
-                                    .load(url)
-                                    .placeholder(R.drawable.ic_loading_100dp)
-                                    .error(R.drawable.ic_error_100dp)
-                                    .timeout(10_000)
-                                    .into(binding.preview)
-                            }
-
+                    val type = attachment.type
+                    val url = attachment.url
+                    postViewModel.setMedia(url.toUri(), null, type)
+                    if (type == AttachmentType.IMAGE) {
+                        binding.imageContainer.visibility = View.VISIBLE
+                        editedPost.attachment.apply {
+                            Glide.with(binding.preview)
+                                .load(url)
+                                .placeholder(R.drawable.ic_loading_100dp)
+                                .error(R.drawable.ic_error_100dp)
+                                .timeout(10_000)
+                                .into(binding.preview)
                         }
+
                     }
                 }
             }
+        }
 
         binding.takePeople.setOnClickListener {
             postViewModel.setContent(binding.editTextNewPost.text.toString())
-            requireParentFragment().findNavController().navigate(R.id.action_newPostFragment_to_takePeopleFragment)
+            requireParentFragment().findNavController()
+                .navigate(R.id.action_newPostFragment_to_takePeopleFragment)
         }
-
-
-//TODO сделать кнопку очистки для видео и аудио(может использовать уже имеющуюся?) в новом посте
-        //TODO Сделать выбор отмеченных пользователей в новом посте
-
-
 
         return binding.root
     }

@@ -1,6 +1,5 @@
 package ru.kostenko.nework.ui
 
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,16 +14,16 @@ import kotlinx.coroutines.launch
 import ru.kostenko.nework.R
 import ru.kostenko.nework.adapter.OnUsersInteractionListener
 import ru.kostenko.nework.adapter.UsersAdapter
-import ru.kostenko.nework.databinding.FragmentTakePeopleBinding
+import ru.kostenko.nework.databinding.FragmentTakeSpeakersBinding
 import ru.kostenko.nework.dto.User
-import ru.kostenko.nework.viewmodel.PostViewModel
+import ru.kostenko.nework.viewmodel.EventViewModel
 import ru.kostenko.nework.viewmodel.UserViewModel
 
 @AndroidEntryPoint
-class TakePeopleFragment : Fragment() {
+class TakeSpeakersFragment : Fragment() {
 
     val userViewModel: UserViewModel by activityViewModels()
-    val postViewModel: PostViewModel by activityViewModels()
+    val eventViewModel: EventViewModel by activityViewModels()
     private lateinit var toolbar: Toolbar
 
     override fun onCreateView(
@@ -32,8 +31,8 @@ class TakePeopleFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentTakePeopleBinding.inflate(layoutInflater)
-        val tmpMentionIds = mutableSetOf<Int>()
+        val binding = FragmentTakeSpeakersBinding.inflate(layoutInflater)
+        val tmpSpeakersIds = mutableSetOf<Int>()
         toolbar = binding.toolbar
         toolbar.apply {
             setTitle(R.string.take_people)
@@ -46,12 +45,12 @@ class TakePeopleFragment : Fragment() {
                 when (it.itemId) {
                     R.id.save -> {
                         lifecycleScope.launch {
-                            if(tmpMentionIds.isNotEmpty()) postViewModel.setMentinoed(tmpMentionIds)
+                            if(tmpSpeakersIds.isNotEmpty())
+                                eventViewModel.setSpeakers(tmpSpeakersIds)
                             findNavController().popBackStack()
                         }
                         true
                     }
-
                     else -> false
                 }
             }
@@ -62,11 +61,11 @@ class TakePeopleFragment : Fragment() {
             }
 
             override fun onUserCheckBoxClicked(user: User) {
-                if (!tmpMentionIds.contains(user.id)) tmpMentionIds.add(user.id)
+                if (!tmpSpeakersIds.contains(user.id)) tmpSpeakersIds.add(user.id)
             }
 
             override fun onUserUnCheckBoxClicked(user: User) {
-                if (tmpMentionIds.contains(user.id)) tmpMentionIds.remove(user.id)
+                if (tmpSpeakersIds.contains(user.id)) tmpSpeakersIds.remove(user.id)
             }
         })
 

@@ -136,11 +136,11 @@ class PostViewHolder(
                 }.play()
             }
 
-            pauseButton.setOnClickListener {
-                if (observer.mediaPlayer != null) {
-                    if (observer.mediaPlayer!!.isPlaying) observer.mediaPlayer?.pause() else observer.mediaPlayer?.start()
-                }
-            }
+//            pauseButton.setOnClickListener {
+//                if (observer.mediaPlayer != null) {
+//                    if (observer.mediaPlayer!!.isPlaying) observer.mediaPlayer?.pause() else observer.mediaPlayer?.start()
+//                }
+//            }
 
             stopButton.setOnClickListener {
                 if (observer.mediaPlayer != null && observer.mediaPlayer!!.isPlaying) {

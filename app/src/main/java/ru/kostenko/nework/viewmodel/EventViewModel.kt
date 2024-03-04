@@ -2,6 +2,7 @@ package ru.kostenko.nework.viewmodel
 
 import android.annotation.SuppressLint
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -87,10 +88,6 @@ class EventViewModel @Inject constructor(
 
     val edited = MutableLiveData(empty)
 
-    private val _eventCreated = SingleLiveEvent<Unit>()
-    val eventCreated: LiveData<Unit>
-        get() = _eventCreated
-
     private val _event = MutableLiveData<Event>()
     val event: LiveData<Event>
         get() = _event
@@ -133,20 +130,15 @@ class EventViewModel @Inject constructor(
                     author = repository.getUserById(authorId).name,
                     content = text,
                     published = OffsetDateTime.now().toString(),
-                    coords = _coords.value,
                     datetime = dateTime,
                     type = type,
+                    users = mapOf(),
                 )
                 try {
-                    val mediaModel = _media.value
-                    if (mediaModel == null && editEvent.content != text) {
-                        repository.saveEvent(eventCopy)
-
-                    } else if (mediaModel != null) {
-                        repository.saveEventWithAttachment(eventCopy, mediaModel)
-                    }
+                    val mediaModel = if (_media.value?.inputStream != null) _media.value else null
+                    Log.d("PartTAAAG", "VieModel Participants save : ${eventCopy.participantsIds}")
+                    repository.saveEvent(eventCopy, mediaModel)
                     _dataState.value = FeedModelState()
-                    _eventCreated.value = Unit
                 } catch (e: Exception) {
                     _dataState.value = FeedModelState(error = true)
                 }
@@ -208,7 +200,7 @@ class EventViewModel @Inject constructor(
     }
 
     fun setCoords(latC: Double, LongC: Double) {
-        _coords.value = Coords(latC, LongC)
+            edited.value = edited.value?.copy(coords = Coords(latC, LongC))
     }
 
     fun clearCoords() {
@@ -234,6 +226,26 @@ class EventViewModel @Inject constructor(
             _dataState.value = FeedModelState()
         } catch (e: Exception) {
             _dataState.value = FeedModelState(error = true)
+        }
+    }
+
+    fun setParticipants(set: Set<Int>) {
+        edited.value = edited.value?.copy(participantsIds = set)
+        Log.d("PartTAAAG", "VieModel setParticipants : ${edited.value?.participantsIds}")
+    }
+
+    fun setSpeakers(set: Set<Int>) {
+        edited.value = edited.value?.copy(speakerIds = set)
+    }
+
+    fun participate(id: Int, participatedByMe: Boolean) {
+        viewModelScope.launch {
+            try {
+                repository.participateById(id, participatedByMe)
+                _dataState.value = FeedModelState()
+            } catch (e: Exception) {
+                _dataState.value = FeedModelState(error = true)
+            }
         }
     }
 

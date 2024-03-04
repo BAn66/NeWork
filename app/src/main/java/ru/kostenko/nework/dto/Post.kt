@@ -17,7 +17,5 @@ data class Post(
     val users: Map<Long, Pair<String, String>>  = mapOf(),
     val attachment: Attachment? = null,
     val ownedByMe: Boolean = false,
-
-
     ): FeedItem
 

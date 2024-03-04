@@ -39,11 +39,9 @@ class UsersFragment : Fragment() {
             }
 
             override fun onUserCheckBoxClicked(user: User) {
-                TODO("Not yet implemented")
             }
 
             override fun onUserUnCheckBoxClicked(user: User) {
-                TODO("Not yet implemented")
             }
         })
 

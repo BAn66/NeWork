@@ -174,15 +174,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/audio_bar" />
 
-<!--                <ImageButton-->
-<!--                    android:id="@+id/pause_button"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:clickable="true"-->
-<!--                    android:contentDescription="@string/pause"-->
-<!--                    android:src="@drawable/ic_pause_48"-->
-<!--                    app:layout_constraintStart_toEndOf="@id/play_button"-->
-<!--                    app:layout_constraintTop_toBottomOf="@id/audio_bar" />-->
 
                 <ImageButton
                     android:id="@+id/stop_button"
@@ -337,15 +328,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:contentDescription="@string/liked_more"
+                    android:contentDescription="@string/speakers_more"
                     android:insetTop="0dp"
                     android:insetBottom="0dp"
                     android:minHeight="0dp"
                     android:paddingTop="0dp"
-                    android:paddingBottom="0dp"
+                    android:paddingBottom="4dp"
                     app:icon="@drawable/add_circle_24"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/likers_title" />
+                    app:layout_constraintTop_toBottomOf="parent" />
             </LinearLayout>
 
             <androidx.constraintlayout.widget.Barrier
@@ -372,13 +363,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:checkable="true"
                 android:contentDescription="@string/description_liked_count"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
                 android:minHeight="0dp"
                 android:paddingTop="0dp"
                 android:paddingBottom="0dp"
+                android:checkable="true"
                 app:icon="@drawable/ic_like_selector"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/likers_title"
@@ -504,13 +495,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/common_pudding"
-                android:checkable="true"
                 android:contentDescription="@string/description_mention_count"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
                 android:minHeight="0dp"
                 android:paddingTop="0dp"
                 android:paddingBottom="0dp"
+                android:checkable="true"
                 app:icon="@drawable/ic_mention_select"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/mention_title"

@@ -31,6 +31,7 @@ interface OnEventInteractionListener {
     fun edit(event: Event)
     fun openEvent(event: Event)
     fun share(event: Event)
+    fun participate(event: Event)
 }
 
 class EventsAdapter(
@@ -112,14 +113,6 @@ class EventsAdapter(
                         .into(imageAttach)
                 }
 
-//            if (post.authorJob != null) {
-//                author.text = itemView.context.getString(
-//                    R.string.author_job,
-//                    post.author,
-//                    post.authorJob
-//                )
-//            } else author.text = post.author
-
                 play.setOnClickListener {
                     videoContent.apply {
                         setMediaController(MediaController(context))
@@ -151,7 +144,6 @@ class EventsAdapter(
 
                 btnLike.text = eraseZero(event.likeOwnerIds.size.toLong())
                 btnLike.isChecked = event.likedByMe
-
                 btnLike.setOnClickListener {//анимация лайка
                     val scaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, 1F, 1.25F, 1F)
                     val scaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1F, 1.25F, 1F)
@@ -161,6 +153,19 @@ class EventsAdapter(
                         interpolator = BounceInterpolator()
                     }.start()
                     onEventInteractionListener.like(event)
+                }
+
+                btnParticipate.text = eraseZero(event.participantsIds.size.toLong())
+                btnParticipate.isChecked = event.participatedByMe
+                btnParticipate.setOnClickListener {//анимация лайка
+                    val scaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, 1F, 1.25F, 1F)
+                    val scaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1F, 1.25F, 1F)
+                    ObjectAnimator.ofPropertyValuesHolder(it, scaleX, scaleY).apply {
+                        duration = 500
+//                    repeatCount = 100
+                        interpolator = BounceInterpolator()
+                    }.start()
+                    onEventInteractionListener.participate(event)
                 }
 
                 btnShare.setOnClickListener {

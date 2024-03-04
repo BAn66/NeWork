@@ -175,23 +175,13 @@
                         app:layout_constraintTop_toBottomOf="@id/audio_bar" />
 
                     <ImageButton
-                        android:id="@+id/pause_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:contentDescription="@string/pause"
-                        android:src="@drawable/ic_pause_48"
-                        app:layout_constraintStart_toEndOf="@id/play_button"
-                        app:layout_constraintTop_toBottomOf="@id/audio_bar" />
-
-                    <ImageButton
                         android:id="@+id/stop_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:clickable="true"
                         android:contentDescription="@string/stop"
                         android:src="@drawable/ic_stop_48"
-                        app:layout_constraintStart_toEndOf="@id/pause_button"
+                        app:layout_constraintStart_toEndOf="@id/play_button"
                         app:layout_constraintTop_toBottomOf="@id/audio_bar" />
                 </LinearLayout>
 
@@ -245,13 +235,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
-                    android:checkable="true"
                     android:contentDescription="@string/description_liked_count"
                     android:insetTop="0dp"
                     android:insetBottom="0dp"
                     android:minHeight="0dp"
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
+                    android:checkable="true"
                     app:icon="@drawable/ic_like_selector"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/likers_title"
@@ -376,7 +366,6 @@
                     style="@style/Widget.AppTheme.LikeButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checkable="true"
                     android:layout_margin="@dimen/common_pudding"
                     android:contentDescription="@string/description_mention_count"
                     android:insetTop="0dp"
@@ -384,6 +373,7 @@
                     android:minHeight="0dp"
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
+                    android:checkable="true"
                     app:icon="@drawable/ic_mention_select"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/mention_title"

@@ -25,10 +25,6 @@ class AddPlaceDialog : DialogFragment() {
         fun createBundle(lat: Double, long: Double): Bundle = bundleOf(
             LAT_KEY to lat, LONG_KEY to long
         )
-
-//        fun newInstance(lat: Double, long: Double, id: Long? = null) = AddPlaceDialog().apply{
-//            arguments = bundleOf(LAT_KEY to lat, LONG_KEY to long, ID_KEY to id)
-//        }
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

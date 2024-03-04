@@ -94,16 +94,7 @@ class NewJobFragment : Fragment() {
                                 formatDateForJob(binding.end.text.toString())
                             },
                         )
-//Заглушка
-//                        jobsViewModel.save(
-//                            "Pilot",
-//                            "manager",
-//                            "2024-02-01T08:05:53.667Z",
-//                            "2024-02-24T08:05:53.667Z",
-//                            "www.pilot.ru"
-//                        )
                     }
-
                 }
             }
             findNavController().popBackStack()

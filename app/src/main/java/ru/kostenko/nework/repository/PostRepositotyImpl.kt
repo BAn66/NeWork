@@ -52,13 +52,10 @@ class PostRepositoryImpl @Inject constructor(
     override val newerPostId: Flow<Int?> = postDao.max()
 
     override suspend fun savePost(post: Post, mediaModel: MediaModel?) {
-        Log.d("PostTAAAG", "savePost PostRepository content:${post.content}")
         try {
             val postWithAttachment = if (mediaModel != null) {
-
                 val media = saveMediaOnServer(mediaModel)
                 post.copy(attachment = Attachment(media.url, requireNotNull(mediaModel.type)))
-
             } else {
                 post.copy()
             }
@@ -67,7 +64,6 @@ class PostRepositoryImpl @Inject constructor(
 
             // Если код не 200, то body будет null. Не нужны ещё проверки
             val body = response.body() ?: throw ApiError(response.code(), response.message())
-
             postDao.insert(PostEntity.fromDto(body))
         } catch (e: IOException) {
             throw NetworkError

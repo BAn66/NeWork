@@ -62,8 +62,6 @@ class UserDetailsFragment : Fragment() {
 //            }
 //        })
 
-        //TODO Сделай скрытие аватарки при скролле
-
         val tabLayout = binding.navUserTabs
         val viewPager = binding.navUserViewP2
 
@@ -72,11 +70,9 @@ class UserDetailsFragment : Fragment() {
             when (position) {
                 0 -> {
                     tab.text = "Wall"
-
                 }
                 1 -> {
                     tab.text = "Jobs"
-
                 }
             }
         }.attach()
@@ -103,7 +99,6 @@ class UserDetailsFragment : Fragment() {
                         findNavController().popBackStack()
                         true
                     }
-
                     else -> false
                 }
             }
