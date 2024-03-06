@@ -64,14 +64,17 @@ class UserViewHolder(
 
             //TODO при прокрутке снимаются галки если ставить setPeople.isChecked=false, а если удалить то галки остаются на следующей странице пагинации.
 
-
-            if (user.isTaken){
-                setPeople.visibility = View.VISIBLE
-            }
+            setPeople.visibility = if (user.isTaken)View.VISIBLE else View.INVISIBLE
 
             setPeople.setOnCheckedChangeListener {_, isChecked ->
-                   if (isChecked) onUsersInteractionListener.onUserCheckBoxClicked(user)
-                else onUsersInteractionListener.onUserUnCheckBoxClicked(user)
+                setPeople.isChecked = if (isChecked){
+                    onUsersInteractionListener.onUserCheckBoxClicked(user)
+                    true
+                }
+                else {
+                    onUsersInteractionListener.onUserUnCheckBoxClicked(user)
+                    false
+                }
             }
         }
     }
