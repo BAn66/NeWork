@@ -1,5 +1,4 @@
 apply plugin: 'dagger.hilt.android.plugin'
-apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
@@ -49,8 +48,6 @@ android {
         debug {
             manifestPlaceholders.usesClearTextTraffic = true
             buildConfigField "String", "BASE_URL", '"http://94.228.125.136:8080"'
-//            buildConfigField "String", "BASE_URL", '"http://192.168.0.2:9999"' //Для телефона
-//            buildConfigField "String", "BASE_URL", '"http://127.0.0.1:9999"' //Для телефона
         }
     }
     compileOptions {
@@ -70,69 +67,53 @@ dependencies {
     def room_version = "2.6.0"
     def fragment_version = "2.7.0"
     def play_services_base_version = "18.2.0"
-    def okkhttp_version = "4.11.0"
+//    def okkhttp_version = "4.11.0"
     def okkhttp_logging_version = "4.11.0"
     def gson_version = "2.10.1"
     def swiperefresh_version = "1.2.0-alpha01"
     def glide_version = "4.16.0"
     def retrofit_version = "2.9.0"
-    //для  CRUD через ретрофит позволит в декларативном стиле работать с HTTP-запросами
-    def retrofitgson_version = "2.9.0" //обмен между json и ретрофит
+    def retrofitgson_version = "2.9.0"
     def coroutines_version = "1.3.9"
-    //Для работы с картинками
-    def work_version = "2.9.0"//Для ворктайма и фоновых сервисов
+    def work_version = "2.9.0"
     def paging_version = "3.2.1"
 
 
     implementation "androidx.core:core-ktx:$core_version"
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.9.0' //материал дизайн 2
+    implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.core:core-ktx:1.10.1'
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version" //Для mvvm модели
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"//Для mvvm модели
-//    testImplementation "android.arch.core:core-testing:$arch_version"//Для mvvm модели тестирования
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     implementation "androidx.fragment:fragment-ktx:1.6.1"
-    implementation "androidx.activity:activity-ktx:$activity_version" //Для mvvm модели
+    implementation "androidx.activity:activity-ktx:$activity_version"
     implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
-    implementation "com.google.code.gson:gson:$gson_version" //сериализация
-    implementation "androidx.navigation:navigation-fragment-ktx:$fragment_version" //для фрагментов
-    implementation "androidx.navigation:navigation-ui-ktx:$fragment_version" //для фрагментов
-    implementation "androidx.room:room-runtime:$room_version" //для room
-    implementation "androidx.room:room-ktx:$room_version" //для room с корутинами
+    implementation "com.google.code.gson:gson:$gson_version"
+    implementation "androidx.navigation:navigation-fragment-ktx:$fragment_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$fragment_version"
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
     implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
     implementation "com.google.firebase:firebase-messaging-ktx"
     implementation "com.google.android.gms:play-services-base:$play_services_base_version"
-//    implementation "com.squareup.okhttp3:okhttp:$okkhttp_version" //Для запросов по http//retrofit за собой тянет можно убрать
     implementation "com.squareup.okhttp3:logging-interceptor:$okkhttp_logging_version"
-    //Для логгирования
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swiperefresh_version"
-    implementation "com.github.bumptech.glide:glide:$glide_version"//Для Glide даунлодер изображений
+    implementation "com.github.bumptech.glide:glide:$glide_version"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitgson_version"
-//    implementation "org.jetbrains.kotlinx:kotlin-coroutines-core" // Корутины kotlin
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
-    //Корутины Андроид
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutines_version"
-    //Доп. библиотека корутюн для пушей файрбейза
     implementation "androidx.work:work-runtime-ktx:$work_version"
-    //worktime для фоновых сервисов, для 100% выполнения работы, которая не была выполнена приложенем
-
-    implementation "com.google.dagger:hilt-android:$hilt_version"// Для внедрения зависимостей
+    implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
-//    annotationProcessor "com.google.dagger:dagger-compiler:$hilt_version"
-
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
-    //Для пагинга (постраничная загрузка)
-
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    kapt "androidx.room:room-compiler:$room_version" //для room
-    implementation "androidx.room:room-paging:2.6.1" //для room with Pagging3
-
-    implementation 'com.github.dhaval2404:imagepicker:2.1'    //для работы с картинками
-    implementation 'com.yandex.android:maps.mobile:4.5.0-lite'//для ЯндексКарт
-    //https://github.com/GetStream/avatarview-android
-    implementation "io.getstream:avatarview-coil:1.0.7" //avatars
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-paging:2.6.1"
+    implementation 'com.github.dhaval2404:imagepicker:2.1'
+    implementation 'com.yandex.android:maps.mobile:4.5.0-lite'
+    implementation "io.getstream:avatarview-coil:1.0.7"
 }

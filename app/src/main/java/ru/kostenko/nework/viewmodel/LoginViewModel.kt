@@ -20,7 +20,7 @@ class LoginViewModel @Inject constructor(
     private val repository: UserRepositoryImpl,
 ) : ViewModel() {
 
-    private val _photo = MutableLiveData<PhotoModel?>(null)  //Для картинок
+    private val _photo = MutableLiveData<PhotoModel?>(null)
     val photo: LiveData<PhotoModel?>
         get() = _photo
 

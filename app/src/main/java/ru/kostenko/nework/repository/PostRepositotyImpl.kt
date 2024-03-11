@@ -1,6 +1,6 @@
 package ru.kostenko.nework.repository
 
-import android.util.Log
+
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -62,7 +62,6 @@ class PostRepositoryImpl @Inject constructor(
 
             val response = apiService.savePost(postWithAttachment)
 
-            // Если код не 200, то body будет null. Не нужны ещё проверки
             val body = response.body() ?: throw ApiError(response.code(), response.message())
             postDao.insert(PostEntity.fromDto(body))
         } catch (e: IOException) {
@@ -71,21 +70,6 @@ class PostRepositoryImpl @Inject constructor(
             throw UnknownError
         }
     }
-
-
-//    override suspend fun savePostWithAttachment(post: Post, mediaModel: MediaModel) {
-//        try {
-//            val media = saveMediaOnServer(mediaModel)
-//            val postWithAttachment = post.copy(attachment = mediaModel.type?.let { type ->
-//                Attachment(media.url, type)
-//            })
-//            savePost(postWithAttachment)
-//        } catch (e: IOException) {
-//            throw NetworkError
-//        } catch (e: Exception) {
-//            throw UnknownError
-//        }
-//    }
 
     override suspend fun saveMediaOnServer(mediaModel: MediaModel): Media {
         try {

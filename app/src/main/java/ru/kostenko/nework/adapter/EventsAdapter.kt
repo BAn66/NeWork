@@ -39,6 +39,7 @@ class EventsAdapter(
     private val observer: MediaLifecycleObserver
 ) : PagingDataAdapter<FeedItem, EventsAdapter.EventViewHolder>(DiffCallback()) {
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         val binding =
             CardEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -56,7 +57,6 @@ class EventsAdapter(
         private val onEventInteractionListener: OnEventInteractionListener,
         private val observer: MediaLifecycleObserver
     ) : RecyclerView.ViewHolder(binding.root) {
-        //        @SuppressLint("SetTextI18n")
         fun bind(event: Event) {
             binding.apply {
                 author.text = event.author
@@ -66,20 +66,17 @@ class EventsAdapter(
                 content.text = event.content
                 typeEvent.text = event.type.str
 
-
                 if (event.datetime != "1900-01-01T00:00:00Z") {
                     dateTime.text = OffsetDateTime.parse(event.datetime)
                         .format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))
                 } else dateTime.text = "без даты"
-
-
 
                 Glide.with(avatar)
                     .load(event.authorAvatar)
                     .placeholder(R.drawable.ic_loading_100dp)
                     .error(R.drawable.post_avatar_drawable)
                     .timeout(10_000)
-                    .apply(RequestOptions().circleCrop()) //делает круглыми аватарки
+                    .apply(RequestOptions().circleCrop())
                     .into(avatar)
 
                 if (event.attachment != null) {
@@ -131,7 +128,6 @@ class EventsAdapter(
 
                 playButton.setOnClickListener {
                     observer.apply {
-                        //Не забываем добавлять разрешение в андроид манифест на работу с сетью
                         mediaPlayer?.setDataSource(event.attachment!!.url)
                     }.play()
                 }
@@ -144,12 +140,11 @@ class EventsAdapter(
 
                 btnLike.text = eraseZero(event.likeOwnerIds.size.toLong())
                 btnLike.isChecked = event.likedByMe
-                btnLike.setOnClickListener {//анимация лайка
+                btnLike.setOnClickListener {
                     val scaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, 1F, 1.25F, 1F)
                     val scaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1F, 1.25F, 1F)
                     ObjectAnimator.ofPropertyValuesHolder(it, scaleX, scaleY).apply {
                         duration = 500
-//                    repeatCount = 100
                         interpolator = BounceInterpolator()
                     }.start()
                     onEventInteractionListener.like(event)
@@ -157,12 +152,11 @@ class EventsAdapter(
 
                 btnParticipate.text = eraseZero(event.participantsIds.size.toLong())
                 btnParticipate.isChecked = event.participatedByMe
-                btnParticipate.setOnClickListener {//анимация лайка
+                btnParticipate.setOnClickListener {
                     val scaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, 1F, 1.25F, 1F)
                     val scaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1F, 1.25F, 1F)
                     ObjectAnimator.ofPropertyValuesHolder(it, scaleX, scaleY).apply {
                         duration = 500
-//                    repeatCount = 100
                         interpolator = BounceInterpolator()
                     }.start()
                     onEventInteractionListener.participate(event)
@@ -181,10 +175,10 @@ class EventsAdapter(
                 avatar.setOnClickListener { onEventInteractionListener.openEvent(event) }
                 author.setOnClickListener { onEventInteractionListener.openEvent(event) }
                 published.setOnClickListener { onEventInteractionListener.openEvent(event) }
-                content.setOnClickListener { onEventInteractionListener.openEvent(event)  }
+                content.setOnClickListener { onEventInteractionListener.openEvent(event) }
                 imageAttach.setOnClickListener { onEventInteractionListener.openEvent(event) }
 
-                menu.isVisible = event.ownedByMe  //Меню видно если пост наш
+                menu.isVisible = event.ownedByMe
                 menu.setOnClickListener {
                     PopupMenu(it.context, it).apply {
                         inflate(R.menu.option_post)

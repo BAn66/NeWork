@@ -1,6 +1,5 @@
 package ru.kostenko.nework.ui
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -8,9 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.MediaController
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -45,59 +41,57 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class PostFragment : Fragment() {
-    @Inject//Внедряем зависимость для авторизации
+    @Inject
     lateinit var appAuth: AppAuth
     private val postViewModel: PostViewModel by activityViewModels()
     private val userViewModel: UserViewModel by activityViewModels()
-    private lateinit var toolbar: Toolbar
+
 
     private var mapView: MapView? = null
     private lateinit var userLocation: UserLocationLayer
 
-    private val premissionLauncher = //запрос на разрешение на геолокацию
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
-            when {
-                granted -> {
-                    MapKitFactory.getInstance().resetLocationManagerToDefault()
-                    userLocation.cameraPosition()?.target?.also {
-                        val map = mapView?.mapWindow?.map ?: return@registerForActivityResult
-                        val cameraPosition = map.cameraPosition
-                        map.move(
-                            CameraPosition(
-                                it,
-                                cameraPosition.zoom,
-                                cameraPosition.azimuth,
-                                cameraPosition.tilt,
-                            )
-                        )
-                    }
-                }
-
-                else -> {
-                    Toast.makeText(
-                        requireContext(),
-                        "Location permission required",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-        }
+//    private val premissionLauncher =
+//        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+//            when {
+//                granted -> {
+//                    MapKitFactory.getInstance().resetLocationManagerToDefault()
+//                    userLocation.cameraPosition()?.target?.also {
+//                        val map = mapView?.mapWindow?.map ?: return@registerForActivityResult
+//                        val cameraPosition = map.cameraPosition
+//                        map.move(
+//                            CameraPosition(
+//                                it,
+//                                cameraPosition.zoom,
+//                                cameraPosition.azimuth,
+//                                cameraPosition.tilt,
+//                            )
+//                        )
+//                    }
+//                }
+//
+//                else -> {
+//                    Toast.makeText(
+//                        requireContext(),
+//                        "Location permission required",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                }
+//            }
+//        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MapKitFactory.initialize(requireContext())
     }
 
-    @SuppressLint("SuspiciousIndentation")
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
         val binding = FragmentPostBinding.inflate(inflater, container, false)
-
-        //Наполняем верхний аппбар
-        toolbar = binding.toolbar
+        val toolbar = binding.toolbar
         val post = postViewModel.post.value!!.copy()
         val observer = MediaLifecycleObserver()
 
@@ -111,22 +105,21 @@ class PostFragment : Fragment() {
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.share -> { //Делимся текстом карточки
-                val intent = Intent().apply {
-                    action = Intent.ACTION_SEND
-                    putExtra(Intent.EXTRA_TEXT, post.content)
-                    type = "text/plain"
-                }
-                val shareIntent =
-                    Intent.createChooser(intent, getString(R.string.description_shared))
-                startActivity(shareIntent)
+                        val intent = Intent().apply {
+                            action = Intent.ACTION_SEND
+                            putExtra(Intent.EXTRA_TEXT, post.content)
+                            type = "text/plain"
+                        }
+                        val shareIntent =
+                            Intent.createChooser(intent, getString(R.string.description_shared))
+                        startActivity(shareIntent)
                         true
                     }
+
                     else -> false
                 }
             }
         }
-
-
 
         binding.author.text = post.author
         binding.published.text = OffsetDateTime.parse(post.published)
@@ -140,7 +133,7 @@ class PostFragment : Fragment() {
             .placeholder(R.drawable.ic_loading_100dp)
             .error(R.drawable.post_avatar_drawable)
             .timeout(10_000)
-            .apply(RequestOptions().circleCrop()) //делает круглыми аватарки
+            .apply(RequestOptions().circleCrop())
             .into(binding.avatar)
 
         if (post.attachment != null) {
@@ -192,9 +185,8 @@ class PostFragment : Fragment() {
 
         binding.playButton.setOnClickListener {
             observer.apply {
-                //Не забываем добавлять разрешение в андроид манифест на работу с сетью
                 val url = post.attachment!!.url
-                mediaPlayer?.setDataSource(url) //TODO при нажатии на паузу аудиоплеера и повторном плэй падает
+                mediaPlayer?.setDataSource(url)
             }.play()
         }
 
@@ -216,15 +208,12 @@ class PostFragment : Fragment() {
         binding.btnMention.isChecked = post.mentionedMe
         binding.btnMention.isCheckable = false
 
-        //Для карты
         mapView = binding.mapview.apply {
             userLocation = MapKitFactory.getInstance().createUserLocationLayer(mapWindow)
             userLocation.isVisible = true
             userLocation.isHeadingEnabled = false
 
             val arguments = post.coords?.copy()
-            //Создаем маркер на карте
-            //переход к точке на карте после клика на списке
             if (arguments?.lat != null) {
                 val latCoord = arguments.lat
                 val longCoord = arguments.long
@@ -247,13 +236,10 @@ class PostFragment : Fragment() {
                     null
                 )
             } else {
-                //При входе в приложение показываем текущее местоположение
                 binding.mapview.visibility = View.GONE
             }
         }
 
-
-        //Группа лайков и лайкеров
         val listLikersId = mutableListOf<Int>()
         post.likeOwnerIds.forEach {
             listLikersId.add(it)
@@ -314,12 +300,13 @@ class PostFragment : Fragment() {
                             it.value.first.visibility = View.VISIBLE
                             it.value.first.loadImage(it.value.second)
                         } else {
-                                if (it.value.second == "") {
-                                    it.value.first.visibility = View.VISIBLE
-                                    it.value.first.loadImage(R.drawable.post_avatar_drawable)
-                                } else {
-                                    it.value.first.visibility = View.VISIBLE
-                                    it.value.first.avatarInitials = it.value.second!!.substring(0, 1).uppercase()
+                            if (it.value.second == "") {
+                                it.value.first.visibility = View.VISIBLE
+                                it.value.first.loadImage(R.drawable.post_avatar_drawable)
+                            } else {
+                                it.value.first.visibility = View.VISIBLE
+                                it.value.first.avatarInitials =
+                                    it.value.second!!.substring(0, 1).uppercase()
                             }
                         }
                     }
@@ -334,7 +321,7 @@ class PostFragment : Fragment() {
                 .navigate(R.id.action_postFragment_to_likersMentMoreFragment)
         }
 
-        //Упомянутые и все все все
+
         val listMentId = mutableListOf<Int>()
         post.mentionIds.forEach {
             listMentId.add(it)
@@ -397,7 +384,8 @@ class PostFragment : Fragment() {
                                 it.value.first.loadImage(R.drawable.post_avatar_drawable)
                             } else {
                                 it.value.first.visibility = View.VISIBLE
-                                it.value.first.avatarInitials = it.value.second!!.substring(0, 1).uppercase()
+                                it.value.first.avatarInitials =
+                                    it.value.second!!.substring(0, 1).uppercase()
                             }
                         }
                     }
@@ -407,9 +395,9 @@ class PostFragment : Fragment() {
 
         if (post.mentionIds.size <= 5) binding.btnMentMore.visibility = View.GONE
         binding.btnMentMore.setOnClickListener {
-                userViewModel.setSetIds(post.mentionIds)
-                requireParentFragment().findNavController()
-                    .navigate(R.id.action_postFragment_to_likersMentMoreFragment)
+            userViewModel.setSetIds(post.mentionIds)
+            requireParentFragment().findNavController()
+                .navigate(R.id.action_postFragment_to_likersMentMoreFragment)
         }
 
 

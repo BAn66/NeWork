@@ -12,12 +12,10 @@ class TabsAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
     }
 
     override fun createFragment(position: Int): Fragment {
-        return when(position){
-            0-> WallFragment()
-            1-> JobsFragment()
+        return when (position) {
+            0 -> WallFragment()
+            1 -> JobsFragment()
             else -> WallFragment()
         }
     }
-
-
 }

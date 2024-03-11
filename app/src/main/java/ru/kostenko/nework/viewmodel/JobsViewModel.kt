@@ -38,7 +38,6 @@ class JobsViewModel @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     val data: Flow<List<Job>> = appAuth.authStateFlow.flatMapLatest { (myId, _) ->
         jobsRepository.data.map {
-//            JobModel()
             it.map { job ->
                 job.copy(
                     ownedByMe = userId.value == myId.toInt()
@@ -47,7 +46,7 @@ class JobsViewModel @Inject constructor(
         }
     }
 
-    private val _dataState = MutableLiveData(FeedModelState()) //Состояние
+    private val _dataState = MutableLiveData(FeedModelState())
     val dataState: LiveData<FeedModelState>
         get() = _dataState
 
@@ -111,28 +110,28 @@ class JobsViewModel @Inject constructor(
         }
     }
 
-    fun formateDateString(str: String?):String{
-        var newDate: String?
-        if (str!=null) {
-            val values = str.split("/")
-            val day = values[0]
-            val month = values[1]
-            val year = values[2]
-//        dd/mm/yyyy
-            newDate = "$year-$month-$day'T'00:00:01.667'Z'"
-        }
-        else
-            newDate = "1900-01-01T00:00:00Z"
-        return newDate
-    }
+//    fun formateDateString(str: String?):String{
+//        var newDate: String?
+//        if (str!=null) {
+//            val values = str.split("/")
+//            val day = values[0]
+//            val month = values[1]
+//            val year = values[2]
+////        dd/mm/yyyy
+//            newDate = "$year-$month-$day'T'00:00:01.667'Z'"
+//        }
+//        else
+//            newDate = "1900-01-01T00:00:00Z"
+//        return newDate
+//    }
 
-    fun startDate(date: String) {
-        edited.value = edited.value?.copy(start = date)
-    }
-
-    fun endDate(date: String) {
-        edited.value = edited.value?.copy(finish = date)
-    }
+//    fun startDate(date: String) {
+//        edited.value = edited.value?.copy(start = date)
+//    }
+//
+//    fun endDate(date: String) {
+//        edited.value = edited.value?.copy(finish = date)
+//    }
 
 
 

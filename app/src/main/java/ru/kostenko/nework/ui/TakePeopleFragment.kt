@@ -25,7 +25,6 @@ class TakePeopleFragment : Fragment() {
 
     val userViewModel: UserViewModel by activityViewModels()
     val postViewModel: PostViewModel by activityViewModels()
-    private lateinit var toolbar: Toolbar
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,7 +33,7 @@ class TakePeopleFragment : Fragment() {
     ): View {
         val binding = FragmentTakePeopleBinding.inflate(layoutInflater)
         val tmpMentionIds = mutableSetOf<Int>()
-        toolbar = binding.toolbar
+        val toolbar: Toolbar = binding.toolbar
         toolbar.apply {
             setTitle(R.string.take_people)
             setNavigationIcon(R.drawable.arrow_back_24)

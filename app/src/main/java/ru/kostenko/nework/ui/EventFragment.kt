@@ -1,6 +1,5 @@
 package ru.kostenko.nework.ui
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -8,9 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.MediaController
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -43,60 +39,56 @@ import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 class EventFragment : Fragment() {
-    @Inject//Внедряем зависимость для авторизации
+    @Inject
     lateinit var appAuth: AppAuth
     private val eventViewModel: EventViewModel by activityViewModels()
     private val userViewModel: UserViewModel by activityViewModels()
-    private lateinit var toolbar: Toolbar
+
 
     private var mapView: MapView? = null
     private lateinit var userLocation: UserLocationLayer
 
-    private val premissionLauncher = //запрос на разрешение на геолокацию
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
-            when {
-                granted -> {
-                    MapKitFactory.getInstance().resetLocationManagerToDefault()
-                    userLocation.cameraPosition()?.target?.also {
-                        val map = mapView?.mapWindow?.map ?: return@registerForActivityResult
-                        val cameraPosition = map.cameraPosition
-                        map.move(
-                            CameraPosition(
-                                it,
-                                cameraPosition.zoom,
-                                cameraPosition.azimuth,
-                                cameraPosition.tilt,
-                            )
-                        )
-                    }
-                }
-
-                else -> {
-                    Toast.makeText(
-                        requireContext(),
-                        "Location permission required",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-            }
-        }
+//    private val premissionLauncher =
+//        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+//            when {
+//                granted -> {
+//                    MapKitFactory.getInstance().resetLocationManagerToDefault()
+//                    userLocation.cameraPosition()?.target?.also {
+//                        val map = mapView?.mapWindow?.map ?: return@registerForActivityResult
+//                        val cameraPosition = map.cameraPosition
+//                        map.move(
+//                            CameraPosition(
+//                                it,
+//                                cameraPosition.zoom,
+//                                cameraPosition.azimuth,
+//                                cameraPosition.tilt,
+//                            )
+//                        )
+//                    }
+//                }
+//
+//                else -> {
+//                    Toast.makeText(
+//                        requireContext(), "Location permission required", Toast.LENGTH_SHORT
+//                    ).show()
+//                }
+//
+//            }
+//        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MapKitFactory.initialize(requireContext())
     }
 
-    @SuppressLint("SuspiciousIndentation")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
         val binding = FragmentEventBinding.inflate(inflater, container, false)
+        val toolbar = binding.toolbar
 
-        //Наполняем верхний аппбар
-        toolbar = binding.toolbar
         val event = eventViewModel.event.value!!.copy()
         val observer = MediaLifecycleObserver()
 
@@ -109,7 +101,7 @@ class EventFragment : Fragment() {
             inflateMenu(R.menu.share_menu)
             setOnMenuItemClickListener {
                 when (it.itemId) {
-                    R.id.share -> {//Делимся текстом карточки
+                    R.id.share -> {
                         val intent = Intent().apply {
                             action = Intent.ACTION_SEND
                             putExtra(Intent.EXTRA_TEXT, event.content)
@@ -130,23 +122,25 @@ class EventFragment : Fragment() {
         binding.eventDate.text = OffsetDateTime.parse(event.datetime)
             .format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))
         binding.content.text = event.content
-        binding.job.text = if (event.authorJob.isNullOrEmpty()) "В поиске работы"
+        binding.job.text = if (event.authorJob.isNullOrEmpty()) getString(R.string.in_search_job)
         else (event.authorJob)
         binding.eventType.text = event.type.str
 
-        Glide.with(binding.avatar)
-            .load(event.authorAvatar)
-            .placeholder(R.drawable.ic_loading_100dp)
-            .error(R.drawable.post_avatar_drawable)
-            .timeout(10_000)
-            .apply(RequestOptions().circleCrop()) //делает круглыми аватарки
-            .into(binding.avatar)
+        Glide.with(binding.avatar).load(event.authorAvatar).placeholder(R.drawable.ic_loading_100dp)
+            .error(R.drawable.post_avatar_drawable).timeout(10_000)
+            .apply(RequestOptions().circleCrop()).into(binding.avatar)
 
         if (event.attachment != null) {
             when (event.attachment.type) {
-                AttachmentType.IMAGE -> binding.imageAttach.visibility = View.VISIBLE
-                AttachmentType.AUDIO -> binding.audioGroup.visibility = View.VISIBLE
-                AttachmentType.VIDEO -> binding.videoGroup.visibility = View.VISIBLE
+                AttachmentType.IMAGE -> {
+                    binding.imageAttach.visibility = View.VISIBLE
+                }
+                AttachmentType.AUDIO -> {
+                    binding.audioGroup.visibility = View.VISIBLE
+                }
+                AttachmentType.VIDEO -> {
+                    binding.videoGroup.visibility = View.VISIBLE
+                }
             }
         } else {
             binding.imageAttach.visibility = View.GONE
@@ -165,12 +159,8 @@ class EventFragment : Fragment() {
 
         event.attachment?.apply {
             binding.imageAttach.contentDescription = this.url
-            Glide.with(binding.imageAttach)
-                .load(this.url)
-                .placeholder(R.drawable.ic_loading_100dp)
-                .error(R.drawable.ic_error_100dp)
-                .timeout(10_000)
-                .into(binding.imageAttach)
+            Glide.with(binding.imageAttach).load(this.url).placeholder(R.drawable.ic_loading_100dp)
+                .error(R.drawable.ic_error_100dp).timeout(10_000).into(binding.imageAttach)
         }
 
         binding.play.setOnClickListener {
@@ -191,9 +181,8 @@ class EventFragment : Fragment() {
 
         binding.playButton.setOnClickListener {
             observer.apply {
-                //Не забываем добавлять разрешение в андроид манифест на работу с сетью
                 val url = event.attachment!!.url
-                mediaPlayer?.setDataSource(url) //TODO при нажатии на паузу аудиоплеера и повторном плэй падает
+                mediaPlayer?.setDataSource(url)
             }.play()
         }
 
@@ -215,15 +204,12 @@ class EventFragment : Fragment() {
         binding.btnEmention.isChecked = event.participatedByMe
         binding.btnEmention.isCheckable = false
 
-        //Для карты
         mapView = binding.mapview.apply {
             userLocation = MapKitFactory.getInstance().createUserLocationLayer(mapWindow)
             userLocation.isVisible = true
             userLocation.isHeadingEnabled = false
 
             val arguments = event.coords?.copy()
-            //Создаем маркер на карте
-            //переход к точке на карте после клика на списке
             if (arguments?.lat != null) {
                 val latCoord = arguments.lat
                 val longCoord = arguments.long
@@ -231,25 +217,19 @@ class EventFragment : Fragment() {
                 collection.clear()
                 val placeBinding = PlaceBinding.inflate(layoutInflater)
                 collection.addPlacemark(
-                    Point(latCoord, longCoord),
-                    ViewProvider(placeBinding.root)
+                    Point(latCoord, longCoord), ViewProvider(placeBinding.root)
                 )
                 mapWindow.map.cameraPosition
                 mapWindow.map.move(
                     CameraPosition(
-                        Point(latCoord, longCoord),
-                        16.5F,
-                        0.0f,
-                        0.0f
-                    ),
-                    Animation(Animation.Type.SMOOTH, 5f),
-                    null
+                        Point(latCoord, longCoord), 16.5F, 0.0f, 0.0f
+                    ), Animation(Animation.Type.SMOOTH, 5f), null
                 )
             } else {
                 binding.mapview.visibility = View.GONE
             }
         }
-        //Группа спикеров
+
         val listSpeakersId = mutableListOf<Int>()
         event.speakerIds.forEach {
             listSpeakersId.add(it)
@@ -335,7 +315,7 @@ class EventFragment : Fragment() {
                 .navigate(R.id.action_eventFragment_to_likersMentMoreFragment)
         }
 
-        //Группа лайков и лайкеров
+
         val listLikersId = mutableListOf<Int>()
         event.likeOwnerIds.forEach {
             listLikersId.add(it)
@@ -401,7 +381,8 @@ class EventFragment : Fragment() {
                                 it.value.first.loadImage(R.drawable.post_avatar_drawable)
                             } else {
                                 it.value.first.visibility = View.VISIBLE
-                                it.value.first.avatarInitials = it.value.second!!.substring(0, 1).uppercase()
+                                it.value.first.avatarInitials =
+                                    it.value.second!!.substring(0, 1).uppercase()
                             }
                         }
                     }
@@ -411,13 +392,12 @@ class EventFragment : Fragment() {
 
         if (event.likeOwnerIds.size <= 5) binding.btnElikersMore.visibility = View.GONE
         binding.btnElikersMore.setOnClickListener {
-                userViewModel.setSetIds(event.likeOwnerIds)
-                requireParentFragment().findNavController()
-                    .navigate(R.id.action_eventFragment_to_likersMentMoreFragment)
-            }
+            userViewModel.setSetIds(event.likeOwnerIds)
+            requireParentFragment().findNavController()
+                .navigate(R.id.action_eventFragment_to_likersMentMoreFragment)
+        }
 
 
-        //Упомянутые и все все все
         val listMentId = mutableListOf<Int>()
         event.participantsIds.forEach {
             listMentId.add(it)

@@ -28,7 +28,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class EventsFragment: Fragment() {
-    @Inject//Внедряем зависимость для авторизации
+    @Inject
     lateinit var appAuth: AppAuth
     private val eventViewModel: EventViewModel by activityViewModels()
     private val authViewModel: AuthViewModel by activityViewModels()
@@ -73,14 +73,14 @@ class EventsFragment: Fragment() {
             }
 
             override fun share(event: Event) {
-                //создаем актвити Chooser для расшаривания текста поста через Intent
+
 
                 val intent = Intent().apply {
                     action = Intent.ACTION_SEND
                     putExtra(Intent.EXTRA_TEXT, event.content)
                     type = "text/plain"
                 }
-                //startActivity(intent) //Более скромный вариант ниже более симпатичный вариант
+
                 val shareIntent =
                     Intent.createChooser(intent, getString(R.string.description_shared))
                 startActivity(shareIntent)
@@ -116,8 +116,7 @@ class EventsFragment: Fragment() {
                 adapter.loadStateFlow.collectLatest { state ->
                     binding.swiperefresh.isRefreshing =
                         state.refresh is LoadState.Loading
-//                                || state.prepend is LoadState.Loading ||
-//                                state.append is LoadState.Loading
+
                 }
             }
         }

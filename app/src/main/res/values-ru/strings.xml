@@ -90,5 +90,15 @@
     <string name="select_gallary">Изображение из галереи</string>
     <string name="select_camera">Изображение с камеры</string>
     <string name="speakers_more">Speakers more</string>
-    <string name="select_participate">Select participate</string>
+    <string name="select_participate">Выберите участников</string>
+    <string name="in_search_job">Search job</string>
+    <string name="set_position">Set position</string>
+    <string name="want_add_post">Do you want to add a post?</string>
+    <string name="you_must_login">To add a post, you must be logged in.</string>
+    <string name="back">Back</string>
+    <string name="want_like">Do you want like?</string>
+    <string name="set_like_must_login">To like a post, you must be logged in.</string>
+    <string name="date">Date</string>
+    <string name="date_time_format">MM/dd/yyyy HH:mm</string>
+    <string name="type_event_title">Type</string>
 </resources>

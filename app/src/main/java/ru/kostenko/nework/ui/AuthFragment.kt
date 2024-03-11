@@ -48,13 +48,13 @@ class AuthFragment : Fragment() {
         }
 
         val textLogin =
-            arguments?.textLogin//получение аргументов между фрагментами при создании нового поста из старого в choosere
+            arguments?.textLogin
         if (textLogin != null) {
             binding.editLogin.setText(textLogin)
         }
 
         val textPassword =
-            arguments?.textPassword//получение аргументов между фрагментами при создании нового поста из старого в choosere
+            arguments?.textPassword
         if (textLogin != null) {
             binding.editPassword.setText(textPassword)
         }

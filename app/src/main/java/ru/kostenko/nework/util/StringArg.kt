@@ -5,12 +5,12 @@ import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 object StringArg : ReadWriteProperty<Bundle, String?> {
-    //Делегирование работы определенному свойству. проброс значений между фрагментами
-    override fun getValue(thisRef: Bundle, property: KProperty<*>): String? = //чтение
+
+    override fun getValue(thisRef: Bundle, property: KProperty<*>): String? =
         thisRef.getString(property.name)
 
 
-    override fun setValue(thisRef: Bundle, property: KProperty<*>, value: String?) { //запись
+    override fun setValue(thisRef: Bundle, property: KProperty<*>, value: String?) {
         thisRef.putString(property.name, value)
     }
 }

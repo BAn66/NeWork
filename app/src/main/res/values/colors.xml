@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--  основной цвет для интерфейса программы - панель, кнопки и т.д.  -->
+
     <color name="colorPrimary">#FEF7FF</color>
-    <!--    цвет для системных элементов - строка состояния-->
+
     <color name="colorPrimaryDark">#FEF7FF</color>
-    <!--    Цвет по умолчанию для компонентов, которые находятся в фокусе или активны  -->
+
     <color name="colorAccent">#F3EDF7</color>
-    <!--    Цвет для неактивных компонентов-->
+
     <color name="colorControlNormal">#F3EDF7</color>
-    <!--    Цвет для активных компонентов-->
+
     <color name="colorControlActivated">#F3EDF7</color>
-    <!--    Цвет для нажатых элементов интерфейса    -->
+
     <color name="colorControlHighlight">#E8DEF8</color>
-    <!--    Фон панели навигации-->
+
     <color name="navigationBarColor">#F3EDF7</color>
-    <!--    Цвет кнопки?-->
+
     <color name="colorButtonNormal">#E8DEF8</color>
-    <!--Цвет бэкграунда телефона-->
+
     <color name="windowBackground">#FFFFFF</color>
-    <!--Цвет бэкграунда карточек-->
+
     <color name="cardViewBackground">#f2ebff</color>
 
     <color name="bottomSheetBackground">#CAC4D0</color>

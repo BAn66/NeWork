@@ -19,8 +19,6 @@ import ru.kostenko.nework.R
 import ru.kostenko.nework.databinding.CardUserBinding
 import ru.kostenko.nework.dto.User
 import kotlin.properties.Delegates
-import kotlin.random.Random
-
 
 interface OnUsersInteractionListener {
     fun onUserClicked(user: User)
@@ -61,8 +59,6 @@ class UserViewHolder(
             cardUser.setOnClickListener {
                 onUsersInteractionListener.onUserClicked(user)
             }
-
-            //TODO при прокрутке снимаются галки если ставить setPeople.isChecked=false, а если удалить то галки остаются на следующей странице пагинации.
 
             setPeople.visibility = if (user.isTaken)View.VISIBLE else View.INVISIBLE
 
@@ -109,7 +105,6 @@ class TextIconDrawable : Drawable() {
     private var alpha = 255
     private var textPaint = TextPaint().apply {
         textAlign = Paint.Align.CENTER
-//        textSize = this.textSize
     }
     var text by Delegates.observable("") { _, _, _ -> invalidateSelf() }
     var textColor by Delegates.observable(Color.WHITE) { _, _, _ -> invalidateSelf() }
@@ -126,11 +121,8 @@ class TextIconDrawable : Drawable() {
 
         fitText(width)
         textPaint.color = ColorUtils.setAlphaComponent(textColor, alpha)
-//        canvas.drawText(text, width / 2f, height / 2f, textPaint)
         val color = Color.parseColor("#6750A4")
-//        Color.parseColor("#FFFEF7FF")
         canvas.drawColor(color)
-//        canvas.drawColor(Color.parseColor("#FFFEF7FF"))
         canvas.drawText(text, width / 2f, height / 1.5f, textPaint)
     }
 
@@ -145,5 +137,4 @@ class TextIconDrawable : Drawable() {
     @Deprecated("Deprecated in Java")
     override fun getOpacity(): Int = PixelFormat.TRANSLUCENT
 
-//    private fun generateRandomColor() = Random.nextInt(0xFF000000.toInt(), 0xFFFFFFFF.toInt())
 }

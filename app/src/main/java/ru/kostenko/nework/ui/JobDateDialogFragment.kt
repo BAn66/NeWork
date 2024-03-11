@@ -17,7 +17,7 @@ class JobDateDialogFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        var binding = FragmentJobDateDialogBinding.inflate(layoutInflater)
+        val binding = FragmentJobDateDialogBinding.inflate(layoutInflater)
 
         binding.cancelBtn.setOnClickListener {
             dismiss()

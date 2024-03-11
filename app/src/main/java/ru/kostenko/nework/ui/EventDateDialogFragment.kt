@@ -1,26 +1,14 @@
 package ru.kostenko.nework.ui
 
-import android.app.DatePickerDialog
-import android.app.Dialog
-import android.app.TimePickerDialog
-import android.icu.text.DateFormat
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.DatePicker
-import android.widget.TextView
-import android.widget.TimePicker
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
-import ru.kostenko.nework.R
 import ru.kostenko.nework.databinding.DialogPickDateTimeBinding
-import ru.kostenko.nework.databinding.FragmentJobDateDialogBinding
 import ru.kostenko.nework.util.AndroidUtils
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.GregorianCalendar
-import java.util.Locale
 
 class EventDateDialogFragment : DialogFragment() {
 
@@ -29,7 +17,7 @@ class EventDateDialogFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        var binding = DialogPickDateTimeBinding.inflate(layoutInflater)
+        val binding = DialogPickDateTimeBinding.inflate(layoutInflater)
 
         binding.cancelBtn.setOnClickListener {
             dismiss()
@@ -37,8 +25,8 @@ class EventDateDialogFragment : DialogFragment() {
         binding.okBtn.setOnClickListener {
             val dateEvent = binding.dateEdit.text.toString()
             val timeEvent = binding.timeEdit.text.toString()
-            parentFragmentManager.setFragmentResult("setDateEvent", bundleOf("dateEvent" to dateEvent))
-            parentFragmentManager.setFragmentResult("setTimeEvent", bundleOf("timeEvent" to timeEvent))
+            parentFragmentManager.setFragmentResult("setDateEvent", bundleOf(DateEventFragment.DATEEVENT to dateEvent))
+            parentFragmentManager.setFragmentResult("setTimeEvent", bundleOf(DateEventFragment.TIMEEVENT to timeEvent))
             dismiss()
         }
 

@@ -22,10 +22,10 @@ interface WallDao {
     @Query("DELETE FROM WallEntity")
     suspend fun removeAll()
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE) //это для сохранения и редактирования, replace заменяет если есть такой же айди кажется
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(post: WallEntity)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE) //это для getall
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(posts: List<WallEntity>)
 
     @Query("DELETE FROM WallEntity WHERE id = :id")

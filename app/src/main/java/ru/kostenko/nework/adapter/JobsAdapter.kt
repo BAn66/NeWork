@@ -66,7 +66,7 @@ class JobViewHolder(
             startDate.text = OffsetDateTime.parse(job.start)
                 .format(DateTimeFormatter.ofPattern("dd $monthNameStart yyyy - "))
             if (job.finish != null && job.finish != "1900-01-01T00:00:00Z"
-                ) {
+            ) {
                 val monthNameEnd = monthNames[OffsetDateTime.parse(job.finish).month.value - 1]
                 endDate.text = OffsetDateTime.parse(job.finish)
                     .format(DateTimeFormatter.ofPattern("dd $monthNameEnd yyyy"))
@@ -75,7 +75,7 @@ class JobViewHolder(
             }
             if (job.link != null
                 && job.link != ""
-                ) {
+            ) {
                 webUrl.text = job.link
             } else {
                 webUrl.visibility = View.GONE

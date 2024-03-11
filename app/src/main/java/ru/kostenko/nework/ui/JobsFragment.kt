@@ -27,7 +27,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class JobsFragment : Fragment() {
-    @Inject//Внедряем зависимость для авторизации
+    @Inject
     lateinit var appAuth: AppAuth
     private val authViewModel: AuthViewModel by activityViewModels()
     private val jobsViewModel: JobsViewModel by activityViewModels()

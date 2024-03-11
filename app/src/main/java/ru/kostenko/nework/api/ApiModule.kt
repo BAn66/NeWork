@@ -28,14 +28,13 @@ class ApiModule {
     }
     @Singleton
     @Provides
-    fun provideLogging(): HttpLoggingInterceptor = HttpLoggingInterceptor()//Перехватчик для логгера
+    fun provideLogging(): HttpLoggingInterceptor = HttpLoggingInterceptor()
         .apply {
             if (BuildConfig.DEBUG) {
                 level = HttpLoggingInterceptor.Level.BODY
             }
         }
 
-    //клиент OkHttp
     @Singleton
     @Provides
     fun provideOkHttp(
@@ -52,7 +51,7 @@ class ApiModule {
             }
             chain.proceed(chain.request())
         }
-        .addInterceptor { chain -> //Добавляем во все сообщения для сервера
+        .addInterceptor { chain ->
             chain.proceed(
                 chain.request()
                     .newBuilder()
@@ -62,14 +61,12 @@ class ApiModule {
         }
         .build()
 
-
-    // и ретрофит
     @Singleton
     @Provides
     fun provideRetrofit(
         clientOkHttp: OkHttpClient
     ): Retrofit = Retrofit.Builder()
-        .addConverterFactory(GsonConverterFactory.create( //это для конвертации лонга в дату и обратно2
+        .addConverterFactory(GsonConverterFactory.create(
             GsonBuilder().registerTypeAdapter(
                 OffsetDateTime :: class.java,
                 object : TypeAdapter<OffsetDateTime>(){
@@ -92,5 +89,4 @@ class ApiModule {
     fun provideApiService(
         retrofit: Retrofit,
     ): ApiService = retrofit.create<ApiService>()
-
 }

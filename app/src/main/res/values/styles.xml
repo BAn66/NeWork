@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--стиль для чекбокса-->
-    <!--    <style name="Widget.AppTheme.LikeCheckBox" parent="Widget.MaterialComponents.CompoundButton.CheckBox">-->
-    <!--        <item name="buttonTint">@color/like_selector</item>-->
-    <!--    </style>-->
 
     <style name="Widget.AppTheme.LikeButton" parent="Widget.MaterialComponents.Button.TextButton.Icon">
         <item name="iconTint" >@color/like_selector</item>
@@ -27,7 +23,6 @@
         <item name="iconTint">?attr/colorControlNormal</item>
     </style>
 
-<!--Для боттомщита (нижняя всплывашка)-->
     <style name="ModalBottomSheetDialog" parent="Widget.MaterialComponents.BottomSheet.Modal">
         <item name="backgroundTint">@color/bottomSheetBackground</item>
         <item name="shapeAppearance">@style/ShapeAppearance.App.LargeComponent</item>

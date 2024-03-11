@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.MediaController
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.Toolbar
 import androidx.core.net.toFile
 import androidx.core.net.toUri
 import androidx.core.view.isGone
@@ -36,19 +35,18 @@ class NewPostFragment : Fragment() {
         var Bundle.text by StringArg
     }
 
-    private lateinit var toolbar: Toolbar
     private val postViewModel: PostViewModel by activityViewModels()
     private val photoResultContract =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { // Контракт для картинок
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
-//                val uri = Uri.parse(Uri_string)
+
                 val uri = it.data?.data ?: return@registerForActivityResult
                 val file = uri.toFile().inputStream()
                 postViewModel.setMedia(uri, file, AttachmentType.IMAGE)
             }
         }
     private val videoResultContract =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { // Контракт для VIDEO
+        registerForActivityResult(ActivityResultContracts.GetContent()) {
             it?.let {
                 val stream = context?.contentResolver?.openInputStream(it)
                 if (stream != null) {
@@ -58,7 +56,7 @@ class NewPostFragment : Fragment() {
         }
 
     private val audioResultContract =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { // Контракт для AUDIO
+        registerForActivityResult(ActivityResultContracts.GetContent()) {
             it?.let {
                 val stream = context?.contentResolver?.openInputStream(it)
                 if (stream != null) {
@@ -75,12 +73,10 @@ class NewPostFragment : Fragment() {
 
         val observer = MediaLifecycleObserver()
         val binding = FragmentNewPostBinding.inflate(layoutInflater)
-        //Если есть черновик он вставляется
         binding.editTextNewPost.setText(postViewModel.content.value)
         binding.editTextNewPost.requestFocus()
 
-        //Верхний аппбар
-        toolbar = binding.toolbar
+        val toolbar = binding.toolbar
         toolbar.apply {
             setTitle(R.string.newpost)
             setNavigationIcon(R.drawable.arrow_back_24)
@@ -122,17 +118,11 @@ class NewPostFragment : Fragment() {
             }
         }
 
-//        viewModel.postCreated.observe(viewLifecycleOwner) { //Работа с SingleLiveEvent: Остаемся на экране редактирования пока не придет ответ с сервера
-//            viewModel.loadPosts()// не забываем обновить значения вью модели (запрос с сервера и загрузка к нам)
-//            findNavController().popBackStack(R.id.postsFragment, false)
-//}
-
-        //Кнопка очистки фото
         binding.remove.setOnClickListener {
             postViewModel.clearMedia()
         }
 
-        //Выбираем фото
+
         binding.takePhoto.setOnClickListener { //Берем фотку через галерею
             postViewModel.setContent(binding.editTextNewPost.text.toString())
             postViewModel.clearMedia()
@@ -157,7 +147,6 @@ class NewPostFragment : Fragment() {
             postViewModel.setContent(binding.editTextNewPost.text.toString())
         }
 
-        //Выбираем видео или аудио
         binding.takeFile.setOnClickListener {
             postViewModel.setContent(binding.editTextNewPost.text.toString())
             postViewModel.clearMedia()
@@ -231,10 +220,9 @@ class NewPostFragment : Fragment() {
             }
         }
 
-        //Кнопки аудио плеера
+
         binding.playButton.setOnClickListener {
             observer.apply {
-                //Не забываем добавлять разрешение в андроид манифест на работу с сетью
                 val uri = postViewModel.media.value?.uri
                 observer.mediaPlayer?.setDataSource(uri.toString())
             }.play()
@@ -246,14 +234,12 @@ class NewPostFragment : Fragment() {
             }
         }
 
-        //Выбор локации
         binding.takeLocation.setOnClickListener {
             postViewModel.setContent(binding.editTextNewPost.text.toString())
             requireParentFragment()
                 .findNavController().navigate(R.id.action_newPostFragment_to_mapFragment)
         }
 
-        //Для редактирования поста
         postViewModel.edited.observe(viewLifecycleOwner) { editedPost ->
             if (editedPost.id != 0) {
                 postViewModel.setContent(editedPost.content)

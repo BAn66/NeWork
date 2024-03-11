@@ -1,6 +1,5 @@
 package ru.kostenko.nework.ui
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,17 +17,18 @@ import ru.kostenko.nework.viewmodel.EventViewModel
 class DateEventFragment : BottomSheetDialogFragment() {
 
     private val eventViewModel: EventViewModel by activityViewModels()
+
     companion object {
         const val TAG = "ModalBottomSheet"
+        const val DATEEVENT = "dateEvent"
+        const val TIMEEVENT = "timeEvent"
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View
-    {
+    ): View {
         val binding = FragmentDateEventBinding.inflate(layoutInflater)
         binding.online.isChecked = true
         eventViewModel.setEventType(EventType.ONLINE)
@@ -51,10 +51,11 @@ class DateEventFragment : BottomSheetDialogFragment() {
         }
 
         setFragmentResultListener("setDateEvent") { _, bundle1 ->
-            val date = bundle1.getString("dateEvent")
+            val date = bundle1.getString(DATEEVENT)
             setFragmentResultListener("setTimeEvent") { _, bundle2 ->
-                val time = bundle2.getString("timeEvent")
-                binding.editDateEvent.setText("$date $time")
+                val time = bundle2.getString(TIMEEVENT)
+                val str = "$date $time"
+                binding.editDateEvent.setText(str)
                 eventViewModel.setDateTime(binding.editDateEvent.text.toString())
             }
         }
