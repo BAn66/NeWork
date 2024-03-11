@@ -16,19 +16,14 @@ import kotlinx.coroutines.launch
 import ru.kostenko.nework.R
 import ru.kostenko.nework.adapter.JobsAdapter
 import ru.kostenko.nework.adapter.OnJobInteractionListener
-import ru.kostenko.nework.authorization.AppAuth
 import ru.kostenko.nework.databinding.FragmentJobsBinding
 import ru.kostenko.nework.dto.Job
 import ru.kostenko.nework.viewmodel.AuthViewModel
 import ru.kostenko.nework.viewmodel.JobsViewModel
 import ru.kostenko.nework.viewmodel.UserViewModel
 
-import javax.inject.Inject
-
 @AndroidEntryPoint
 class JobsFragment : Fragment() {
-    @Inject
-    lateinit var appAuth: AppAuth
     private val authViewModel: AuthViewModel by activityViewModels()
     private val jobsViewModel: JobsViewModel by activityViewModels()
     private val userViewModel: UserViewModel by activityViewModels()

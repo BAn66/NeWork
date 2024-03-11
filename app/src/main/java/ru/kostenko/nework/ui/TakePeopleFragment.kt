@@ -22,7 +22,6 @@ import ru.kostenko.nework.viewmodel.UserViewModel
 
 @AndroidEntryPoint
 class TakePeopleFragment : Fragment() {
-
     val userViewModel: UserViewModel by activityViewModels()
     val postViewModel: PostViewModel by activityViewModels()
 

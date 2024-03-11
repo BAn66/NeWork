@@ -14,20 +14,14 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.launch
 import ru.kostenko.nework.R
-import ru.kostenko.nework.authorization.AppAuth
 import ru.kostenko.nework.databinding.FragmentNewJobBinding
 import ru.kostenko.nework.util.AndroidUtils.formatDateForJob
 import ru.kostenko.nework.viewmodel.JobsViewModel
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 
-import javax.inject.Inject
-
 class NewJobFragment : Fragment() {
-    @Inject
-    lateinit var appAuth: AppAuth
     private val jobsViewModel: JobsViewModel by activityViewModels()
-
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -180,8 +180,8 @@ class PostViewModel @Inject constructor(
         _content.value = ""
     }
 
-    fun setCoords(latC: Double, LongC: Double) {
-        edited.value = edited.value?.copy(coords = Coords(latC, LongC))
+    fun setCoords(latC: Double, longC: Double) {
+        edited.value = edited.value?.copy(coords = Coords(latC, longC))
     }
 
     fun clearCoords() {

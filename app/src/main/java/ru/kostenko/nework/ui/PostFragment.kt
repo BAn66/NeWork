@@ -27,7 +27,6 @@ import io.getstream.avatarview.AvatarView
 import io.getstream.avatarview.coil.loadImage
 import kotlinx.coroutines.launch
 import ru.kostenko.nework.R
-import ru.kostenko.nework.authorization.AppAuth
 import ru.kostenko.nework.databinding.FragmentPostBinding
 import ru.kostenko.nework.databinding.PlaceBinding
 import ru.kostenko.nework.dto.AttachmentType
@@ -37,15 +36,11 @@ import ru.kostenko.nework.viewmodel.PostViewModel
 import ru.kostenko.nework.viewmodel.UserViewModel
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class PostFragment : Fragment() {
-    @Inject
-    lateinit var appAuth: AppAuth
     private val postViewModel: PostViewModel by activityViewModels()
     private val userViewModel: UserViewModel by activityViewModels()
-
 
     private var mapView: MapView? = null
     private lateinit var userLocation: UserLocationLayer
@@ -54,7 +49,6 @@ class PostFragment : Fragment() {
         super.onCreate(savedInstanceState)
         MapKitFactory.initialize(requireContext())
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -96,7 +90,7 @@ class PostFragment : Fragment() {
         binding.published.text = OffsetDateTime.parse(post.published)
             .format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))
         binding.content.text = post.content
-        binding.job.text = if (post.authorJob.isNullOrEmpty()) "В поиске работы"
+        binding.job.text = if (post.authorJob.isNullOrEmpty()) getString(R.string.in_search_job)
         else (post.authorJob)
 
         Glide.with(binding.avatar)

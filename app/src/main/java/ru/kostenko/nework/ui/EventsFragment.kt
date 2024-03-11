@@ -18,18 +18,14 @@ import kotlinx.coroutines.launch
 import ru.kostenko.nework.R
 import ru.kostenko.nework.adapter.EventsAdapter
 import ru.kostenko.nework.adapter.OnEventInteractionListener
-import ru.kostenko.nework.authorization.AppAuth
 import ru.kostenko.nework.databinding.FragmentEventsBinding
 import ru.kostenko.nework.dto.Event
 import ru.kostenko.nework.util.MediaLifecycleObserver
 import ru.kostenko.nework.viewmodel.AuthViewModel
 import ru.kostenko.nework.viewmodel.EventViewModel
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class EventsFragment: Fragment() {
-    @Inject
-    lateinit var appAuth: AppAuth
     private val eventViewModel: EventViewModel by activityViewModels()
     private val authViewModel: AuthViewModel by activityViewModels()
     override fun onCreateView(

@@ -18,18 +18,14 @@ import kotlinx.coroutines.launch
 import ru.kostenko.nework.R
 import ru.kostenko.nework.adapter.OnPostInteractionListener
 import ru.kostenko.nework.adapter.PostsAdapter
-import ru.kostenko.nework.authorization.AppAuth
 import ru.kostenko.nework.databinding.FragmentPostsBinding
 import ru.kostenko.nework.dto.Post
 import ru.kostenko.nework.util.MediaLifecycleObserver
 import ru.kostenko.nework.viewmodel.AuthViewModel
 import ru.kostenko.nework.viewmodel.PostViewModel
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class PostsFragment : Fragment() {
-    @Inject
-    lateinit var appAuth: AppAuth
     private val postViewModel: PostViewModel by activityViewModels()
     private val authViewModel: AuthViewModel by activityViewModels()
 

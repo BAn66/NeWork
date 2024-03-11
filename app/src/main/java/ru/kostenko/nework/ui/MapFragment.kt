@@ -25,12 +25,6 @@ import ru.kostenko.nework.databinding.MapFragmentBinding
 
 @AndroidEntryPoint
 class MapFragment : Fragment() {
-
-//    companion object {
-//        const val LAT_KEY = "LAT_KEY"
-//        const val LONG_KEY = "LONG_KEY"
-//    }
-
     private var mapView: MapView? = null
     private lateinit var userLocation: UserLocationLayer
 
