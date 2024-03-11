@@ -32,7 +32,7 @@ class TakePeopleFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentTakePeopleBinding.inflate(layoutInflater)
-        val tmpMentionIds = mutableSetOf<Int>()
+        val tmpMentionIds = mutableSetOf<Long>()
         val toolbar: Toolbar = binding.toolbar
         toolbar.apply {
             setTitle(R.string.take_people)
@@ -61,11 +61,11 @@ class TakePeopleFragment : Fragment() {
             }
 
             override fun onUserCheckBoxClicked(user: User) {
-                if (!tmpMentionIds.contains(user.id)) tmpMentionIds.add(user.id)
+                if (!tmpMentionIds.contains(user.id.toLong())) tmpMentionIds.add(user.id.toLong())
             }
 
             override fun onUserUnCheckBoxClicked(user: User) {
-                if (tmpMentionIds.contains(user.id)) tmpMentionIds.remove(user.id)
+                if (tmpMentionIds.contains(user.id.toLong())) tmpMentionIds.remove(user.id.toLong())
             }
         })
 

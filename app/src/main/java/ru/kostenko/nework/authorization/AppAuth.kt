@@ -41,13 +41,6 @@ class AppAuth @Inject constructor(
         }
     }
 
-//    @InstallIn(SingletonComponent::class)
-//    @EntryPoint
-//    interface AppAuthEntryPoint {
-//        fun getApiService(): ApiService
-//    }
-
-
     val authStateFlow: StateFlow<AuthState> = _authState.asStateFlow()
 }
 

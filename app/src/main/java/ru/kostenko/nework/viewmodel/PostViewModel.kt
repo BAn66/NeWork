@@ -198,7 +198,7 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    fun setMentinoed(set: Set<Int>) {
+    fun setMentinoed(set: Set<Long>) {
         edited.value = edited.value?.copy(mentionIds = set)
     }
 

@@ -50,35 +50,6 @@ class PostFragment : Fragment() {
     private var mapView: MapView? = null
     private lateinit var userLocation: UserLocationLayer
 
-//    private val premissionLauncher =
-//        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
-//            when {
-//                granted -> {
-//                    MapKitFactory.getInstance().resetLocationManagerToDefault()
-//                    userLocation.cameraPosition()?.target?.also {
-//                        val map = mapView?.mapWindow?.map ?: return@registerForActivityResult
-//                        val cameraPosition = map.cameraPosition
-//                        map.move(
-//                            CameraPosition(
-//                                it,
-//                                cameraPosition.zoom,
-//                                cameraPosition.azimuth,
-//                                cameraPosition.tilt,
-//                            )
-//                        )
-//                    }
-//                }
-//
-//                else -> {
-//                    Toast.makeText(
-//                        requireContext(),
-//                        "Location permission required",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                }
-//            }
-//        }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MapKitFactory.initialize(requireContext())
@@ -240,7 +211,7 @@ class PostFragment : Fragment() {
             }
         }
 
-        val listLikersId = mutableListOf<Int>()
+        val listLikersId = mutableListOf<Long>()
         post.likeOwnerIds.forEach {
             listLikersId.add(it)
         }
@@ -263,7 +234,7 @@ class PostFragment : Fragment() {
                 if (listLikersId.size == 0) binding.avatarLayoutLike.visibility = View.GONE
                 else if (listLikersId.size < 6) {
                     for (i in 0..(listLikersId.size - 1)) {
-                        userViewModel.getUserById(listLikersId[i]).join()
+                        userViewModel.getUserById(listLikersId[i].toInt()).join()
                         val userName = userViewModel.user.value?.name
                         val userAvatar = userViewModel.user.value?.avatar
                         var pair = mapAvatarsLikers.getValue(i)
@@ -279,7 +250,7 @@ class PostFragment : Fragment() {
 
                 } else {
                     for (i in 0..4) {
-                        userViewModel.getUserById(listLikersId[i]).join()
+                        userViewModel.getUserById(listLikersId[i].toInt()).join()
                         val userName = userViewModel.user.value?.name
                         val userAvatar = userViewModel.user.value?.avatar
                         var pair = mapAvatarsLikers.getValue(i)
@@ -322,7 +293,7 @@ class PostFragment : Fragment() {
         }
 
 
-        val listMentId = mutableListOf<Int>()
+        val listMentId = mutableListOf<Long>()
         post.mentionIds.forEach {
             listMentId.add(it)
         }
@@ -344,7 +315,7 @@ class PostFragment : Fragment() {
                 if (listMentId.size == 0) binding.avatarLayoutMent.visibility = View.GONE
                 else if (listMentId.size < 6) {
                     for (i in 0..(listMentId.size - 1)) {
-                        userViewModel.getUserById(listMentId[i]).join()
+                        userViewModel.getUserById(listMentId[i].toInt()).join()
                         val userName = userViewModel.user.value?.name
                         val userAvatar = userViewModel.user.value?.avatar
                         var pair = mapAvatarsMentioneds.getValue(i)
@@ -358,7 +329,7 @@ class PostFragment : Fragment() {
                     }
                 } else {
                     for (i in 0..4) {
-                        userViewModel.getUserById(listMentId[i]).join()
+                        userViewModel.getUserById(listMentId[i].toInt()).join()
                         val userName = userViewModel.user.value?.name
                         val userAvatar = userViewModel.user.value?.avatar
                         var pair = mapAvatarsMentioneds.getValue(i)

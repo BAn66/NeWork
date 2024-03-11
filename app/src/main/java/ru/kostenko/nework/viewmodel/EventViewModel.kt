@@ -224,11 +224,11 @@ class EventViewModel @Inject constructor(
         }
     }
 
-    fun setParticipants(set: Set<Int>) {
+    fun setParticipants(set: Set<Long>) {
         edited.value = edited.value?.copy(participantsIds = set)
     }
 
-    fun setSpeakers(set: Set<Int>) {
+    fun setSpeakers(set: Set<Long>) {
         edited.value = edited.value?.copy(speakerIds = set)
     }
 

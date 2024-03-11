@@ -8,3 +8,4 @@ data class User(
     var isTaken: Boolean = false
 ) : FeedItem
 
+
