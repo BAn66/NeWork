@@ -7,11 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.MediaController
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -23,9 +22,7 @@ import com.yandex.mapkit.mapview.MapView
 import com.yandex.mapkit.user_location.UserLocationLayer
 import com.yandex.runtime.ui_view.ViewProvider
 import dagger.hilt.android.AndroidEntryPoint
-import io.getstream.avatarview.AvatarView
 import io.getstream.avatarview.coil.loadImage
-import kotlinx.coroutines.launch
 import ru.kostenko.nework.R
 import ru.kostenko.nework.databinding.FragmentPostBinding
 import ru.kostenko.nework.databinding.PlaceBinding
@@ -205,76 +202,29 @@ class PostFragment : Fragment() {
             }
         }
 
-        val listLikersId = mutableListOf<Long>()
-        post.likeOwnerIds.forEach {
-            listLikersId.add(it)
+        val likers = post.likeOwnerIds.mapNotNull {
+            post.users[it]
         }
-        val avatarView0: AvatarView = binding.avatarLayoutLike.findViewById(R.id.avatar_liker_0)
-        val avatarView1: AvatarView = binding.avatarLayoutLike.findViewById(R.id.avatar_liker_1)
-        val avatarView2: AvatarView = binding.avatarLayoutLike.findViewById(R.id.avatar_liker_2)
-        val avatarView3: AvatarView = binding.avatarLayoutLike.findViewById(R.id.avatar_liker_3)
-        val avatarView4: AvatarView = binding.avatarLayoutLike.findViewById(R.id.avatar_liker_4)
-
-        lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                val mapAvatarsLikers = mutableMapOf<Int, Pair<AvatarView, String?>>()
-                mapAvatarsLikers.put(0, Pair(avatarView0, null))
-                mapAvatarsLikers.put(1, Pair(avatarView1, null))
-                mapAvatarsLikers.put(2, Pair(avatarView2, null))
-                mapAvatarsLikers.put(3, Pair(avatarView3, null))
-                mapAvatarsLikers.put(4, Pair(avatarView4, null))
-
-
-                if (listLikersId.size == 0) binding.avatarLayoutLike.visibility = View.GONE
-                else if (listLikersId.size < 6) {
-                    for (i in 0..(listLikersId.size - 1)) {
-                        userViewModel.getUserById(listLikersId[i].toInt()).join()
-                        val userName = userViewModel.user.value?.name
-                        val userAvatar = userViewModel.user.value?.avatar
-                        var pair = mapAvatarsLikers.getValue(i)
-                        if (userAvatar.isNullOrEmpty()) {
-                            pair = pair.copy(second = userName)
-                            mapAvatarsLikers.set(i, pair)
-                        } else {
-                            pair = pair.copy(second = userAvatar)
-                            mapAvatarsLikers.set(i, pair)
-                        }
-                    }
-
-
+        binding.avatarLayoutLike.isVisible = likers.isNotEmpty()
+        listOf(
+            binding.avatarLiker0,
+            binding.avatarLiker1,
+            binding.avatarLiker2,
+            binding.avatarLiker3,
+            binding.avatarLiker4,
+        ).forEachIndexed { index, avatarView ->
+            val user = likers.getOrElse(index) {
+                avatarView.isGone = true
+                return@forEachIndexed
+            }
+            val avatar = user.avatar
+            if (avatar?.startsWith("https://") == true) {
+                avatarView.loadImage(avatar)
+            } else {
+                if (avatar == "") {
+                    avatarView.loadImage(R.drawable.post_avatar_drawable)
                 } else {
-                    for (i in 0..4) {
-                        userViewModel.getUserById(listLikersId[i].toInt()).join()
-                        val userName = userViewModel.user.value?.name
-                        val userAvatar = userViewModel.user.value?.avatar
-                        var pair = mapAvatarsLikers.getValue(i)
-                        if (userAvatar.isNullOrEmpty()) {
-                            pair = pair.copy(second = userName)
-                            mapAvatarsLikers.set(i, pair)
-                        } else {
-                            pair = pair.copy(second = userAvatar)
-                            mapAvatarsLikers.set(i, pair)
-                        }
-                    }
-                }
-
-                mapAvatarsLikers.forEach {
-                    it.value.first.visibility = View.GONE
-                    if (it.value.second != null) {
-                        if (it.value.second!!.startsWith("https://")) {
-                            it.value.first.visibility = View.VISIBLE
-                            it.value.first.loadImage(it.value.second)
-                        } else {
-                            if (it.value.second == "") {
-                                it.value.first.visibility = View.VISIBLE
-                                it.value.first.loadImage(R.drawable.post_avatar_drawable)
-                            } else {
-                                it.value.first.visibility = View.VISIBLE
-                                it.value.first.avatarInitials =
-                                    it.value.second!!.substring(0, 1).uppercase()
-                            }
-                        }
-                    }
+                    avatarView.avatarInitials = user.name.take(1).uppercase()
                 }
             }
         }
@@ -287,73 +237,29 @@ class PostFragment : Fragment() {
         }
 
 
-        val listMentId = mutableListOf<Long>()
-        post.mentionIds.forEach {
-            listMentId.add(it)
+        val mentions = post.mentionIds.mapNotNull {
+            post.users[it]
         }
-        val avatarViewMent0: AvatarView = binding.avatarLayoutMent.findViewById(R.id.avatar_ment_0)
-        val avatarViewMent1: AvatarView = binding.avatarLayoutMent.findViewById(R.id.avatar_ment_1)
-        val avatarViewMent2: AvatarView = binding.avatarLayoutMent.findViewById(R.id.avatar_ment_2)
-        val avatarViewMent3: AvatarView = binding.avatarLayoutMent.findViewById(R.id.avatar_ment_3)
-        val avatarViewMent4: AvatarView = binding.avatarLayoutMent.findViewById(R.id.avatar_ment_4)
-
-        lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                val mapAvatarsMentioneds = mutableMapOf<Int, Pair<AvatarView, String?>>()
-                mapAvatarsMentioneds.put(0, Pair(avatarViewMent0, null))
-                mapAvatarsMentioneds.put(1, Pair(avatarViewMent1, null))
-                mapAvatarsMentioneds.put(2, Pair(avatarViewMent2, null))
-                mapAvatarsMentioneds.put(3, Pair(avatarViewMent3, null))
-                mapAvatarsMentioneds.put(4, Pair(avatarViewMent4, null))
-
-                if (listMentId.size == 0) binding.avatarLayoutMent.visibility = View.GONE
-                else if (listMentId.size < 6) {
-                    for (i in 0..(listMentId.size - 1)) {
-                        userViewModel.getUserById(listMentId[i].toInt()).join()
-                        val userName = userViewModel.user.value?.name
-                        val userAvatar = userViewModel.user.value?.avatar
-                        var pair = mapAvatarsMentioneds.getValue(i)
-                        if (userAvatar.isNullOrEmpty()) {
-                            pair = pair.copy(second = userName)
-                            mapAvatarsMentioneds.set(i, pair)
-                        } else {
-                            pair = pair.copy(second = userAvatar)
-                            mapAvatarsMentioneds.set(i, pair)
-                        }
-                    }
+        binding.avatarLayoutMent.isVisible = likers.isNotEmpty()
+        listOf(
+            binding.avatarMent0,
+            binding.avatarMent1,
+            binding.avatarMent2,
+            binding.avatarMent3,
+            binding.avatarMent4,
+        ).forEachIndexed { index, avatarView ->
+            val user = mentions.getOrElse(index) {
+                avatarView.isGone = true
+                return@forEachIndexed
+            }
+            val avatar = user.avatar
+            if (avatar?.startsWith("https://") == true) {
+                avatarView.loadImage(avatar)
+            } else {
+                if (avatar == "") {
+                    avatarView.loadImage(R.drawable.post_avatar_drawable)
                 } else {
-                    for (i in 0..4) {
-                        userViewModel.getUserById(listMentId[i].toInt()).join()
-                        val userName = userViewModel.user.value?.name
-                        val userAvatar = userViewModel.user.value?.avatar
-                        var pair = mapAvatarsMentioneds.getValue(i)
-                        if (userAvatar.isNullOrEmpty()) {
-                            pair = pair.copy(second = userName)
-                            mapAvatarsMentioneds.set(i, pair)
-                        } else {
-                            pair = pair.copy(second = userAvatar)
-                            mapAvatarsMentioneds.set(i, pair)
-                        }
-                    }
-                }
-
-                mapAvatarsMentioneds.forEach {
-                    it.value.first.visibility = View.GONE
-                    if (it.value.second != null) {
-                        if (it.value.second!!.startsWith("https://")) {
-                            it.value.first.visibility = View.VISIBLE
-                            it.value.first.loadImage(it.value.second)
-                        } else {
-                            if (it.value.second == "") {
-                                it.value.first.visibility = View.VISIBLE
-                                it.value.first.loadImage(R.drawable.post_avatar_drawable)
-                            } else {
-                                it.value.first.visibility = View.VISIBLE
-                                it.value.first.avatarInitials =
-                                    it.value.second!!.substring(0, 1).uppercase()
-                            }
-                        }
-                    }
+                    avatarView.avatarInitials = user.name.take(1).uppercase()
                 }
             }
         }

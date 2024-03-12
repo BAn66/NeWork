@@ -33,7 +33,7 @@ class UserViewModel @Inject constructor(
     val dataSetPeople: LiveData<List<User>> =
         userRepositoryImpl.data.map { list ->
             list.mapNotNull { user ->
-                if(userIds.value?.contains(user.id.toLong())!!) user else null
+                if(userIds.value?.contains(user.id.toLong()) == true) user else null
             }
         }.asLiveData(Dispatchers.Default)
 
@@ -73,15 +73,15 @@ class UserViewModel @Inject constructor(
         }
     }
 
-    fun getUsersIds(set: Set<Long>) =
-        viewModelScope.launch { _userIds.value = set }
-
-    fun getTakeble(): LiveData<List<User>> =
-        userRepositoryImpl.data.map { list ->
-            list.map { user ->
-                user.copy(isTaken = true)
-            }
-        }.asLiveData(Dispatchers.Default)
+//    fun getUsersIds(set: Set<Long>) =
+//        viewModelScope.launch { _userIds.value = set }
+//
+//    fun getTakeble(): LiveData<List<User>> =
+//        userRepositoryImpl.data.map { list ->
+//            list.map { user ->
+//                user.copy(isTaken = true)
+//            }
+//        }.asLiveData(Dispatchers.Default)
 
     fun setSetIds(set: Set<Long>) {
         _userIds.value = set
