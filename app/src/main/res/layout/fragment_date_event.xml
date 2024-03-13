@@ -28,7 +28,7 @@
         app:boxStrokeColor="#6750A4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/drag_handler"
-        app:helperText="MM/dd/yyyy HH:mm"
+        app:helperText="@string/date_time_format"
         app:endIconMode="custom"
         app:endIconDrawable="@drawable/calendar_24"
        >

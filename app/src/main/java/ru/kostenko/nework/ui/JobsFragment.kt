@@ -38,7 +38,6 @@ class JobsFragment : Fragment() {
         with(binding) {
             val jobsAdapter = JobsAdapter(object : OnJobInteractionListener {
                 override fun edit(job: Job) {
-                    TODO("Not yet implemented")
                 }
 
                 override fun delete(job: Job) {

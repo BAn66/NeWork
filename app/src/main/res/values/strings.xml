@@ -100,4 +100,5 @@
     <string name="date">Date</string>
     <string name="date_time_format">MM/dd/yyyy HH:mm</string>
     <string name="type_event_title">Type</string>
+
 </resources>

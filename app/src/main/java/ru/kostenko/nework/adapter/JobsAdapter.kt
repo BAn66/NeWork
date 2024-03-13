@@ -47,29 +47,12 @@ class JobViewHolder(
             jobName.text = job.name
             officePosition.text = job.position
 
-            val monthNames = arrayOf(
-                "января",
-                "февраля",
-                "марта",
-                "апреля",
-                "мая",
-                "июня",
-                "июля",
-                "августа",
-                "сентября",
-                "октября",
-                "ноября",
-                "декабря"
-            )
-
-            val monthNameStart = monthNames[OffsetDateTime.parse(job.start).month.value - 1]
             startDate.text = OffsetDateTime.parse(job.start)
-                .format(DateTimeFormatter.ofPattern("dd $monthNameStart yyyy - "))
+                .format(DateTimeFormatter.ofPattern("dd MMMM yyyy - "))
             if (job.finish != null && job.finish != "1900-01-01T00:00:00Z"
             ) {
-                val monthNameEnd = monthNames[OffsetDateTime.parse(job.finish).month.value - 1]
                 endDate.text = OffsetDateTime.parse(job.finish)
-                    .format(DateTimeFormatter.ofPattern("dd $monthNameEnd yyyy"))
+                    .format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))
             } else {
                 endDate.text = context.getString(R.string.until_now)
             }

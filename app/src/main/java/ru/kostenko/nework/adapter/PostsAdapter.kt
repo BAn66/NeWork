@@ -57,7 +57,6 @@ class PostViewHolder(
     private val onPostInteractionListener: OnPostInteractionListener,
     private val observer: MediaLifecycleObserver
 ) : RecyclerView.ViewHolder(binding.root) {
-    @SuppressLint("SetTextI18n")
     fun bind(post: Post) {
         binding.apply {
             author.text = post.author
