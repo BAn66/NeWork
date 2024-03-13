@@ -72,8 +72,7 @@ class PostViewModel @Inject constructor(
         get() = _media
 
     private val _dataState = MutableLiveData(FeedModelState())
-    val dataState: LiveData<FeedModelState>
-        get() = _dataState
+
 
     val edited = MutableLiveData(empty)
 
@@ -96,7 +95,7 @@ class PostViewModel @Inject constructor(
 
     val authorId = appAuth.authStateFlow.value.id.toInt()
 
-    fun loadPosts() = viewModelScope.launch {
+    private fun loadPosts() = viewModelScope.launch {
         try {
             _dataState.value = FeedModelState(loading = true)
             _dataState.value = FeedModelState()
@@ -176,7 +175,7 @@ class PostViewModel @Inject constructor(
         _content.value = tmpContent
     }
 
-    fun clearContent() {
+    private fun clearContent() {
         _content.value = ""
     }
 
@@ -184,7 +183,7 @@ class PostViewModel @Inject constructor(
         edited.value = edited.value?.copy(coords = Coords(latC, longC))
     }
 
-    fun clearCoords() {
+    private fun clearCoords() {
         _coords.value = null
     }
 

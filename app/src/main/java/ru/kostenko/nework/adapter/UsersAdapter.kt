@@ -36,7 +36,7 @@ class UserViewHolder(
             userName.text = user.name
             userLogin.text = user.login
 
-            if (userName.text.length < 1) {
+            if (userName.text.isEmpty()) {
                 Glide.with(avatar)
                     .load(R.drawable.post_avatar_drawable)
                     .error(R.drawable.post_avatar_drawable)

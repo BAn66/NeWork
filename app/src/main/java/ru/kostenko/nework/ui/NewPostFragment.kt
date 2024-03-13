@@ -274,7 +274,7 @@ class NewPostFragment : Fragment() {
         return binding.root
     }
 
-    fun choosePhotoFromGallary() {
+    private fun choosePhotoFromGallary() {
         ImagePicker.Builder(this)
             .crop()
             .galleryOnly()
@@ -294,11 +294,11 @@ class NewPostFragment : Fragment() {
             )
     }
 
-    fun takeVideo() {
+    private fun takeVideo() {
         videoResultContract.launch("video/*")
     }
 
-    fun takeAudio() {
+    private fun takeAudio() {
         audioResultContract.launch("audio/*")
     }
 

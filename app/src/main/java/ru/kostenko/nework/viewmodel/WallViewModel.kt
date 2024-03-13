@@ -1,7 +1,5 @@
 package ru.kostenko.nework.viewmodel
 
-
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -28,8 +26,6 @@ class WallViewModel @Inject constructor(
     private val appAuth: AppAuth,
 ) : ViewModel() {
     private val _dataState = MutableLiveData(FeedModelState())
-    val dataState: LiveData<FeedModelState>
-        get() = _dataState
 
     @OptIn(ExperimentalCoroutinesApi::class)
     fun getWallPosts(userId: Int): Flow<PagingData<FeedItem>> =appAuth

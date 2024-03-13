@@ -1,4 +1,4 @@
-package ru.netologia.nmedia.dao
+package ru.kostenko.nework.dao
 
 import androidx.paging.PagingSource
 import androidx.room.Dao

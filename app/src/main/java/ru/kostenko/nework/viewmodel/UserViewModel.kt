@@ -38,15 +38,13 @@ class UserViewModel @Inject constructor(
         }.asLiveData(Dispatchers.Default)
 
     private val _dataState = MutableLiveData<FeedModelState>()
-    val dataState: LiveData<FeedModelState>
-        get() = _dataState
 
     private val _user = MutableLiveData<User>()
     val user: LiveData<User>
         get() = _user
 
     private val _userIds = MutableLiveData<Set<Long>>()
-    val userIds: LiveData<Set<Long>>
+    private val userIds: LiveData<Set<Long>>
         get() = _userIds
 
     init {

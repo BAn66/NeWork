@@ -1,6 +1,5 @@
 package ru.kostenko.nework.util
 
-import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
@@ -16,10 +15,6 @@ import java.util.Locale
 object AndroidUtils {
 
     private val calendar = Calendar.getInstance()
-    fun hideKeyboard(view: View) {
-        val inputMethodManager = view.context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-    }
 
     fun View.focusAndShowKeyboard() {
         fun View.showTheKeyboardNow() {

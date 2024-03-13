@@ -37,8 +37,6 @@ class JobsFragment : Fragment() {
         val binding = FragmentJobsBinding.inflate(layoutInflater)
         with(binding) {
             val jobsAdapter = JobsAdapter(object : OnJobInteractionListener {
-                override fun edit(job: Job) {
-                }
 
                 override fun delete(job: Job) {
                     jobsViewModel.removeMyJob(job.id)

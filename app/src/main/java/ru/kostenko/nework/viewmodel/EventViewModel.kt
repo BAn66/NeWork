@@ -77,8 +77,6 @@ class EventViewModel @Inject constructor(
         get() = _media
 
     private val _dataState = MutableLiveData(FeedModelState())
-    val dataState: LiveData<FeedModelState>
-        get() = _dataState
 
     private val _datetime = SingleLiveEvent<String>()
     val datetime: LiveData<String>
@@ -108,7 +106,7 @@ class EventViewModel @Inject constructor(
 
     val authorId = appAuth.authStateFlow.value.id.toInt()
 
-    fun loadEvents() =
+    private fun loadEvents() =
         viewModelScope.launch {
             try {
                 _dataState.value = FeedModelState(loading = true)
@@ -146,7 +144,7 @@ class EventViewModel @Inject constructor(
         emptyNew()
     }
 
-    fun emptyNew() {
+    private fun emptyNew() {
         edited.value = empty
     }
 
@@ -190,15 +188,15 @@ class EventViewModel @Inject constructor(
         _content.value = tmpContent
     }
 
-    fun clearContent() {
+    private fun clearContent() {
         _content.value = ""
     }
 
-    fun setCoords(latC: Double, LongC: Double) {
-        edited.value = edited.value?.copy(coords = Coords(latC, LongC))
+    fun setCoords(latC: Double, longC: Double) {
+        edited.value = edited.value?.copy(coords = Coords(latC, longC))
     }
 
-    fun clearCoords() {
+    private fun clearCoords() {
         _coords.value = null
     }
 
@@ -206,7 +204,7 @@ class EventViewModel @Inject constructor(
         _datetime.value = formatDateForServer(string)
     }
 
-    fun clearDateTime() {
+    private fun clearDateTime() {
         _datetime.value = ""
     }
 

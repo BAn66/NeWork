@@ -109,5 +109,6 @@
     <string name="time_format">ЧЧ:мм</string>
     <string name="end_date">Дата окончания</string>
     <string name="tire">" - "</string>
+    <string name="without_date">without date</string>
 
 </resources>

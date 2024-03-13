@@ -7,9 +7,9 @@ import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import retrofit2.HttpException
 import ru.kostenko.nework.api.ApiService
+import ru.kostenko.nework.dao.PostDao
 import ru.kostenko.nework.dao.RemoteKeyDao
 import ru.kostenko.nework.entity.PostEntity
-import ru.netologia.nmedia.dao.PostDao
 import ru.kostenko.nework.db.AppDb
 import ru.kostenko.nework.dto.Post
 import ru.kostenko.nework.entity.RemoteKeyEntity

@@ -59,7 +59,7 @@ class UserDetailsFragment : Fragment() {
 
         val toolbar: Toolbar = binding.toolbar
         toolbar.apply {
-            setTitle("$nameUser / $loginUser")
+            title = "$nameUser / $loginUser"
             setNavigationIcon(R.drawable.arrow_back_24)
             setNavigationOnClickListener {
                 findNavController().popBackStack()

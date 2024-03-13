@@ -6,7 +6,7 @@
     <string name="authentication">Authentication</string>
     <string name="add_post">Add post</string>
     <string name="description_post_author_avatar">Avatar name</string>
-    <string name="description_post_more">Больше</string>
+    <string name="description_post_more">More</string>
     <string name="description_liked_count">Liked count</string>
     <string name="login">Login</string>
     <string name="registration">Registration</string>
@@ -108,5 +108,6 @@
     <string name="time_format">hh:mm</string>
     <string name="end_date">End date</string>
     <string name="tire">" - "</string>
+    <string name="without_date">without date</string>
 
 </resources>

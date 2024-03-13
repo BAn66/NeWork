@@ -15,8 +15,8 @@ import ru.kostenko.nework.viewmodel.PostViewModel
 
 @AndroidEntryPoint
 class AddPlaceDialog : DialogFragment() {
-    val postViewModel: PostViewModel by activityViewModels()
-    val eventViewModel: EventViewModel by activityViewModels()
+    private val postViewModel: PostViewModel by activityViewModels()
+    private val eventViewModel: EventViewModel by activityViewModels()
 
     companion object {
         private const val LAT_KEY = "LAT_KEY"

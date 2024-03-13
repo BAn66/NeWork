@@ -15,7 +15,6 @@ import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 
 interface OnJobInteractionListener {
-    fun edit(job: Job)
     fun delete(job: Job)
 }
 

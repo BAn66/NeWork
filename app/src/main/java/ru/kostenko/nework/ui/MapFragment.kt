@@ -54,7 +54,7 @@ class MapFragment : Fragment() {
         }
     }
 
-    private val premissionLauncher =
+    private val permissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
             when {
                 granted -> {
@@ -140,7 +140,7 @@ class MapFragment : Fragment() {
         }
 
         binding.location.setOnClickListener {
-            premissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
+            permissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
         }
 
         return binding.root

@@ -5,9 +5,9 @@ import ru.kostenko.nework.dto.Coords
 
 data class CoordsEntity(
     val latitude: Double,
-    val longtitude: Double,
+    val longitude: Double,
 ) {
-    fun toDto() = Coords(latitude, longtitude)
+    fun toDto() = Coords(latitude, longitude)
 
     companion object {
         fun fromDto(dto: Coords?): CoordsEntity? {

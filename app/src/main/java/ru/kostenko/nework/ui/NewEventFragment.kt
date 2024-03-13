@@ -97,7 +97,7 @@ class NewEventFragment : Fragment() {
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.save -> {
-                        if (!binding.editTextNewPost.text.isNotBlank()
+                        if (binding.editTextNewPost.text.isBlank()
                         ) {
                             Snackbar.make(
                                 binding.root, R.string.error_empty_content,
@@ -230,7 +230,6 @@ class NewEventFragment : Fragment() {
 
         binding.playButton.setOnClickListener {
             observer.apply {
-                //Не забываем добавлять разрешение в андроид манифест на работу с сетью
                 val uri = eventViewModel.media.value?.uri
                 observer.mediaPlayer?.setDataSource(uri.toString())
             }.play()
@@ -289,7 +288,7 @@ class NewEventFragment : Fragment() {
 
     }
 
-    fun choosePhotoFromGallary() {
+    private fun choosePhotoFromGallary() {
         ImagePicker.Builder(this)
             .crop()
             .galleryOnly()
@@ -309,11 +308,11 @@ class NewEventFragment : Fragment() {
             )
     }
 
-    fun takeVideo() {
+    private fun takeVideo() {
         videoResultContract.launch("video/*")
     }
 
-    fun takeAudio() {
+    private fun takeAudio() {
         audioResultContract.launch("audio/*")
     }
 

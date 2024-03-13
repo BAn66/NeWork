@@ -16,19 +16,7 @@ class Converters {
         else data.split("-").map { it.toLong() }.toSet()
 
     @TypeConverter
-    fun fromString(value: String?): Map<Long, Pair<String, String>>? {
-        val mapType = object : TypeToken<Map<Long, Pair<String, String>>?>() {}.type
-        return Gson().fromJson(value, mapType)
-    }
-
-    @TypeConverter
-    fun fromMap(map: Map<Long, Pair<String, String>>?): String? {
-        val gson = Gson()
-        return gson.toJson(map)
-    }
-
-    @TypeConverter
-    fun fromStringtoUsers(value: String?): Map<Long, UserPreview>? {
+    fun fromStringToUsers(value: String?): Map<Long, UserPreview>? {
         val mapType = object : TypeToken<Map<Long, UserPreview>?>() {}.type
         return Gson().fromJson(value, mapType)
     }

@@ -29,14 +29,18 @@ class RegistrationFragment : Fragment() {
 
     private val photoResultContract =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Activity.RESULT_OK) {
-                val uri = it.data?.data ?: return@registerForActivityResult
-                val file = uri.toFile()
-                viewModel.setPhoto(uri, file)
-            } else if (it.resultCode == ImagePicker.RESULT_ERROR) {
-                Toast.makeText(context, ImagePicker.getError(it.data), Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(context, "Task Cancelled", Toast.LENGTH_SHORT).show()
+            when (it.resultCode) {
+                Activity.RESULT_OK -> {
+                    val uri = it.data?.data ?: return@registerForActivityResult
+                    val file = uri.toFile()
+                    viewModel.setPhoto(uri, file)
+                }
+                ImagePicker.RESULT_ERROR -> {
+                    Toast.makeText(context, ImagePicker.getError(it.data), Toast.LENGTH_SHORT).show()
+                }
+                else -> {
+                    Toast.makeText(context, "Task Cancelled", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
@@ -133,7 +137,7 @@ class RegistrationFragment : Fragment() {
         return binding.root
     }
 
-    fun choosePhotoFromGallary() {
+    private fun choosePhotoFromGallary() {
         ImagePicker.Builder(this)
             .galleryMimeTypes(
                 mimeTypes = arrayOf(

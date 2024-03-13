@@ -36,7 +36,7 @@ interface OnEventInteractionListener {
 }
 
 class EventsAdapter(
-    private val onEventIteractionLister: OnEventInteractionListener,
+    private val onEventInteractionLister: OnEventInteractionListener,
     private val observer: MediaLifecycleObserver
 ) : PagingDataAdapter<FeedItem, EventsAdapter.EventViewHolder>(DiffCallback()) {
 
@@ -44,7 +44,7 @@ class EventsAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         val binding =
             CardEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return EventViewHolder(binding, onEventIteractionLister, observer)
+        return EventViewHolder(binding, onEventInteractionLister, observer)
     }
 
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
@@ -74,7 +74,7 @@ class EventsAdapter(
                 if (event.datetime != "1900-01-01T00:00:00Z") {
                     dateTime.text = OffsetDateTime.parse(event.datetime)
                         .format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))
-                } else dateTime.text = "без даты"
+                } else dateTime.setText(R.string.without_date)
 
                 Glide.with(avatar)
                     .load(event.authorAvatar)

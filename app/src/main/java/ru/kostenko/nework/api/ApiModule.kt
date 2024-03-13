@@ -88,5 +88,5 @@ class ApiModule {
     @Provides
     fun provideApiService(
         retrofit: Retrofit,
-    ): ApiService = retrofit.create<ApiService>()
+    ): ApiService = retrofit.create()
 }
