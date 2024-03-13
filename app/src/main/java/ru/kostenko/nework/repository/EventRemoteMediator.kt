@@ -8,11 +8,8 @@ import androidx.room.withTransaction
 import retrofit2.HttpException
 import ru.kostenko.nework.api.ApiService
 import ru.kostenko.nework.dao.RemoteKeyDao
-import ru.kostenko.nework.entity.PostEntity
-import ru.netologia.nmedia.dao.PostDao
 import ru.kostenko.nework.db.AppDb
 import ru.kostenko.nework.dto.Event
-import ru.kostenko.nework.dto.Post
 import ru.kostenko.nework.entity.EventEntity
 import ru.kostenko.nework.entity.RemoteKeyEntity
 import ru.netologia.nmedia.dao.EventDao
@@ -62,7 +59,6 @@ class EventRemoteMediator(
                         insertMinKey(body)
                         eventDao.removeAll()
                     }
-
                     LoadType.APPEND -> insertMinKey(body)
                     LoadType.PREPEND -> insertMaxKey(body)
                 }

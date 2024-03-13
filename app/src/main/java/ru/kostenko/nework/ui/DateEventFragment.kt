@@ -9,6 +9,7 @@ import androidx.fragment.app.setFragmentResultListener
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
+import ru.kostenko.nework.R
 import ru.kostenko.nework.databinding.FragmentDateEventBinding
 import ru.kostenko.nework.dto.EventType
 import ru.kostenko.nework.viewmodel.EventViewModel
@@ -35,7 +36,7 @@ class DateEventFragment : BottomSheetDialogFragment() {
 
         val datePicker =
             MaterialDatePicker.Builder.datePicker()
-                .setTitleText("Select date")
+                .setTitleText(R.string.select_date)
                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
                 .build()
         datePicker.dialog?.show()

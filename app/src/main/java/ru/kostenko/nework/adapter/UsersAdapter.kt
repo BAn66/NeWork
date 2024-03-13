@@ -8,9 +8,9 @@ import android.graphics.PixelFormat
 import android.graphics.drawable.Drawable
 import android.text.TextPaint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.graphics.ColorUtils
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -60,17 +60,14 @@ class UserViewHolder(
                 onUsersInteractionListener.onUserClicked(user)
             }
 
-            setPeople.visibility = if (user.isTaken)View.VISIBLE else View.INVISIBLE
+            setPeople.isVisible = user.isTaken
 
-            setPeople.setOnCheckedChangeListener {_, isChecked ->
-                setPeople.isChecked = if (isChecked){
-                    onUsersInteractionListener.onUserCheckBoxClicked(user)
-                    true
-                }
-                else {
-                    onUsersInteractionListener.onUserUnCheckBoxClicked(user)
-                    false
-                }
+            setPeople.setOnCheckedChangeListener(null)
+            setPeople.isChecked = user.isChecked
+
+            setPeople.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) onUsersInteractionListener.onUserCheckBoxClicked(user)
+                else onUsersInteractionListener.onUserUnCheckBoxClicked(user)
             }
         }
     }

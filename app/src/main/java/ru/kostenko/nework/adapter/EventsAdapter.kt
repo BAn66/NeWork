@@ -19,6 +19,7 @@ import ru.kostenko.nework.databinding.CardEventBinding
 import ru.kostenko.nework.dto.AttachmentType
 import ru.kostenko.nework.dto.DiffCallback
 import ru.kostenko.nework.dto.Event
+import ru.kostenko.nework.dto.EventType
 import ru.kostenko.nework.dto.FeedItem
 import ru.kostenko.nework.util.AndroidUtils.eraseZero
 import ru.kostenko.nework.util.MediaLifecycleObserver
@@ -64,7 +65,11 @@ class EventsAdapter(
                     .format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"))
 
                 content.text = event.content
-                typeEvent.text = event.type.str
+                typeEvent.setText(
+                    if(event.type == EventType.ONLINE)
+                        R.string.online
+                    else R.string.offline
+                )
 
                 if (event.datetime != "1900-01-01T00:00:00Z") {
                     dateTime.text = OffsetDateTime.parse(event.datetime)
@@ -167,7 +172,6 @@ class EventsAdapter(
                 }
 
                 content.setOnClickListener {
-                    println("content clicked")
                     onEventInteractionListener.openEvent(event)
                 }
 

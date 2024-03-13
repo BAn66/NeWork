@@ -26,7 +26,6 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView
-        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
@@ -34,7 +33,6 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/postLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/common_margin">
@@ -490,12 +488,12 @@
                 app:layout_constraintTop_toBottomOf="@id/barrier_elikers" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_emention"
+                android:id="@+id/btn_participants"
                 style="@style/Widget.AppTheme.LikeButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/common_pudding"
-                android:contentDescription="@string/description_mention_count"
+                android:contentDescription="@string/description_participians_count"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
                 android:minHeight="0dp"
@@ -508,16 +506,16 @@
                 tools:text="@sample/posts.json/data/likedCount" />
 
             <LinearLayout
-                android:id="@+id/avatar_layout_ement"
+                android:id="@+id/avatar_layout_participians"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="@id/btn_emention"
-                app:layout_constraintStart_toEndOf="@id/btn_emention"
-                app:layout_constraintTop_toTopOf="@id/btn_emention">
+                app:layout_constraintBottom_toBottomOf="@id/btn_participants"
+                app:layout_constraintStart_toEndOf="@id/btn_participants"
+                app:layout_constraintTop_toTopOf="@id/btn_participants">
 
                 <io.getstream.avatarview.AvatarView
-                    android:id="@+id/avatar_ement_0"
+                    android:id="@+id/avatar_participian_0"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     app:avatarViewBorderColor="@color/colorWhite"
@@ -531,7 +529,7 @@
                     app:avatarViewShape="circle" />
 
                 <io.getstream.avatarview.AvatarView
-                    android:id="@+id/avatar_ement_1"
+                    android:id="@+id/avatar_participian_1"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     app:avatarViewBorderColor="@color/colorWhite"
@@ -545,7 +543,7 @@
                     app:avatarViewShape="circle" />
 
                 <io.getstream.avatarview.AvatarView
-                    android:id="@+id/avatar_ement_2"
+                    android:id="@+id/avatar_participian_2"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     app:avatarViewBorderColor="@color/colorWhite"
@@ -559,7 +557,7 @@
                     app:avatarViewShape="circle" />
 
                 <io.getstream.avatarview.AvatarView
-                    android:id="@+id/avatar_ement_3"
+                    android:id="@+id/avatar_participian_3"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     app:avatarViewBorderColor="@color/colorWhite"
@@ -573,7 +571,7 @@
                     app:avatarViewShape="circle" />
 
                 <io.getstream.avatarview.AvatarView
-                    android:id="@+id/avatar_ement_4"
+                    android:id="@+id/avatar_participian_4"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     app:avatarViewBorderColor="@color/colorWhite"
@@ -587,7 +585,7 @@
                     app:avatarViewShape="circle" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_ement_more"
+                    android:id="@+id/btn_participians_more"
                     style="@style/Widget.AppTheme.LikeButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -606,7 +604,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:barrierDirection="bottom"
-                app:constraint_referenced_ids="btn_emention" />
+                app:constraint_referenced_ids="btn_participants" />
 
             <com.yandex.mapkit.mapview.MapView
                 android:id="@+id/mapview"

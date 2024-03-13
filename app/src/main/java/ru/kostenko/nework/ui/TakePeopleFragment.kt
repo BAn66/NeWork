@@ -8,10 +8,13 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.update
 import ru.kostenko.nework.R
 import ru.kostenko.nework.adapter.OnUsersInteractionListener
 import ru.kostenko.nework.adapter.UsersAdapter
@@ -22,8 +25,8 @@ import ru.kostenko.nework.viewmodel.UserViewModel
 
 @AndroidEntryPoint
 class TakePeopleFragment : Fragment() {
-    val userViewModel: UserViewModel by activityViewModels()
-    val postViewModel: PostViewModel by activityViewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
+    private val postViewModel: PostViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,7 +34,8 @@ class TakePeopleFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentTakePeopleBinding.inflate(layoutInflater)
-        val tmpMentionIds = mutableSetOf<Long>()
+        val tmpMentionIds = MutableStateFlow(emptySet<Long>())
+
         val toolbar: Toolbar = binding.toolbar
         toolbar.apply {
             setTitle(R.string.take_people)
@@ -43,13 +47,10 @@ class TakePeopleFragment : Fragment() {
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.save -> {
-                        lifecycleScope.launch {
-                            if(tmpMentionIds.isNotEmpty()) postViewModel.setMentinoed(tmpMentionIds)
-                            findNavController().popBackStack()
-                        }
+                        postViewModel.setMentinoed(tmpMentionIds.value)
+                        findNavController().popBackStack()
                         true
                     }
-
                     else -> false
                 }
             }
@@ -60,18 +61,25 @@ class TakePeopleFragment : Fragment() {
             }
 
             override fun onUserCheckBoxClicked(user: User) {
-                if (!tmpMentionIds.contains(user.id.toLong())) tmpMentionIds.add(user.id.toLong())
+                tmpMentionIds.update { it + user.id.toLong() }
             }
 
             override fun onUserUnCheckBoxClicked(user: User) {
-                if (tmpMentionIds.contains(user.id.toLong())) tmpMentionIds.remove(user.id.toLong())
+                tmpMentionIds.update { it - user.id.toLong() }
             }
         })
 
         binding.userList.adapter = adapter
-        userViewModel.dataTakeble.observe(viewLifecycleOwner) { users ->
-            adapter.submitList(users)
-        }
+
+        userViewModel.dataTakeble.asFlow()
+            .combine(tmpMentionIds){users, mentionIds ->
+                users.map {
+                    it.copy(isChecked = it.id.toLong() in mentionIds)
+                }
+            }.asLiveData()
+            .observe(viewLifecycleOwner) { users ->
+                adapter.submitList(users)
+            }
 
         return binding.root
     }

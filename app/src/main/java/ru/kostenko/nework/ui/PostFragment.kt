@@ -66,7 +66,7 @@ class PostFragment : Fragment() {
             inflateMenu(R.menu.share_menu)
             setOnMenuItemClickListener {
                 when (it.itemId) {
-                    R.id.share -> { //Делимся текстом карточки
+                    R.id.share -> {
                         val intent = Intent().apply {
                             action = Intent.ACTION_SEND
                             putExtra(Intent.EXTRA_TEXT, post.content)

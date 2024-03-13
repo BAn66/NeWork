@@ -2,7 +2,6 @@ package ru.kostenko.nework.adapter
 
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
-import android.annotation.SuppressLint
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -69,7 +68,7 @@ class PostViewHolder(
                 .placeholder(R.drawable.ic_loading_100dp)
                 .error(R.drawable.post_avatar_drawable)
                 .timeout(10_000)
-                .apply(RequestOptions().circleCrop()) //делает круглыми аватарки
+                .apply(RequestOptions().circleCrop())
                 .into(avatar)
 
             if (post.attachment != null) {
@@ -149,7 +148,6 @@ class PostViewHolder(
             }
 
             content.setOnClickListener {
-                println("content clicked")
                 onPostInteractionListener.openPost(post)
             }
 

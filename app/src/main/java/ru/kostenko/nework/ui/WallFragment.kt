@@ -111,7 +111,7 @@ class WallFragment : Fragment() {
                 }
             }
 
-            postViewModel.edited.observe(viewLifecycleOwner) { post->// Начало редактирования
+            postViewModel.edited.observe(viewLifecycleOwner) { post->
                 if (post.id != 0) {
                     requireParentFragment().requireParentFragment()
                         .findNavController().navigate(R.id.action_userDetailsFragment_to_newPostFragment)

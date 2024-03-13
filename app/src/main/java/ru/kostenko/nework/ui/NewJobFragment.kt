@@ -31,7 +31,7 @@ class NewJobFragment : Fragment() {
         val binding = FragmentNewJobBinding.inflate(layoutInflater)
         val toolbar = binding.toolbar
         toolbar.apply {
-            title = "New job"
+            setTitle(R.string.new_job)
             setNavigationIcon(R.drawable.arrow_back_24)
             setNavigationOnClickListener {
                 findNavController().popBackStack()
@@ -63,7 +63,8 @@ class NewJobFragment : Fragment() {
             viewLifecycleOwner.lifecycleScope.launch {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
 
-                    if (binding.companyName.text.isNullOrBlank() || binding.position.text.isNullOrBlank() ||
+                    if (binding.companyName.text.isNullOrBlank() ||
+                        binding.position.text.isNullOrBlank() ||
                         binding.start.text.isNullOrBlank()
                     ) {
                         Toast.makeText(

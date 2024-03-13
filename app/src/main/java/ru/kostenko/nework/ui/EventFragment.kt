@@ -26,6 +26,7 @@ import ru.kostenko.nework.R
 import ru.kostenko.nework.databinding.FragmentEventBinding
 import ru.kostenko.nework.databinding.PlaceBinding
 import ru.kostenko.nework.dto.AttachmentType
+import ru.kostenko.nework.dto.EventType
 import ru.kostenko.nework.util.AndroidUtils
 import ru.kostenko.nework.util.MediaLifecycleObserver
 import ru.kostenko.nework.viewmodel.EventViewModel
@@ -89,7 +90,11 @@ class EventFragment : Fragment() {
         binding.content.text = event.content
         binding.job.text = if (event.authorJob.isNullOrEmpty()) getString(R.string.in_search_job)
         else (event.authorJob)
-        binding.eventType.text = event.type.str
+        binding.eventType.setText(
+            if(event.type == EventType.ONLINE)
+                R.string.online
+            else R.string.offline
+        )
 
         Glide.with(binding.avatar).load(event.authorAvatar).placeholder(R.drawable.ic_loading_100dp)
             .error(R.drawable.post_avatar_drawable).timeout(10_000)
@@ -165,11 +170,11 @@ class EventFragment : Fragment() {
         binding.btnElike.isChecked = event.likedByMe
         binding.btnElike.isCheckable = false
 
-        binding.btnEmention.text = AndroidUtils.eraseZero(
+        binding.btnParticipants.text = AndroidUtils.eraseZero(
             event.participantsIds.size.toLong()
         )
-        binding.btnEmention.isChecked = event.participatedByMe
-        binding.btnEmention.isCheckable = false
+        binding.btnParticipants.isChecked = event.participatedByMe
+        binding.btnParticipants.isCheckable = false
 
         mapView = binding.mapview.apply {
             userLocation = MapKitFactory.getInstance().createUserLocationLayer(mapWindow)
@@ -270,13 +275,13 @@ class EventFragment : Fragment() {
         val participants = event.participantsIds.mapNotNull {
             event.users[it]
         }
-        binding.avatarLayoutEment.isVisible = participants.isNotEmpty()
+        binding.avatarLayoutParticipians.isVisible = participants.isNotEmpty()
         listOf(
-            binding.avatarEment0,
-            binding.avatarEment1,
-            binding.avatarEment2,
-            binding.avatarEment3,
-            binding.avatarEment4,
+            binding.avatarParticipian0,
+            binding.avatarParticipian1,
+            binding.avatarParticipian2,
+            binding.avatarParticipian3,
+            binding.avatarParticipian4,
         ).forEachIndexed { index, avatarView ->
             val user = participants.getOrElse(index) {
                 avatarView.isGone = true
@@ -294,8 +299,8 @@ class EventFragment : Fragment() {
             }
         }
 
-        if (event.participantsIds.size <= 5) binding.btnEmentMore.visibility = View.GONE
-        binding.btnEmentMore.setOnClickListener {
+        if (event.participantsIds.size <= 5) binding.btnParticipiansMore.visibility = View.GONE
+        binding.btnParticipiansMore.setOnClickListener {
             userViewModel.setSetIds(event.participantsIds)
             requireParentFragment().findNavController()
                 .navigate(R.id.action_eventFragment_to_likersMentMoreFragment)

@@ -5,7 +5,8 @@ data class User(
     val login: String = "",
     val name: String = "",
     val avatar: String? = null,
-    var isTaken: Boolean = false
+    var isTaken: Boolean = false,
+    var isChecked: Boolean = false
 ) : FeedItem
 
 

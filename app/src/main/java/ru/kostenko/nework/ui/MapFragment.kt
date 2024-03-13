@@ -76,7 +76,7 @@ class MapFragment : Fragment() {
                 else -> {
                     Toast.makeText(
                         requireContext(),
-                        "Location permission required",
+                        getString(R.string.location_permission_required),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -98,7 +98,7 @@ class MapFragment : Fragment() {
 
         val toolbar = binding.toolbar
         toolbar.apply {
-            setTitle("Set position")
+            setTitle(R.string.set_position)
             setNavigationIcon(R.drawable.arrow_back_24)
             setNavigationOnClickListener {
                 findNavController().popBackStack()

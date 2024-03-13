@@ -46,10 +46,10 @@ class UserDetailsFragment : Fragment() {
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             when (position) {
                 0 -> {
-                    tab.text = "Wall"
+                    tab.setText(R.string.wall)
                 }
                 1 -> {
-                    tab.text = "Jobs"
+                    tab.setText(R.string.jobs)
                 }
             }
         }.attach()

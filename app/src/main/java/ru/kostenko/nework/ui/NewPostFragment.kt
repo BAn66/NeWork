@@ -123,7 +123,7 @@ class NewPostFragment : Fragment() {
         }
 
 
-        binding.takePhoto.setOnClickListener { //Берем фотку через галерею
+        binding.takePhoto.setOnClickListener {
             postViewModel.setContent(binding.editTextNewPost.text.toString())
             postViewModel.clearMedia()
             val pictureDialog = AlertDialog.Builder(it.context)

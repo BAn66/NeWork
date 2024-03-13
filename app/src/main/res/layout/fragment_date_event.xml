@@ -12,6 +12,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" android:paddingTop="@dimen/common_pudding_8dp"
+        android:contentDescription="@string/drag_handler"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/drag_handle_24"

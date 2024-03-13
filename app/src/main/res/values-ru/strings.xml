@@ -9,7 +9,6 @@
     <string name="description_post_author_avatar">Имя аватара</string>
     <string name="description_post_more">Больше</string>
     <string name="description_liked_count">Счетчик лайков</string>
-    <string name="description_play">Воспроизведение</string>
     <string name="login">Логин</string>
     <string name="registration">Регистрация</string>
     <string name="password">Пароль</string>
@@ -34,7 +33,6 @@
     <string name="description_edit">Редактировать</string>
     <string name="description_remove">Удалить</string>
     <string name="play">Воспроизведение</string>
-    <string name="pause">Пауза</string>
     <string name="stop">Стоп</string>
     <string name="add_event">Добавь событие</string>
     <string name="offline">В живую</string>
@@ -44,7 +42,6 @@
     <string name="new_event">Новое событие</string>
     <string name="save">Сохранить</string>
     <string name="error_empty_content">Текст не может быть пустым</string>
-    <string name="profile">Профиль</string>
     <string name="VideoHolder">Заставка</string>
     <string name="wall">Стена</string>
     <string name="jobs">Работа</string>
@@ -61,6 +58,7 @@
     <string name="share">Поделится</string>
     <string name="location_mark">Место расположения</string>
     <string name="description_mention_count">Упомянутые</string>
+    <string name="description_participians_count">Участвующие</string>
     <string name="liked_more">Увидеть больше лайкнувших</string>
     <string name="ment_more">Увидеть больше упомянутых</string>
     <string name="description_shared">Поделится</string>
@@ -83,16 +81,13 @@
     <string name="speakers_label">Выступающие</string>
     <string name="take_people">Выбрать пользователей</string>
     <string name="select_action">Выберите действие</string>
-    <string name="select_ment">Отметить пользователей</string>
-    <string name="select_spk">Отметить выступающих</string>
     <string name="select_video">Выберите видео</string>
     <string name="select_audio">Выберите аудио</string>
     <string name="select_gallary">Изображение из галереи</string>
     <string name="select_camera">Изображение с камеры</string>
     <string name="speakers_more">Speakers more</string>
-    <string name="select_participate">Выберите участников</string>
     <string name="in_search_job">В поиске работы</string>
-    <string name="set_position">Укажите должность</string>
+    <string name="set_position">Укажите местоположение</string>
     <string name="want_add_post">Хотите добавить пост?</string>
     <string name="you_must_login">Чтобы добавить пост, вы должны быть зарегестрированы.</string>
     <string name="back">Назад</string>
@@ -101,5 +96,18 @@
     <string name="date">Дата</string>
     <string name="date_time_format">ММ/дд/гггг ЧЧ:мм</string>
     <string name="type_event_title">Тип события</string>
+    <string name="select_date">Выберете дату</string>
+    <string name="location_permission_required">Требуется разрешение на определение местоположения</string>
+    <string name="new_job">Новая работа</string>
+    <string name="icon_calendar">icon_calendar</string>
+    <string name="drag_handler">drag_handler</string>
+    <string name="enter_dates">Введите даты</string>
+    <string name="select_date_time_tittle">Выберите дату и время</string>
+    <string name="enter_date_time">Введите дату и время</string>
+    <string name="date_format">дд/мм/гггг</string>
+    <string name="time">Время</string>
+    <string name="time_format">ЧЧ:мм</string>
+    <string name="end_date">Дата окончания</string>
+    <string name="tire">" - "</string>
 
 </resources>

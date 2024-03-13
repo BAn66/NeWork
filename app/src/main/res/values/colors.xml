@@ -15,25 +15,18 @@
 
     <color name="navigationBarColor">#F3EDF7</color>
 
-    <color name="colorButtonNormal">#E8DEF8</color>
-
     <color name="windowBackground">#FFFFFF</color>
 
     <color name="cardViewBackground">#f2ebff</color>
 
     <color name="bottomSheetBackground">#CAC4D0</color>
 
-    <color name="colorSwitchThumbNormal">#F3EDF7</color>
     <color name="colorSecondary">#EADDFF</color>
     <color name="colorOnSecondary">#6750A4</color>
     <color name="colorOnSurface">#6750A4</color>
 
     <color name="colorText">#1D1B20</color>
     <color name="colorWhite">#FFFFFF</color>
-    <color name="actionButton">#EADDFF</color>
     <color name="ic_launcher_background">#FFFFFF</color>
-    <color name="colorTransparent">#00000000</color>
-    <color name="lightSkyBlue">#B0E0E6</color>
-    <color name="loginBtnFalse">#1D1B201F</color>
 
 </resources>

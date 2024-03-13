@@ -57,9 +57,9 @@ class RegistrationFragment : Fragment() {
 
         binding.avatar.setOnClickListener {
             val pictureDialog = AlertDialog.Builder(it.context)
-            pictureDialog.setTitle("Select Action")
+            pictureDialog.setTitle(R.string.select_action)
             val pictureDialogItems =
-                arrayOf("Select photo from gallery", "Capture photo from camera")
+                arrayOf(getString(R.string.select_gallary), getString(R.string.select_camera))
             pictureDialog.setItems(
                 pictureDialogItems
             ) { _, which ->

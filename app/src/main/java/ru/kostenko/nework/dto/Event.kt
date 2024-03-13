@@ -22,9 +22,9 @@ data class Event(
     val ownedByMe: Boolean = false,
     ): FeedItem
 
-enum class EventType(val str: String){
-    OFFLINE("Offline"),
-    ONLINE("Online")
+enum class EventType{
+    OFFLINE,
+    ONLINE
 }
 
 
