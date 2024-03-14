@@ -131,7 +131,10 @@ class TextIconDrawable : Drawable() {
         textPaint.colorFilter = colorFilter
     }
 
-    @Deprecated("Deprecated in Java")
+
+    @Deprecated("Deprecated in Java",
+        ReplaceWith("PixelFormat.TRANSLUCENT", "android.graphics.PixelFormat")
+    )
     override fun getOpacity(): Int = PixelFormat.TRANSLUCENT
 
 }

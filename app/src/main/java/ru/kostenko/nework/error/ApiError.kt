@@ -3,7 +3,7 @@ package ru.kostenko.nework.error
 import android.database.SQLException
 import java.io.IOException
 
-sealed class AppError(var code: String) : RuntimeException() {
+sealed class AppError(val code: String) : RuntimeException() {
     companion object {
         fun from(e: Throwable): AppError = when (e) {
             is AppError -> e

@@ -84,4 +84,4 @@ data class EventEntity(
 
 
 fun List<EventEntity>.toDto() = map { it.toDto() }
-fun List<Event>.toEntity() = map { EventEntity.fromDto(it) }
+
