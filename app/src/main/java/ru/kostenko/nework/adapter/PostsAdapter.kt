@@ -2,7 +2,6 @@ package ru.kostenko.nework.adapter
 
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
-import android.annotation.SuppressLint
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -35,14 +34,14 @@ interface OnPostInteractionListener {
 }
 
 class PostsAdapter(
-    private val onPostIteractionLister: OnPostInteractionListener,
+    private val onPostInteractionLister: OnPostInteractionListener,
     private val observer: MediaLifecycleObserver
 ) : PagingDataAdapter<FeedItem, PostViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val binding =
             CardPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PostViewHolder(binding, onPostIteractionLister, observer)
+        return PostViewHolder(binding, onPostInteractionLister, observer)
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
@@ -57,7 +56,6 @@ class PostViewHolder(
     private val onPostInteractionListener: OnPostInteractionListener,
     private val observer: MediaLifecycleObserver
 ) : RecyclerView.ViewHolder(binding.root) {
-    @SuppressLint("SetTextI18n")
     fun bind(post: Post) {
         binding.apply {
             author.text = post.author
@@ -70,7 +68,7 @@ class PostViewHolder(
                 .placeholder(R.drawable.ic_loading_100dp)
                 .error(R.drawable.post_avatar_drawable)
                 .timeout(10_000)
-                .apply(RequestOptions().circleCrop()) //делает круглыми аватарки
+                .apply(RequestOptions().circleCrop())
                 .into(avatar)
 
             if (post.attachment != null) {
@@ -104,14 +102,6 @@ class PostViewHolder(
                     .into(imageAttach)
             }
 
-//            if (post.authorJob != null) {
-//                author.text = itemView.context.getString(
-//                    R.string.author_job,
-//                    post.author,
-//                    post.authorJob
-//                )
-//            } else author.text = post.author
-
             play.setOnClickListener {
                 videoContent.apply {
                     setMediaController(MediaController(context))
@@ -127,20 +117,12 @@ class PostViewHolder(
                 }
             }
 
-            //TODO при нажатии на паузу аудиоплеера и повторном плэй падает
             playButton.setOnClickListener {
                 observer.apply {
-                    //Не забываем добавлять разрешение в андроид манифест на работу с сетью
                     val url = post.attachment!!.url
                     mediaPlayer?.setDataSource(url)
                 }.play()
             }
-
-//            pauseButton.setOnClickListener {
-//                if (observer.mediaPlayer != null) {
-//                    if (observer.mediaPlayer!!.isPlaying) observer.mediaPlayer?.pause() else observer.mediaPlayer?.start()
-//                }
-//            }
 
             stopButton.setOnClickListener {
                 if (observer.mediaPlayer != null && observer.mediaPlayer!!.isPlaying) {
@@ -151,12 +133,11 @@ class PostViewHolder(
             btnLike.text = eraseZero(post.likeOwnerIds.size.toLong())
             btnLike.isChecked = post.likedByMe
 
-            btnLike.setOnClickListener {//анимация лайка
+            btnLike.setOnClickListener {
                 val scaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, 1F, 1.25F, 1F)
                 val scaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1F, 1.25F, 1F)
                 ObjectAnimator.ofPropertyValuesHolder(it, scaleX, scaleY).apply {
                     duration = 500
-//                    repeatCount = 100
                     interpolator = BounceInterpolator()
                 }.start()
                 onPostInteractionListener.like(post)
@@ -167,7 +148,6 @@ class PostViewHolder(
             }
 
             content.setOnClickListener {
-                println("content clicked")
                 onPostInteractionListener.openPost(post)
             }
 
@@ -178,7 +158,7 @@ class PostViewHolder(
             content.setOnClickListener { onPostInteractionListener.openPost(post) }
             imageAttach.setOnClickListener { onPostInteractionListener.openPost(post) }
 
-            menu.isVisible = post.ownedByMe  //Меню видно если пост наш
+            menu.isVisible = post.ownedByMe
             menu.setOnClickListener {
                 PopupMenu(it.context, it).apply {
                     inflate(R.menu.option_post)
@@ -201,7 +181,6 @@ class PostViewHolder(
             }
         }
     }
-
 
 }
 

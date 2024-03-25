@@ -1,6 +1,6 @@
 package ru.kostenko.nework.repository
 
-import android.util.Log
+
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -12,6 +12,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import ru.kostenko.nework.api.ApiService
+import ru.kostenko.nework.dao.PostDao
 import ru.kostenko.nework.dao.RemoteKeyDao
 import ru.kostenko.nework.db.AppDb
 import ru.kostenko.nework.dto.Attachment
@@ -24,7 +25,6 @@ import ru.kostenko.nework.entity.PostEntity
 import ru.kostenko.nework.error.ApiError
 import ru.kostenko.nework.error.NetworkError
 import ru.kostenko.nework.error.UnknownError
-import ru.netologia.nmedia.dao.PostDao
 import java.io.IOException
 import javax.inject.Inject
 
@@ -62,8 +62,7 @@ class PostRepositoryImpl @Inject constructor(
 
             val response = apiService.savePost(postWithAttachment)
 
-            // Если код не 200, то body будет null. Не нужны ещё проверки
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            val body = response.body() ?: throw ApiError(response.message())
             postDao.insert(PostEntity.fromDto(body))
         } catch (e: IOException) {
             throw NetworkError
@@ -71,21 +70,6 @@ class PostRepositoryImpl @Inject constructor(
             throw UnknownError
         }
     }
-
-
-//    override suspend fun savePostWithAttachment(post: Post, mediaModel: MediaModel) {
-//        try {
-//            val media = saveMediaOnServer(mediaModel)
-//            val postWithAttachment = post.copy(attachment = mediaModel.type?.let { type ->
-//                Attachment(media.url, type)
-//            })
-//            savePost(postWithAttachment)
-//        } catch (e: IOException) {
-//            throw NetworkError
-//        } catch (e: Exception) {
-//            throw UnknownError
-//        }
-//    }
 
     override suspend fun saveMediaOnServer(mediaModel: MediaModel): Media {
         try {
@@ -95,9 +79,9 @@ class PostRepositoryImpl @Inject constructor(
             )
             val response = apiService.saveMediaOnServer(data)
             if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
+                throw ApiError(response.message())
             }
-            return response.body() ?: throw ApiError(response.code(), response.message())
+            return response.body() ?: throw ApiError(response.message())
 
         } catch (e: IOException) {
             throw NetworkError
@@ -111,9 +95,9 @@ class PostRepositoryImpl @Inject constructor(
             postDao.removeById(id)
             val response = apiService.removePostById(id)
             if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
+                throw ApiError(response.message())
             }
-            response.body() ?: throw ApiError(response.code(), response.message())
+            response.body() ?: throw ApiError(response.message())
         } catch (e: IOException) {
             throw NetworkError
         } catch (e: Exception) {
@@ -129,9 +113,9 @@ class PostRepositoryImpl @Inject constructor(
                     if (likedByMe) it.dislikePostById(id) else it.likePostById(id)
                 }
             if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
+                throw ApiError(response.message())
             }
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            val body = response.body() ?: throw ApiError(response.message())
             postDao.insert(PostEntity.fromDto(body))
         } catch (e: IOException) {
             throw NetworkError
@@ -144,10 +128,9 @@ class PostRepositoryImpl @Inject constructor(
         try {
             val response = apiService.getUserById(id)
             if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
+                throw ApiError(response.message())
             }
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
-            return body
+            return response.body() ?: throw ApiError(response.message())
         } catch (e: IOException) {
             throw NetworkError
 
@@ -160,10 +143,9 @@ class PostRepositoryImpl @Inject constructor(
         try {
             val response = apiService.getPostById(id)
             if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
+                throw ApiError(response.message())
             }
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
-            return body
+            return response.body() ?: throw ApiError(response.message())
         } catch (e: IOException) {
             throw NetworkError
 

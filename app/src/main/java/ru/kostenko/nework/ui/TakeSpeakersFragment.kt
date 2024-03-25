@@ -7,10 +7,13 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.update
 import ru.kostenko.nework.R
 import ru.kostenko.nework.adapter.OnUsersInteractionListener
 import ru.kostenko.nework.adapter.UsersAdapter
@@ -21,10 +24,8 @@ import ru.kostenko.nework.viewmodel.UserViewModel
 
 @AndroidEntryPoint
 class TakeSpeakersFragment : Fragment() {
-
-    val userViewModel: UserViewModel by activityViewModels()
-    val eventViewModel: EventViewModel by activityViewModels()
-    private lateinit var toolbar: Toolbar
+    private val userViewModel: UserViewModel by activityViewModels()
+    private val eventViewModel: EventViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,8 +33,8 @@ class TakeSpeakersFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentTakeSpeakersBinding.inflate(layoutInflater)
-        val tmpSpeakersIds = mutableSetOf<Int>()
-        toolbar = binding.toolbar
+        val tmpSpeakersIds = MutableStateFlow(emptySet<Long>())
+        val toolbar: Toolbar = binding.toolbar
         toolbar.apply {
             setTitle(R.string.take_people)
             setNavigationIcon(R.drawable.arrow_back_24)
@@ -44,11 +45,8 @@ class TakeSpeakersFragment : Fragment() {
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.save -> {
-                        lifecycleScope.launch {
-                            if(tmpSpeakersIds.isNotEmpty())
-                                eventViewModel.setSpeakers(tmpSpeakersIds)
-                            findNavController().popBackStack()
-                        }
+                        eventViewModel.setSpeakers(tmpSpeakersIds.value)
+                        findNavController().popBackStack()
                         true
                     }
                     else -> false
@@ -61,18 +59,25 @@ class TakeSpeakersFragment : Fragment() {
             }
 
             override fun onUserCheckBoxClicked(user: User) {
-                if (!tmpSpeakersIds.contains(user.id)) tmpSpeakersIds.add(user.id)
+                tmpSpeakersIds.update { it + user.id.toLong() }
             }
 
             override fun onUserUnCheckBoxClicked(user: User) {
-                if (tmpSpeakersIds.contains(user.id)) tmpSpeakersIds.remove(user.id)
+                tmpSpeakersIds.update { it - user.id.toLong() }
             }
         })
 
         binding.userList.adapter = adapter
-        userViewModel.dataTakeble.observe(viewLifecycleOwner) { users ->
-            adapter.submitList(users)
-        }
+
+        userViewModel.dataTakeble.asFlow()
+            .combine(tmpSpeakersIds){users, spkIds ->
+                users.map {
+                    it.copy(isChecked = it.id.toLong() in spkIds)
+                }
+            }.asLiveData()
+            .observe(viewLifecycleOwner) { users ->
+                adapter.submitList(users)
+            }
 
         return binding.root
     }

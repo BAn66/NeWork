@@ -11,6 +11,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import ru.kostenko.nework.api.ApiService
+import ru.kostenko.nework.dao.EventDao
 import ru.kostenko.nework.dao.RemoteKeyDao
 import ru.kostenko.nework.db.AppDb
 import ru.kostenko.nework.dto.Attachment
@@ -23,7 +24,6 @@ import ru.kostenko.nework.entity.EventEntity
 import ru.kostenko.nework.error.ApiError
 import ru.kostenko.nework.error.NetworkError
 import ru.kostenko.nework.error.UnknownError
-import ru.netologia.nmedia.dao.EventDao
 import java.io.IOException
 import javax.inject.Inject
 
@@ -60,9 +60,9 @@ class EventRepositoryImpl @Inject constructor(
             val response = apiService.saveEvent(eventWithAttachment)
 
             if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
+                throw ApiError(response.message())
             }
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            val body = response.body() ?: throw ApiError(response.message())
             eventDao.insert(EventEntity.fromDto(body))
 
         } catch (e: IOException) {
@@ -80,9 +80,9 @@ class EventRepositoryImpl @Inject constructor(
             )
             val response = apiService.saveMediaOnServer(data)
             if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
+                throw ApiError(response.message())
             }
-            return response.body() ?: throw ApiError(response.code(), response.message())
+            return response.body() ?: throw ApiError(response.message())
 
         } catch (e: IOException) {
             throw NetworkError
@@ -96,9 +96,9 @@ class EventRepositoryImpl @Inject constructor(
             eventDao.removeById(id)
             val response = apiService.removeEventById(id)
             if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
+                throw ApiError(response.message())
             }
-            response.body() ?: throw ApiError(response.code(), response.message())
+            response.body() ?: throw ApiError(response.message())
         } catch (e: IOException) {
             throw NetworkError
         } catch (e: Exception) {
@@ -114,9 +114,9 @@ class EventRepositoryImpl @Inject constructor(
                     if (likedByMe) it.dislikeEventById(id) else it.likeEventById(id)
                 }
             if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
+                throw ApiError(response.message())
             }
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            val body = response.body() ?: throw ApiError(response.message())
             eventDao.insert(EventEntity.fromDto(body))
         } catch (e: IOException) {
             throw NetworkError
@@ -133,9 +133,9 @@ class EventRepositoryImpl @Inject constructor(
                     if (participatedByMe) it.deleteEventParticipants(id) else it.saveEventParticipants(id)
                 }
             if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
+                throw ApiError(response.message())
             }
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            val body = response.body() ?: throw ApiError(response.message())
             eventDao.insert(EventEntity.fromDto(body))
         } catch (e: IOException) {
             throw NetworkError
@@ -148,10 +148,9 @@ class EventRepositoryImpl @Inject constructor(
         try {
             val response = apiService.getUserById(id)
             if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
+                throw ApiError(response.message())
             }
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
-            return body
+            return response.body() ?: throw ApiError(response.message())
         } catch (e: IOException) {
             throw NetworkError
 
@@ -164,10 +163,9 @@ class EventRepositoryImpl @Inject constructor(
         try {
             val response = apiService.getEventById(id)
             if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
+                throw ApiError(response.message())
             }
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
-            return body
+            return response.body() ?: throw ApiError(response.message())
         } catch (e: IOException) {
             throw NetworkError
 

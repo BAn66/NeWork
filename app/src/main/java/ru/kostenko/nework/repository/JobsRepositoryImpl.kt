@@ -32,9 +32,9 @@ class JobsRepositoryImpl @Inject constructor(
             jobDao.getAllJobs()
             val response = apiService.getMyJobs()
             if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
+                throw ApiError(response.message())
             }
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            val body = response.body() ?: throw ApiError(response.message())
             jobDao.insertListJobs(body.toEntity())
         } catch (e: IOException) {
             throw NetworkError
@@ -49,9 +49,9 @@ class JobsRepositoryImpl @Inject constructor(
             jobDao.clear()
             val response = apiService.getJobs(id)
             if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
+                throw ApiError(response.message())
             }
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            val body = response.body() ?: throw ApiError(response.message())
             _data.postValue(body)
             jobDao.insertListJobs(body.toEntity())
         } catch (e: IOException) {
@@ -66,7 +66,7 @@ class JobsRepositoryImpl @Inject constructor(
         try {
             val response = apiService.deleteMyJobs(id)
             if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
+                throw ApiError(response.message())
             }
             jobDao.deleteJobById(id)
         } catch (e: IOException) {
@@ -81,9 +81,9 @@ class JobsRepositoryImpl @Inject constructor(
         try {
             val response = apiService.setMyJob(job)
             if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
+                throw ApiError(response.message())
             }
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            val body = response.body() ?: throw ApiError(response.message())
             jobDao.insertJob(JobEntity.fromDto(body))
         } catch (e: IOException) {
             throw NetworkError

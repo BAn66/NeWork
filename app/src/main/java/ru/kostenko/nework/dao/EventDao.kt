@@ -1,4 +1,4 @@
-package ru.netologia.nmedia.dao
+package ru.kostenko.nework.dao
 
 import androidx.paging.PagingSource
 import androidx.room.Dao
@@ -22,10 +22,10 @@ interface EventDao {
     @Query("DELETE FROM EventEntity")
     suspend fun removeAll()
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE) //это для сохранения и редактирования, replace заменяет если есть такой же айди кажется
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(event: EventEntity)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE) //это для getall
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(events: List<EventEntity>)
 
     @Query("DELETE FROM EventEntity WHERE id = :id")

@@ -8,9 +8,9 @@ import android.graphics.PixelFormat
 import android.graphics.drawable.Drawable
 import android.text.TextPaint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.graphics.ColorUtils
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -19,8 +19,6 @@ import ru.kostenko.nework.R
 import ru.kostenko.nework.databinding.CardUserBinding
 import ru.kostenko.nework.dto.User
 import kotlin.properties.Delegates
-import kotlin.random.Random
-
 
 interface OnUsersInteractionListener {
     fun onUserClicked(user: User)
@@ -38,7 +36,7 @@ class UserViewHolder(
             userName.text = user.name
             userLogin.text = user.login
 
-            if (userName.text.length < 1) {
+            if (userName.text.isEmpty()) {
                 Glide.with(avatar)
                     .load(R.drawable.post_avatar_drawable)
                     .error(R.drawable.post_avatar_drawable)
@@ -62,15 +60,13 @@ class UserViewHolder(
                 onUsersInteractionListener.onUserClicked(user)
             }
 
-            //TODO при прокрутке снимаются галки если ставить setPeople.isChecked=false, а если удалить то галки остаются на следующей странице пагинации.
+            setPeople.isVisible = user.isTaken
 
+            setPeople.setOnCheckedChangeListener(null)
+            setPeople.isChecked = user.isChecked
 
-            if (user.isTaken){
-                setPeople.visibility = View.VISIBLE
-            }
-
-            setPeople.setOnCheckedChangeListener {_, isChecked ->
-                   if (isChecked) onUsersInteractionListener.onUserCheckBoxClicked(user)
+            setPeople.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) onUsersInteractionListener.onUserCheckBoxClicked(user)
                 else onUsersInteractionListener.onUserUnCheckBoxClicked(user)
             }
         }
@@ -106,7 +102,6 @@ class TextIconDrawable : Drawable() {
     private var alpha = 255
     private var textPaint = TextPaint().apply {
         textAlign = Paint.Align.CENTER
-//        textSize = this.textSize
     }
     var text by Delegates.observable("") { _, _, _ -> invalidateSelf() }
     var textColor by Delegates.observable(Color.WHITE) { _, _, _ -> invalidateSelf() }
@@ -123,11 +118,8 @@ class TextIconDrawable : Drawable() {
 
         fitText(width)
         textPaint.color = ColorUtils.setAlphaComponent(textColor, alpha)
-//        canvas.drawText(text, width / 2f, height / 2f, textPaint)
         val color = Color.parseColor("#6750A4")
-//        Color.parseColor("#FFFEF7FF")
         canvas.drawColor(color)
-//        canvas.drawColor(Color.parseColor("#FFFEF7FF"))
         canvas.drawText(text, width / 2f, height / 1.5f, textPaint)
     }
 
@@ -139,8 +131,10 @@ class TextIconDrawable : Drawable() {
         textPaint.colorFilter = colorFilter
     }
 
-    @Deprecated("Deprecated in Java")
+
+    @Deprecated("Deprecated in Java",
+        ReplaceWith("PixelFormat.TRANSLUCENT", "android.graphics.PixelFormat")
+    )
     override fun getOpacity(): Int = PixelFormat.TRANSLUCENT
 
-//    private fun generateRandomColor() = Random.nextInt(0xFF000000.toInt(), 0xFFFFFFFF.toInt())
 }

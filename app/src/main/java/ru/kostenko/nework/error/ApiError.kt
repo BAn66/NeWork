@@ -3,7 +3,7 @@ package ru.kostenko.nework.error
 import android.database.SQLException
 import java.io.IOException
 
-sealed class AppError(var code: String) : RuntimeException() {
+sealed class AppError(val code: String) : RuntimeException() {
     companion object {
         fun from(e: Throwable): AppError = when (e) {
             is AppError -> e
@@ -14,7 +14,7 @@ sealed class AppError(var code: String) : RuntimeException() {
     }
 }
 
-class ApiError(val status: Int, code: String) : AppError(code)
-object NetworkError : AppError("error_network")
-object DbError : AppError("error_db")
-object UnknownError : AppError("error_unknown")
+class ApiError(code: String) : AppError(code)
+data object NetworkError : AppError("error_network")
+data object DbError : AppError("error_db")
+data object UnknownError : AppError("error_unknown")

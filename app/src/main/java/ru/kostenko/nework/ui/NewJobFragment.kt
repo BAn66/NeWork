@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
@@ -15,20 +14,14 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.launch
 import ru.kostenko.nework.R
-import ru.kostenko.nework.authorization.AppAuth
 import ru.kostenko.nework.databinding.FragmentNewJobBinding
 import ru.kostenko.nework.util.AndroidUtils.formatDateForJob
 import ru.kostenko.nework.viewmodel.JobsViewModel
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 
-import javax.inject.Inject
-
 class NewJobFragment : Fragment() {
-    @Inject//Внедряем зависимость для авторизации
-    lateinit var appAuth: AppAuth
     private val jobsViewModel: JobsViewModel by activityViewModels()
-    private lateinit var toolbar: Toolbar
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,10 +29,9 @@ class NewJobFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         val binding = FragmentNewJobBinding.inflate(layoutInflater)
-        //Наполняем верхний аппбар
-        toolbar = binding.toolbar
+        val toolbar = binding.toolbar
         toolbar.apply {
-            title = "New job"
+            setTitle(R.string.new_job)
             setNavigationIcon(R.drawable.arrow_back_24)
             setNavigationOnClickListener {
                 findNavController().popBackStack()
@@ -71,7 +63,8 @@ class NewJobFragment : Fragment() {
             viewLifecycleOwner.lifecycleScope.launch {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
 
-                    if (binding.companyName.text.isNullOrBlank() || binding.position.text.isNullOrBlank() ||
+                    if (binding.companyName.text.isNullOrBlank() ||
+                        binding.position.text.isNullOrBlank() ||
                         binding.start.text.isNullOrBlank()
                     ) {
                         Toast.makeText(

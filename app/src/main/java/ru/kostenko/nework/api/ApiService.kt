@@ -21,13 +21,12 @@ import ru.kostenko.nework.dto.User
 
 
 interface ApiService {
-//    Users
     @FormUrlEncoded
     @POST("users/authentication")
     suspend fun updateUser(
         @Field("login") login: String,
         @Field("pass") pass: String
-    ): Response<Token> //Запрос на Login
+    ): Response<Token>
 
     @Multipart
     @POST("users/registration")
@@ -36,7 +35,7 @@ interface ApiService {
         @Query("pass") pass: String,
         @Query("name") name: String,
         @Part file: MultipartBody.Part
-    ):Response<Token> //Запрос на Registration
+    ):Response<Token>
 
     @GET("users")
     suspend fun getUsers(): Response<List<User>>
@@ -44,17 +43,13 @@ interface ApiService {
     @GET("users/{id}")
     suspend fun getUserById(@Path("id") id: Int): Response<User>
 
-//    Posts
     @GET("posts/latest")
     suspend fun getLatestPosts(@Query("count") count: Int): Response<List<Post>>
 
-    @GET("posts/{id}/newer")
-    suspend fun getNewerPosts(@Path("id") id: Int): Response<List<Post>>
-
-    @GET("posts/{id}/before") //Загружает посты до
+    @GET("posts/{id}/before")
     suspend fun getBeforePost(@Path("id") id: Int, @Query("count") count: Int): Response<List<Post>>
 
-    @GET("posts/{id}/after") //Загружает посты после
+    @GET("posts/{id}/after")
     suspend fun getAfterPost(@Path("id") id: Int, @Query("count") count: Int): Response<List<Post>>
 
     @GET("posts/{id}")
@@ -69,21 +64,12 @@ interface ApiService {
     @DELETE("posts/{id}/likes")
     suspend fun dislikePostById(@Path("id") id: Int): Response<Post>
 
-    @GET("posts")
-    suspend fun getAllPosts(): Response<List<Post>>
-
     @POST("posts")
     suspend fun savePost(@Body post: Post): Response<Post>
 
-    //Media
     @Multipart
     @POST("media")
     suspend fun saveMediaOnServer(@Part part: MultipartBody.Part): Response<Media>
-
-    //EVENTS
-
-    @GET("events")
-    suspend fun getAllEvents(): Response<List<Event>>
 
     @POST("events")
     suspend fun saveEvent(@Body event: Event): Response<Event>
@@ -100,13 +86,10 @@ interface ApiService {
     @DELETE("events/{id}/likes")
     suspend fun dislikeEventById(@Path("id") id: Int): Response<Event>
 
-    @GET("events/{id}/newer")
-    suspend fun getNewerEvents(@Path("id") id: Int): Response<List<Event>>
-
-    @GET("events/{id}/before") //Загружает посты до
+    @GET("events/{id}/before")
     suspend fun getBeforeEvent(@Path("id") id: Int, @Query("count") count: Int): Response<List<Event>>
 
-    @GET("events/{id}/after") //Загружает посты после
+    @GET("events/{id}/after")
     suspend fun getAfterEvent(@Path("id") id: Int, @Query("count") count: Int): Response<List<Event>>
 
     @GET("events/{id}")
@@ -118,32 +101,21 @@ interface ApiService {
     @GET("events/latest")
     suspend fun getLatestEvents(@Query("count") count: Int): Response<List<Event>>
 
-    //Wall
     @POST("{authorId}/wall/{id}/likes")
     suspend fun likePostByIdOnWall(@Path("authorId") authorId: Int, @Path("id") id: Int): Response<Post>
 
     @DELETE("{authorId}/wall/{id}/likes")
     suspend fun dislikePostByIdOnWall(@Path("authorId") authorId: Int, @Path("id") id: Int): Response<Post>
 
-    @GET("{authorId}/wall")
-    suspend fun getWall(@Path("authorId") authorId: Int): Response<List<Post>>
-
-    @GET("{authorId}/wall/{id}/newer")
-    suspend fun getNewerPostsOnWall(@Path("authorId") authorId: Int, @Path("id") id: Int): Response<List<Post>>
-
-    @GET("{authorId}/wall/{id}/before") //Загружает посты до
+    @GET("{authorId}/wall/{id}/before")
     suspend fun getBeforePostOnWall(@Path("authorId") authorId: Int, @Path("id") id: Int, @Query("count") count: Int): Response<List<Post>>
 
-    @GET("{authorId}/wall/{id}/after") //Загружает посты после
+    @GET("{authorId}/wall/{id}/after")
     suspend fun getAfterPostOnWall(@Path("authorId") authorId: Int, @Path("id") id: Int, @Query("count") count: Int): Response<List<Post>>
-
-    @GET("{authorId}/wall/{id}")
-    suspend fun getPostByIdOnWall(@Path("authorId") authorId: Int, @Path("id") id: Int): Response<Post>
 
     @GET("{authorId}/wall/latest")
     suspend fun getLatestPostsOnWall(@Path("authorId") authorId: Int, @Query("count") count: Int): Response<List<Post>>
 
-    //JOBs
     @GET("{userId}/jobs")
     suspend fun getJobs(@Path("userId") userId: Int): Response<List<Job>>
 
@@ -156,27 +128,17 @@ interface ApiService {
     @DELETE("my/jobs/{id}")
     suspend fun deleteMyJobs(@Path("id") jobId: Int): Response<Unit>
 
-    //MyWall
     @POST("my/wall/{id}/likes")
     suspend fun likePostByIdOnMyWall(@Path("id") id: Int): Response<Post>
 
     @DELETE("my/wall/{id}/likes")
     suspend fun dislikePostByIdOnMyWall(@Path("id") id: Int): Response<Post>
 
-    @GET("my/wall")
-    suspend fun getMyWall(): Response<List<Post>>
-
-    @GET("my/wall/{id}/newer")
-    suspend fun getNewerPostsOnMyWall(@Path("id") id: Int): Response<List<Post>>
-
-    @GET("my/wall/{id}/before") //Загружает посты до
+    @GET("my/wall/{id}/before")
     suspend fun getBeforePostOnMyWall(@Path("id") id: Int, @Query("count") count: Int): Response<List<Post>>
 
-    @GET("my/wall/{id}/after") //Загружает посты после
+    @GET("my/wall/{id}/after")
     suspend fun getAfterPostOnMyWall(@Path("id") id: Int, @Query("count") count: Int): Response<List<Post>>
-
-    @GET("my/wall/{id}")
-    suspend fun getPostByIdOnMyWall(@Path("id") id: Int): Response<Post>
 
     @GET("my/wall/latest")
     suspend fun getLatestPostsOnMyWall(@Query("count") count: Int): Response<List<Post>>

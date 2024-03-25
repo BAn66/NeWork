@@ -103,13 +103,12 @@
                 tools:text="@sample/posts.json/data/published" />
 
             <TextView
-                android:id="@+id/tire"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:paddingStart="@dimen/common_pudding_8dp"
                 android:paddingEnd="0dp"
                 android:singleLine="true"
-                android:text=" - "
+                android:text="@string/tire"
                 android:textColor="?android:textColorSecondary"
                 android:textSize="14sp"
                 android:textStyle="bold"
@@ -131,7 +130,7 @@
     </androidx.cardview.widget.CardView>
 
     <Button
-        android:id="@+id/create_btn"
+        android:id="@+id/createBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"

@@ -23,14 +23,12 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class UserDetailsFragment : Fragment() {
-    @Inject//Внедряем зависимость для авторизации
+    @Inject
     lateinit var appAuth: AppAuth
     private val userViewModel: UserViewModel by activityViewModels()
     private val wallViewModel: WallViewModel by activityViewModels()
     private val jobsViewModel: JobsViewModel by activityViewModels()
     private val authViewModel: AuthViewModel by activityViewModels()
-    private lateinit var toolbar: Toolbar
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,27 +38,6 @@ class UserDetailsFragment : Fragment() {
         val binding = FragmentUserDetailsBinding.inflate(inflater, container, false)
         wallViewModel.clearWall()
         jobsViewModel.clearJobs()
-        //Навигация через bottomMenu
-//        val navController = requireNotNull(
-//            childFragmentManager.findFragmentById(R.id.nav_user_fragment_main)
-//        ).findNavController()
-//        binding.navUserView.setupWithNavController(navController)
-
-        //Навигация через Tabs
-//        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-//
-//            override fun onTabSelected(tab: TabLayout.Tab?) {
-//                // Handle tab select
-//            }
-//
-//            override fun onTabReselected(tab: TabLayout.Tab?) {
-//                // Handle tab reselect
-//            }
-//
-//            override fun onTabUnselected(tab: TabLayout.Tab?) {
-//                // Handle tab unselect
-//            }
-//        })
 
         val tabLayout = binding.navUserTabs
         val viewPager = binding.navUserViewP2
@@ -69,22 +46,20 @@ class UserDetailsFragment : Fragment() {
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             when (position) {
                 0 -> {
-                    tab.text = "Wall"
+                    tab.setText(R.string.wall)
                 }
                 1 -> {
-                    tab.text = "Jobs"
+                    tab.setText(R.string.jobs)
                 }
             }
         }.attach()
-        //Данные о пользователе из userViewModel
         val user = userViewModel.user
         val nameUser = user.value?.name
         val loginUser = user.value?.login
 
-        //Наполняем верхний аппбар
-        toolbar = binding.toolbar
+        val toolbar: Toolbar = binding.toolbar
         toolbar.apply {
-            setTitle("$nameUser / $loginUser")
+            title = "$nameUser / $loginUser"
             setNavigationIcon(R.drawable.arrow_back_24)
             setNavigationOnClickListener {
                 findNavController().popBackStack()
@@ -104,7 +79,6 @@ class UserDetailsFragment : Fragment() {
             }
         }
 
-        //Установка аватарки в качестве фото профиля
         Glide.with(binding.userPhoto)
             .load(user.value?.avatar)
             .placeholder(R.drawable.ic_loading_100dp)

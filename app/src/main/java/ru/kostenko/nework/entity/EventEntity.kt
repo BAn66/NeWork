@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import ru.kostenko.nework.dto.Event
 import ru.kostenko.nework.dto.EventType
-
+import ru.kostenko.nework.dto.UserPreview
 
 
 @Entity
@@ -22,15 +22,15 @@ data class EventEntity(
     @Embedded
     val coords: CoordsEntity? = null,
     val type: EventType = EventType.OFFLINE,
-    val likeOwnerIds: Set<Int> = emptySet(),
+    val likeOwnerIds: Set<Long> = emptySet(),
     val likedByMe: Boolean = false,
-    val speakerIds: Set<Int> = emptySet(),
-    val participantsIds: Set<Int> = emptySet(),
+    val speakerIds: Set<Long> = emptySet(),
+    val participantsIds: Set<Long> = emptySet(),
     val participatedByMe: Boolean = false,
     @Embedded
     val attachment: AttachmentEntity? = null,
     val link: String? = null,
-    val users: Map<Long, Pair<String, String>> = mapOf(),
+    val users: Map<Long, UserPreview> = mapOf(),
 
 
     ) {
@@ -84,4 +84,4 @@ data class EventEntity(
 
 
 fun List<EventEntity>.toDto() = map { it.toDto() }
-fun List<Event>.toEntity() = map { EventEntity.fromDto(it) }
+

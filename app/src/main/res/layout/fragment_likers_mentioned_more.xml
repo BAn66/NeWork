@@ -27,7 +27,6 @@
 
     <androidx.recyclerview.widget.RecyclerView
         app:layout_constraintBottom_toBottomOf="parent"
-        android:id="@+id/user_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

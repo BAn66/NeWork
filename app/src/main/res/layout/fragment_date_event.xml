@@ -7,13 +7,12 @@
     android:layout_height="match_parent"
     tools:context=".ui.DateEventFragment">
 
-
-<!-- Bottom sheet contents. -->
     <ImageView
         android:id="@+id/drag_handler"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" android:paddingTop="@dimen/common_pudding_8dp"
+        android:contentDescription="@string/drag_handler"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/drag_handle_24"
@@ -24,22 +23,23 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Date"
+        android:hint="@string/date"
         android:padding="@dimen/common_pudding_8dp"
         android:textColorHint="#6750A4"
         app:boxStrokeColor="#6750A4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/drag_handler"
-        app:helperText="MM/dd/yyyy HH:mm"
+        app:helperText="@string/date_time_format"
         app:endIconMode="custom"
-        app:endIconDrawable="@drawable/calendar_24">
+        app:endIconDrawable="@drawable/calendar_24"
+       >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_date_event"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:focusable="false"
-            android:text="MM/dd/yyyy HH:mm" />
+            android:text="@string/date_time_format" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/common_pudding_8dp"
         app:layout_constraintTop_toBottomOf="@+id/date_event_input"
-        android:text="Type"
+        android:text="@string/type_event_title"
         />
     <RadioGroup
         android:id="@+id/radioGroup"
@@ -68,10 +68,4 @@
         android:layout_height="match_parent"
         android:text="@string/offline"/>
     </RadioGroup>
-
-
-
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

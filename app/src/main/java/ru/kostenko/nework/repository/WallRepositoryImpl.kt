@@ -31,7 +31,6 @@ class WallRepositoryImpl @Inject constructor(
     private val appDb: AppDb,
 ) : WallRepository {
 
-    val wallList = mutableListOf<Post>()
     private val _wall = MutableLiveData<List<Post>>()
     override val data = _wall.asFlow().flowOn(Dispatchers.Default)
 
@@ -60,9 +59,9 @@ class WallRepositoryImpl @Inject constructor(
                     if (likedByMe) it.dislikePostByIdOnWall(authorId, id) else it.likePostByIdOnWall(authorId, id)
                 }
             if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
+                throw ApiError(response.message())
             }
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            val body = response.body() ?: throw ApiError(response.message())
             wallDao.insert(WallEntity.fromDto(body))
         } catch (e: IOException) {
             throw NetworkError
@@ -94,9 +93,9 @@ class WallRepositoryImpl @Inject constructor(
                     if (likedByMe) it.dislikePostByIdOnMyWall(id) else it.likePostByIdOnMyWall( id)
                 }
             if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
+                throw ApiError(response.message())
             }
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            val body = response.body() ?: throw ApiError(response.message())
             wallDao.insert(WallEntity.fromDto(body))
         } catch (e: IOException) {
             throw NetworkError

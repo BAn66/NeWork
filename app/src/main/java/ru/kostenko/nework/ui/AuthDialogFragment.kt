@@ -11,18 +11,18 @@ class AuthDialogFragment: DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
-            builder.setTitle("Do you want to add a post?")
-                .setMessage("To add a post, you must be logged in.")
+            builder.setTitle(getString(R.string.want_add_post))
+                .setMessage(getString(R.string.you_must_login))
                 .setIcon(R.drawable.baseline_question_mark_24)
-                .setPositiveButton("Login") {
+                .setPositiveButton(getString(R.string.login)) {
                         _, _ ->
                     findNavController().navigate(R.id.action_mainFragment_to_authFragment)
                 }
-                .setNegativeButton("Registration") {
+                .setNegativeButton(getString(R.string.registration)) {
                         _, _ ->
                    findNavController().navigate(R.id.action_mainFragment_to_registrationFragment)
                 }
-                .setNeutralButton("Back"){
+                .setNeutralButton(getString(R.string.back)){
                         dialog, _ -> dialog.cancel()
                 }
             builder.create()

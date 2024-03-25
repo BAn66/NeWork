@@ -6,7 +6,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 
 class MediaLifecycleObserver :
-    LifecycleEventObserver { //Отслеживает события жизенного цикла в приложении
+    LifecycleEventObserver {
 
     var mediaPlayer: MediaPlayer? = MediaPlayer()
 

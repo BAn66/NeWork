@@ -4,6 +4,7 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import ru.kostenko.nework.dto.Post
+import ru.kostenko.nework.dto.UserPreview
 
 @Entity
 data class WallEntity (
@@ -18,11 +19,11 @@ data class WallEntity (
     @Embedded
     val coords: CoordsEntity? = null,
     val link: String? = null,
-    val mentionIds:  Set<Int> = emptySet(),
+    val mentionIds:  Set<Long> = emptySet(),
     val mentionedMe: Boolean,
-    val likeOwnerIds:  Set<Int> = emptySet(),
+    val likeOwnerIds:  Set<Long> = emptySet(),
     val likedByMe: Boolean = false,
-    val users: Map<Long, Pair<String, String>>  = mapOf(),
+    val users: Map<Long, UserPreview>  = mapOf(),
     @Embedded
     val attachment: AttachmentEntity? = null,
 ){
@@ -66,4 +67,3 @@ data class WallEntity (
 }
 
 fun List<WallEntity>.toDto() = map { it.toDto() }
-fun List<Post>.toWallEntity() = map { WallEntity.fromDto(it) }

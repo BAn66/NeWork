@@ -11,18 +11,18 @@ class AuthDialogFragmentFromUserDetails : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
-            builder.setTitle("Do you want like?")
-                .setMessage("To like a post, you must be logged in.")
+            builder.setTitle(getString(R.string.want_like))
+                .setMessage(getString(R.string.set_like_must_login))
                 .setIcon(R.drawable.baseline_question_mark_24)
-                .setPositiveButton("Login") {
+                .setPositiveButton(getString(R.string.login)) {
                         _, _ ->
                     findNavController().navigate(R.id.action_userDetailsFragment_to_authFragment)
                 }
-                .setNegativeButton("Registration") {
+                .setNegativeButton(getString(R.string.registration)) {
                         _, _ ->
                     findNavController().navigate(R.id.action_userDetailsFragment_to_registrationFragment)
                 }
-                .setNeutralButton("Back"){
+                .setNeutralButton(getString(R.string.back)){
                         dialog, _ -> dialog.cancel()
                 }
             builder.create()

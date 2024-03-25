@@ -1,7 +1,5 @@
 package ru.kostenko.nework.viewmodel
 
-
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -27,9 +25,7 @@ class WallViewModel @Inject constructor(
     private val repository: WallRepositoryImpl,
     private val appAuth: AppAuth,
 ) : ViewModel() {
-    private val _dataState = MutableLiveData(FeedModelState()) //Состояние
-    val dataState: LiveData<FeedModelState>
-        get() = _dataState
+    private val _dataState = MutableLiveData(FeedModelState())
 
     @OptIn(ExperimentalCoroutinesApi::class)
     fun getWallPosts(userId: Int): Flow<PagingData<FeedItem>> =appAuth
@@ -37,14 +33,12 @@ class WallViewModel @Inject constructor(
                 repository.getWallPosts(userId).map { pagingData ->
                     pagingData.map { post ->
                         if (post is Post) {
-//                        maxId.value = maxOf(post.id, maxId.value)// сравнение текущего макс.ид и ид в паггинге
                             post.copy(ownedByMe = post.authorId.toLong() == myId)
                         } else {
                             post
                         }
                     }
                 }
-//                .catch { throw Exception() }
             }.flowOn(Dispatchers.Default)
 
     fun likePostById(authorId: Int, id: Int, likedByMe: Boolean) {

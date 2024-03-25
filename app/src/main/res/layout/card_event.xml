@@ -2,7 +2,6 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/postCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/card_margin"
@@ -12,7 +11,7 @@
     app:cardElevation="@dimen/elevation">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/postLayout"
+        android:id="@+id/post_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/common_margin">
@@ -249,7 +248,7 @@
             tools:text="@sample/posts.json/data/likedCount" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_participate"
+            android:id="@+id/btnParticipate"
             style="@style/Widget.AppTheme.LikeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

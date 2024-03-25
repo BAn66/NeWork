@@ -81,9 +81,9 @@ class UserRepositoryImpl @Inject constructor(
             userDao.getAll()
             val response = apiService.getUsers()
             if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
+                throw ApiError(response.message())
             }
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            val body = response.body() ?: throw ApiError(response.message())
             userDao.insert(body.toUserEntity())
         } catch (e: IOException) {
             throw NetworkError
@@ -97,10 +97,9 @@ class UserRepositoryImpl @Inject constructor(
         try {
             val response = apiService.getUserById(id)
             if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
+                throw ApiError(response.message())
             }
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
-            return body
+            return response.body() ?: throw ApiError(response.message())
         } catch (e: IOException) {
             throw NetworkError
 

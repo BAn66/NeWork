@@ -3,7 +3,9 @@ package ru.kostenko.nework.db
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import ru.kostenko.nework.dao.EventDao
 import ru.kostenko.nework.dao.JobDao
+import ru.kostenko.nework.dao.PostDao
 import ru.kostenko.nework.dao.RemoteKeyDao
 import ru.kostenko.nework.dao.UserDao
 import ru.kostenko.nework.dao.WallDao
@@ -14,8 +16,6 @@ import ru.kostenko.nework.entity.RemoteKeyEntity
 import ru.kostenko.nework.entity.UserEntity
 import ru.kostenko.nework.entity.WallEntity
 import ru.kostenko.nework.util.Converters
-import ru.netologia.nmedia.dao.EventDao
-import ru.netologia.nmedia.dao.PostDao
 
 @Database(
     entities =
@@ -27,7 +27,7 @@ import ru.netologia.nmedia.dao.PostDao
         WallEntity::class,
         JobEntity::class,
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

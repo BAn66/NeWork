@@ -18,18 +18,14 @@ import kotlinx.coroutines.launch
 import ru.kostenko.nework.R
 import ru.kostenko.nework.adapter.OnPostInteractionListener
 import ru.kostenko.nework.adapter.PostsAdapter
-import ru.kostenko.nework.authorization.AppAuth
 import ru.kostenko.nework.databinding.FragmentPostsBinding
 import ru.kostenko.nework.dto.Post
 import ru.kostenko.nework.util.MediaLifecycleObserver
 import ru.kostenko.nework.viewmodel.AuthViewModel
 import ru.kostenko.nework.viewmodel.PostViewModel
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class PostsFragment : Fragment() {
-    @Inject//Внедряем зависимость для авторизации
-    lateinit var appAuth: AppAuth
     private val postViewModel: PostViewModel by activityViewModels()
     private val authViewModel: AuthViewModel by activityViewModels()
 
@@ -74,13 +70,11 @@ class PostsFragment : Fragment() {
             }
 
             override fun share(post: Post) {
-                //создаем актвити Chooser для расшаривания текста поста через Intent
                 val intent = Intent().apply {
                     action = Intent.ACTION_SEND
                     putExtra(Intent.EXTRA_TEXT, post.content)
                     type = "text/plain"
                 }
-                //startActivity(intent) //Более скромный вариант ниже более симпатичный вариант
                 val shareIntent =
                     Intent.createChooser(intent, getString(R.string.description_shared))
                 startActivity(shareIntent)
@@ -104,7 +98,7 @@ class PostsFragment : Fragment() {
             }
         }
 
-        postViewModel.edited.observe(viewLifecycleOwner) { post->// Начало редактирования
+        postViewModel.edited.observe(viewLifecycleOwner) { post->
             if (post.id != 0) {
                 requireParentFragment().requireParentFragment()
                     .findNavController().navigate(R.id.action_mainFragment_to_newPostFragment)
@@ -130,6 +124,3 @@ class PostsFragment : Fragment() {
     }
 
 }
-
-//        val toolbar = requireParentFragment().activity?.findViewById<Toolbar>(R.id.toolbar)
-//        toolbar?.setTitle("TEST")

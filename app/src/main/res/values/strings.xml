@@ -6,9 +6,8 @@
     <string name="authentication">Authentication</string>
     <string name="add_post">Add post</string>
     <string name="description_post_author_avatar">Avatar name</string>
-    <string name="description_post_more">Больше</string>
+    <string name="description_post_more">More</string>
     <string name="description_liked_count">Liked count</string>
-    <string name="description_play">Play</string>
     <string name="login">Login</string>
     <string name="registration">Registration</string>
     <string name="password">Password</string>
@@ -33,7 +32,6 @@
     <string name="description_edit">Edit</string>
     <string name="description_remove">Remove</string>
     <string name="play">Play</string>
-    <string name="pause">Pause</string>
     <string name="stop">Stop</string>
     <string name="add_event">Add event</string>
     <string name="offline">Offline</string>
@@ -43,7 +41,6 @@
     <string name="new_event">New event</string>
     <string name="save">Save</string>
     <string name="error_empty_content">"The content field cannot be empty "</string>
-    <string name="profile">Profile</string>
     <string name="VideoHolder">Video holder</string>
     <string name="wall">Wall</string>
     <string name="jobs">Jobs</string>
@@ -60,6 +57,7 @@
     <string name="share">Share</string>
     <string name="location_mark">Mark of location</string>
     <string name="description_mention_count">Mentioned</string>
+    <string name="description_participians_count">participians</string>
     <string name="liked_more">See more likers</string>
     <string name="ment_more">See more mentioned</string>
     <string name="description_shared">Share</string>
@@ -82,12 +80,34 @@
     <string name="speakers_label">Speakers</string>
     <string name="take_people">Choose users</string>
     <string name="select_action">Select action</string>
-    <string name="select_ment">Select mentioned</string>
-    <string name="select_spk">Select speakers</string>
     <string name="select_video">Select video</string>
     <string name="select_audio">Select audio</string>
     <string name="select_gallary">Select gallary</string>
     <string name="select_camera">Select camera</string>
     <string name="speakers_more">Speakers more</string>
-    <string name="select_participate">Select participants</string>
+    <string name="in_search_job">Search job</string>
+    <string name="set_position">Set position</string>
+    <string name="want_add_post">Do you want to add a post?</string>
+    <string name="you_must_login">To add a post, you must be logged in.</string>
+    <string name="back">Back</string>
+    <string name="want_like">Do you want like?</string>
+    <string name="set_like_must_login">To like a post, you must be logged in.</string>
+    <string name="date">Date</string>
+    <string name="date_time_format">MM/dd/yyyy HH:mm</string>
+    <string name="type_event_title">Type</string>
+    <string name="select_date">Select date</string>
+    <string name="location_permission_required">Location permission rrequired</string>
+    <string name="new_job">New job</string>
+    <string name="icon_calendar">icon_calendar</string>
+    <string name="drag_handler">drag_handler</string>
+    <string name="enter_dates">Enter dates</string>
+    <string name="select_date_time_tittle">Select date and time</string>
+    <string name="enter_date_time">Enter date and time</string>
+    <string name="date_format">dd/mm/yyyy</string>
+    <string name="time">Time</string>
+    <string name="time_format">hh:mm</string>
+    <string name="end_date">End date</string>
+    <string name="tire">" - "</string>
+    <string name="without_date">without date</string>
+
 </resources>

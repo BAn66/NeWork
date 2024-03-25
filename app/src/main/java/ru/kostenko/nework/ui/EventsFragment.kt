@@ -18,18 +18,14 @@ import kotlinx.coroutines.launch
 import ru.kostenko.nework.R
 import ru.kostenko.nework.adapter.EventsAdapter
 import ru.kostenko.nework.adapter.OnEventInteractionListener
-import ru.kostenko.nework.authorization.AppAuth
 import ru.kostenko.nework.databinding.FragmentEventsBinding
 import ru.kostenko.nework.dto.Event
 import ru.kostenko.nework.util.MediaLifecycleObserver
 import ru.kostenko.nework.viewmodel.AuthViewModel
 import ru.kostenko.nework.viewmodel.EventViewModel
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class EventsFragment: Fragment() {
-    @Inject//Внедряем зависимость для авторизации
-    lateinit var appAuth: AppAuth
     private val eventViewModel: EventViewModel by activityViewModels()
     private val authViewModel: AuthViewModel by activityViewModels()
     override fun onCreateView(
@@ -73,14 +69,14 @@ class EventsFragment: Fragment() {
             }
 
             override fun share(event: Event) {
-                //создаем актвити Chooser для расшаривания текста поста через Intent
+
 
                 val intent = Intent().apply {
                     action = Intent.ACTION_SEND
                     putExtra(Intent.EXTRA_TEXT, event.content)
                     type = "text/plain"
                 }
-                //startActivity(intent) //Более скромный вариант ниже более симпатичный вариант
+
                 val shareIntent =
                     Intent.createChooser(intent, getString(R.string.description_shared))
                 startActivity(shareIntent)
@@ -116,8 +112,7 @@ class EventsFragment: Fragment() {
                 adapter.loadStateFlow.collectLatest { state ->
                     binding.swiperefresh.isRefreshing =
                         state.refresh is LoadState.Loading
-//                                || state.prepend is LoadState.Loading ||
-//                                state.append is LoadState.Loading
+
                 }
             }
         }

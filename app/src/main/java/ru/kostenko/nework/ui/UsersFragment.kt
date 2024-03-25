@@ -20,7 +20,6 @@ import ru.kostenko.nework.viewmodel.UserViewModel
 
 @AndroidEntryPoint
 class UsersFragment : Fragment() {
-
     val userViewModel: UserViewModel by activityViewModels()
 
     override fun onCreateView(

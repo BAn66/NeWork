@@ -1,8 +1,6 @@
 package ru.kostenko.nework.viewmodel
 
-import android.annotation.SuppressLint
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -74,13 +72,11 @@ class EventViewModel @Inject constructor(
             }
         }.flowOn(Dispatchers.Default)
 
-    private val _media = MutableLiveData<MediaModel?>(null)  //Для картинок, видео, аудио
+    private val _media = MutableLiveData<MediaModel?>(null)
     val media: LiveData<MediaModel?>
         get() = _media
 
-    private val _dataState = MutableLiveData(FeedModelState()) //Состояние
-    val dataState: LiveData<FeedModelState>
-        get() = _dataState
+    private val _dataState = MutableLiveData(FeedModelState())
 
     private val _datetime = SingleLiveEvent<String>()
     val datetime: LiveData<String>
@@ -110,8 +106,8 @@ class EventViewModel @Inject constructor(
 
     val authorId = appAuth.authStateFlow.value.id.toInt()
 
-    fun loadEvents() =
-        viewModelScope.launch { //Загружаем события c помщью коротюнов и вьюмоделскоуп
+    private fun loadEvents() =
+        viewModelScope.launch {
             try {
                 _dataState.value = FeedModelState(loading = true)
                 _dataState.value = FeedModelState()
@@ -120,10 +116,8 @@ class EventViewModel @Inject constructor(
             }
         }
 
-    @SuppressLint("SuspiciousIndentation")
     fun changeEventAndSave(content: String, dateTime: String, type: EventType) {
         val text: String = content.trim()
-        //функция изменения и сохранения в репозитории
         edited.value?.let { editEvent ->
             viewModelScope.launch {
                 val eventCopy = editEvent.copy(
@@ -136,7 +130,6 @@ class EventViewModel @Inject constructor(
                 )
                 try {
                     val mediaModel = if (_media.value?.inputStream != null) _media.value else null
-                    Log.d("PartTAAAG", "VieModel Participants save : ${eventCopy.participantsIds}")
                     repository.saveEvent(eventCopy, mediaModel)
                     _dataState.value = FeedModelState()
                 } catch (e: Exception) {
@@ -151,7 +144,7 @@ class EventViewModel @Inject constructor(
         emptyNew()
     }
 
-    fun emptyNew() {
+    private fun emptyNew() {
         edited.value = empty
     }
 
@@ -195,15 +188,15 @@ class EventViewModel @Inject constructor(
         _content.value = tmpContent
     }
 
-    fun clearContent() {
+    private fun clearContent() {
         _content.value = ""
     }
 
-    fun setCoords(latC: Double, LongC: Double) {
-            edited.value = edited.value?.copy(coords = Coords(latC, LongC))
+    fun setCoords(latC: Double, longC: Double) {
+        edited.value = edited.value?.copy(coords = Coords(latC, longC))
     }
 
-    fun clearCoords() {
+    private fun clearCoords() {
         _coords.value = null
     }
 
@@ -211,7 +204,7 @@ class EventViewModel @Inject constructor(
         _datetime.value = formatDateForServer(string)
     }
 
-    fun clearDateTime() {
+    private fun clearDateTime() {
         _datetime.value = ""
     }
 
@@ -229,12 +222,11 @@ class EventViewModel @Inject constructor(
         }
     }
 
-    fun setParticipants(set: Set<Int>) {
+    fun setParticipants(set: Set<Long>) {
         edited.value = edited.value?.copy(participantsIds = set)
-        Log.d("PartTAAAG", "VieModel setParticipants : ${edited.value?.participantsIds}")
     }
 
-    fun setSpeakers(set: Set<Int>) {
+    fun setSpeakers(set: Set<Long>) {
         edited.value = edited.value?.copy(speakerIds = set)
     }
 

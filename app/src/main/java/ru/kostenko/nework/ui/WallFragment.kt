@@ -29,7 +29,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class WallFragment : Fragment() {
-    @Inject//Внедряем зависимость для авторизации
+    @Inject
     lateinit var appAuth: AppAuth
     private val authViewModel: AuthViewModel by activityViewModels()
     private val wallViewModel: WallViewModel by activityViewModels()
@@ -43,7 +43,6 @@ class WallFragment : Fragment() {
         val binding = FragmentWallBinding.inflate(layoutInflater)
 
         with(binding) {
-//            textWall.text = userViewModel.user.value?.login
             val authorId = userViewModel.user.value?.id
             val wallAdapter = PostsAdapter(object : OnPostInteractionListener {
                 override fun like(post: Post) {
@@ -86,7 +85,6 @@ class WallFragment : Fragment() {
                 }
 
                 override fun share(post: Post) {
-                    //создаем актвити Chooser для расшаривания текста поста через Intent
                     val intent = Intent().apply {
                         action = Intent.ACTION_SEND
                         putExtra(Intent.EXTRA_TEXT, post.content)
@@ -113,7 +111,7 @@ class WallFragment : Fragment() {
                 }
             }
 
-            postViewModel.edited.observe(viewLifecycleOwner) { post->// Начало редактирования
+            postViewModel.edited.observe(viewLifecycleOwner) { post->
                 if (post.id != 0) {
                     requireParentFragment().requireParentFragment()
                         .findNavController().navigate(R.id.action_userDetailsFragment_to_newPostFragment)

@@ -33,20 +33,18 @@ class UserViewModel @Inject constructor(
     val dataSetPeople: LiveData<List<User>> =
         userRepositoryImpl.data.map { list ->
             list.mapNotNull { user ->
-                if(userIds.value?.contains(user.id)!!) user else null
+                if(userIds.value?.contains(user.id.toLong()) == true) user else null
             }
         }.asLiveData(Dispatchers.Default)
 
     private val _dataState = MutableLiveData<FeedModelState>()
-    val dataState: LiveData<FeedModelState>
-        get() = _dataState
 
     private val _user = MutableLiveData<User>()
     val user: LiveData<User>
         get() = _user
 
-    private val _userIds = MutableLiveData<Set<Int>>()
-    val userIds: LiveData<Set<Int>>
+    private val _userIds = MutableLiveData<Set<Long>>()
+    private val userIds: LiveData<Set<Long>>
         get() = _userIds
 
     init {
@@ -73,17 +71,17 @@ class UserViewModel @Inject constructor(
         }
     }
 
-    fun getUsersIds(set: Set<Int>) =
-        viewModelScope.launch { _userIds.value = set }
+//    fun getUsersIds(set: Set<Long>) =
+//        viewModelScope.launch { _userIds.value = set }
+//
+//    fun getTakeble(): LiveData<List<User>> =
+//        userRepositoryImpl.data.map { list ->
+//            list.map { user ->
+//                user.copy(isTaken = true)
+//            }
+//        }.asLiveData(Dispatchers.Default)
 
-    fun getTakeble(): LiveData<List<User>> =
-        userRepositoryImpl.data.map { list ->
-            list.map { user ->
-                user.copy(isTaken = true)
-            }
-        }.asLiveData(Dispatchers.Default)
-
-    fun setSetIds(set: Set<Int>) {
+    fun setSetIds(set: Set<Long>) {
         _userIds.value = set
     }
 

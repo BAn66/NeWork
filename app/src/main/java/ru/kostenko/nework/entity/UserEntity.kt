@@ -20,15 +20,3 @@ class UserEntity (
 
 fun List<UserEntity>.toDto() = map(UserEntity::toDto)
 fun List<User>.toUserEntity() = map(UserEntity.Companion::fromDto)
-
-@Entity
-data class UserRemoteKeyEntity(
-    @PrimaryKey
-    val type: KeyType,
-    val key: Long,
-) {
-    enum class KeyType{
-        AFTER, //Вверху пост
-        BEFORE //В самом низу пост
-    }
-}

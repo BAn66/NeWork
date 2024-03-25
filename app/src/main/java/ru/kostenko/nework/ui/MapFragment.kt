@@ -2,20 +2,11 @@ package ru.kostenko.nework.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.widget.Toolbar
-import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
@@ -24,41 +15,29 @@ import com.yandex.mapkit.layers.ObjectEvent
 import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.map.InputListener
 import com.yandex.mapkit.map.Map
-import com.yandex.mapkit.map.MapObjectTapListener
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.mapkit.user_location.UserLocationLayer
 import com.yandex.mapkit.user_location.UserLocationObjectListener
 import com.yandex.mapkit.user_location.UserLocationView
-import com.yandex.runtime.ui_view.ViewProvider
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import ru.kostenko.nework.R
 import ru.kostenko.nework.databinding.MapFragmentBinding
-import ru.kostenko.nework.databinding.PlaceBinding
 
 @AndroidEntryPoint
 class MapFragment : Fragment() {
-
-    companion object {
-        const val LAT_KEY = "LAT_KEY"
-        const val LONG_KEY = "LONG_KEY"
-    }
-
     private var mapView: MapView? = null
     private lateinit var userLocation: UserLocationLayer
-    private lateinit var toolbar: Toolbar
+
 
     private var listener = object : InputListener {
         override fun onMapTap(map: Map, point: Point) = Unit
 
         override fun onMapLongTap(map: Map, point: Point) {
-            findNavController().navigate( //запуск диалога по навигэйт
+            findNavController().navigate(
                 R.id.addPlace, AddPlaceDialog.createBundle(
                     point.latitude, point.longitude
                 )
             )
-//            AddPlaceDialog.newInstance(point.latitude, point.longitude) //просто запуск диалога
-//                .show(childFragmentManager, null)
         }
     }
 
@@ -75,7 +54,7 @@ class MapFragment : Fragment() {
         }
     }
 
-    private val premissionLauncher = //запрос на разрешение на геолокацию
+    private val permissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
             when {
                 granted -> {
@@ -97,7 +76,7 @@ class MapFragment : Fragment() {
                 else -> {
                     Toast.makeText(
                         requireContext(),
-                        "Location permission required",
+                        getString(R.string.location_permission_required),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -117,9 +96,9 @@ class MapFragment : Fragment() {
     ): View {
         val binding = MapFragmentBinding.inflate(inflater, container, false)
 
-        toolbar = binding.toolbar
+        val toolbar = binding.toolbar
         toolbar.apply {
-            setTitle("Set position")
+            setTitle(R.string.set_position)
             setNavigationIcon(R.drawable.arrow_back_24)
             setNavigationOnClickListener {
                 findNavController().popBackStack()
@@ -131,47 +110,7 @@ class MapFragment : Fragment() {
             userLocation.isVisible = true
             userLocation.isHeadingEnabled = false
             mapWindow.map.addInputListener(listener)
-
-//            val collection = mapWindow.map.mapObjects.addCollection()
-//            viewLifecycleOwner.lifecycleScope.launch {
-//                repeatOnLifecycle(Lifecycle.State.STARTED) {
-//
-//                        collection.clear()
-//                         //делаем маркеру вьюшку
-//                            val placeBinding = PlaceBinding.inflate(layoutInflater)
-//                            collection.addPlacemark(
-//                                Point(place.lat, place.long),
-//                                ViewProvider(placeBinding.root)
-//                            ).apply {
-//                                userData = place.id
-//                            }
-//                        }
-//                    }
-//
-//            }
-//            collection.addTapListener(placeTapListener)
-
-//            //переход к точке на карте после клика на списке
-//            val arguments = arguments
-//            if (arguments != null &&
-//                arguments.containsKey(LAT_KEY) &&
-//                arguments.containsKey(LONG_KEY)
-//            ) {
-//                val cameraPosition = mapWindow.map.cameraPosition
-//                mapWindow.map.move(
-//                    CameraPosition(
-//                        Point(arguments.getDouble(LAT_KEY), arguments.getDouble(LONG_KEY)),
-//                        10F,
-//                        cameraPosition.azimuth,
-//                        cameraPosition.tilt
-//                    )
-//                )
-//                arguments.remove(LAT_KEY)
-//                arguments.remove(LONG_KEY)
-//            } else {
-                //При входе в приложение показываем текущее местоположение
-                userLocation.setObjectListener(locationObjectListener)
-//            }
+            userLocation.setObjectListener(locationObjectListener)
         }
 
         binding.plus.setOnClickListener {
@@ -200,24 +139,9 @@ class MapFragment : Fragment() {
             )
         }
 
-        binding.location.setOnClickListener {//разрешение на текущую локацию?
-            premissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
-
+        binding.location.setOnClickListener {
+            permissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
         }
-
-//        requireActivity().addMenuProvider(object : MenuProvider {
-//            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-//                menuInflater.inflate(R.menu.map_menu, menu)
-//            }
-//
-//            override fun onMenuItemSelected(menuItem: MenuItem): Boolean =
-//                if (menuItem.itemId == R.id.listOfPlaces) {
-//                    findNavController().navigate(R.id.action_mapFragment_to_placesFragment)
-//                    true
-//                } else {
-//                    false
-//                }
-//        }, viewLifecycleOwner)
 
         return binding.root
     }
@@ -226,14 +150,12 @@ class MapFragment : Fragment() {
         super.onStart()
         mapView?.onStart()
         MapKitFactory.getInstance().onStart()
-
     }
 
     override fun onStop() {
         super.onStop()
         mapView?.onStop()
         MapKitFactory.getInstance().onStop()
-
     }
 
     override fun onDestroyView() {

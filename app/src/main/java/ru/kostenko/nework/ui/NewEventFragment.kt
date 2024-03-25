@@ -2,14 +2,12 @@ package ru.kostenko.nework.ui
 
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.MediaController
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.Toolbar
 import androidx.core.net.toFile
 import androidx.core.net.toUri
 import androidx.core.view.isGone
@@ -39,11 +37,10 @@ class NewEventFragment : Fragment() {
         var Bundle.text by StringArg
     }
 
-    private lateinit var toolbar: Toolbar
     private val eventViewModel: EventViewModel by activityViewModels()
 
     private val photoResultContract =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { // Контракт для картинок
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
                 val uri = it.data?.data ?: return@registerForActivityResult
                 val file = uri.toFile().inputStream()
@@ -51,7 +48,7 @@ class NewEventFragment : Fragment() {
             }
         }
     private val videoResultContract =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { // Контракт для VIDEO
+        registerForActivityResult(ActivityResultContracts.GetContent()) {
             it?.let {
                 val stream = context?.contentResolver?.openInputStream(it)
                 if (stream != null) {
@@ -61,7 +58,7 @@ class NewEventFragment : Fragment() {
         }
 
     private val audioResultContract =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { // Контракт для AUDIO
+        registerForActivityResult(ActivityResultContracts.GetContent()) {
             it?.let {
                 val stream = context?.contentResolver?.openInputStream(it)
                 if (stream != null) {
@@ -81,8 +78,8 @@ class NewEventFragment : Fragment() {
         binding.editTextNewPost.setText(eventViewModel.content.value)
         binding.editTextNewPost.requestFocus()
 
-        //Верхний аппбар
-        toolbar = binding.toolbar
+
+        val toolbar = binding.toolbar
         toolbar.apply {
             setTitle(R.string.new_event)
             setNavigationIcon(R.drawable.arrow_back_24)
@@ -100,7 +97,7 @@ class NewEventFragment : Fragment() {
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.save -> {
-                        if (!binding.editTextNewPost.text.isNotBlank()
+                        if (binding.editTextNewPost.text.isBlank()
                         ) {
                             Snackbar.make(
                                 binding.root, R.string.error_empty_content,
@@ -119,10 +116,6 @@ class NewEventFragment : Fragment() {
                                 EventType.ONLINE
                             } else eventViewModel.eventType.value
 
-                            Log.d(
-                                "PartTAAAG",
-                                "changeEventAndSave Eventfragment before: ${eventViewModel.edited.value?.participantsIds}"
-                            )
                             typeEvent?.let { type ->
                                 eventViewModel.changeEventAndSave(
                                     content,
@@ -130,10 +123,7 @@ class NewEventFragment : Fragment() {
                                     type
                                 )
                             }
-                            Log.d(
-                                "PartTAAAG",
-                                "changeEventAndSave Eventfragment after: ${eventViewModel.edited.value?.participantsIds}"
-                            )
+
                             activity?.invalidateOptionsMenu()
                             findNavController()
                                 .navigate(R.id.action_newEventFragment_to_mainFragment)
@@ -147,12 +137,10 @@ class NewEventFragment : Fragment() {
             }
         }
 
-        //Кнопка очистки фото
         binding.remove.setOnClickListener {
             eventViewModel.clearMedia()
         }
 
-        //Выбираем фото
         binding.takePhoto.setOnClickListener {
             eventViewModel.clearMedia()
             val pictureDialog = AlertDialog.Builder(it.context)
@@ -176,7 +164,6 @@ class NewEventFragment : Fragment() {
             eventViewModel.setContent(binding.editTextNewPost.text.toString())
         }
 
-        //Выбираем видео или аудио
         binding.takeFile.setOnClickListener {
             eventViewModel.clearMedia()
             val videoDialog = AlertDialog.Builder(it.context)
@@ -241,10 +228,8 @@ class NewEventFragment : Fragment() {
             }
         }
 
-        //Кнопки аудио плеера
         binding.playButton.setOnClickListener {
             observer.apply {
-                //Не забываем добавлять разрешение в андроид манифест на работу с сетью
                 val uri = eventViewModel.media.value?.uri
                 observer.mediaPlayer?.setDataSource(uri.toString())
             }.play()
@@ -256,7 +241,6 @@ class NewEventFragment : Fragment() {
             }
         }
 
-        //Переход на экран с картой
         binding.takeLocation.setOnClickListener {
             eventViewModel.setContent(binding.editTextNewPost.text.toString())
             requireParentFragment()
@@ -264,13 +248,11 @@ class NewEventFragment : Fragment() {
         }
 
 
-        //Вызов диалога для установки даты и вида событий
         binding.addDateEvent.setOnClickListener {
             val modalBottomSheet = DateEventFragment()
             modalBottomSheet.show(parentFragmentManager, DateEventFragment.TAG)
         }
 
-        //Для редактирования поста
         eventViewModel.edited.observe(viewLifecycleOwner) { editedEvent ->
             if (editedEvent.id != 0) {
                 eventViewModel.setContent(editedEvent.content)
@@ -297,37 +279,16 @@ class NewEventFragment : Fragment() {
             }
         }
 
-        //Выбираем выступающих
         binding.takePeople.setOnClickListener {
             requireParentFragment().findNavController()
                 .navigate(R.id.action_newEventFragment_to_takeSpeakersFragment)
-
-//            Меню если понадобится добавить участвующих в событие
-//            eventViewModel.setContent(binding.editTextNewPost.text.toString())
-//            val peopleDialog = AlertDialog.Builder(it.context)
-//            peopleDialog.setTitle(R.string.select_action)
-//            val str1 = getString(R.string.select_spk)
-//            val str2 = getString(R.string.select_participate)
-//            val peopleDialogItems = arrayOf(str1, str2)
-//            peopleDialog.setItems(
-//                peopleDialogItems
-//            ) { _, which ->
-//                when (which) {
-//                    0 -> requireParentFragment().findNavController()
-//                        .navigate(R.id.action_newEventFragment_to_takeSpeakersFragment)
-//
-//                    1 -> requireParentFragment().findNavController()
-//                        .navigate(R.id.action_newEventFragment_to_takeParticipantsFragment)
-//                }
-//            }
-//            peopleDialog.show()
         }
 
         return binding.root
 
     }
 
-    fun choosePhotoFromGallary() {
+    private fun choosePhotoFromGallary() {
         ImagePicker.Builder(this)
             .crop()
             .galleryOnly()
@@ -347,11 +308,11 @@ class NewEventFragment : Fragment() {
             )
     }
 
-    fun takeVideo() {
+    private fun takeVideo() {
         videoResultContract.launch("video/*")
     }
 
-    fun takeAudio() {
+    private fun takeAudio() {
         audioResultContract.launch("audio/*")
     }
 

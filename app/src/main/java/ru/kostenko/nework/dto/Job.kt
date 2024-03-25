@@ -10,4 +10,4 @@ data class Job(
     val link: String? = null,
     val ownedByMe: Boolean = false,
 
-    ): FeedItem {}
+    ): FeedItem

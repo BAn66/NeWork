@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.Toolbar
 import androidx.core.net.toFile
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -26,19 +25,22 @@ import ru.kostenko.nework.viewmodel.LoginViewModel
 
 @AndroidEntryPoint
 class RegistrationFragment : Fragment() {
-    private lateinit var toolbar_registration: Toolbar
     private val viewModel: LoginViewModel by activityViewModels()
 
-    private val photoResultContract =// Контракт для картинок
+    private val photoResultContract =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Activity.RESULT_OK) {
-                val uri = it.data?.data ?: return@registerForActivityResult
-                val file = uri.toFile()
-                viewModel.setPhoto(uri, file)
-            } else if (it.resultCode == ImagePicker.RESULT_ERROR) {
-                Toast.makeText(context, ImagePicker.getError(it.data), Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(context, "Task Cancelled", Toast.LENGTH_SHORT).show()
+            when (it.resultCode) {
+                Activity.RESULT_OK -> {
+                    val uri = it.data?.data ?: return@registerForActivityResult
+                    val file = uri.toFile()
+                    viewModel.setPhoto(uri, file)
+                }
+                ImagePicker.RESULT_ERROR -> {
+                    Toast.makeText(context, ImagePicker.getError(it.data), Toast.LENGTH_SHORT).show()
+                }
+                else -> {
+                    Toast.makeText(context, "Task Cancelled", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
@@ -48,8 +50,8 @@ class RegistrationFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentRegistrationBinding.inflate(layoutInflater)
-        toolbar_registration = binding.toolbar
-        toolbar_registration.apply {
+        val toolbar = binding.toolbar
+        toolbar.apply {
             setTitle(R.string.registration)
             setNavigationIcon(R.drawable.arrow_back_24)
             setNavigationOnClickListener {
@@ -59,9 +61,9 @@ class RegistrationFragment : Fragment() {
 
         binding.avatar.setOnClickListener {
             val pictureDialog = AlertDialog.Builder(it.context)
-            pictureDialog.setTitle("Select Action")
+            pictureDialog.setTitle(R.string.select_action)
             val pictureDialogItems =
-                arrayOf("Select photo from gallery", "Capture photo from camera")
+                arrayOf(getString(R.string.select_gallary), getString(R.string.select_camera))
             pictureDialog.setItems(
                 pictureDialogItems
             ) { _, which ->
@@ -135,7 +137,7 @@ class RegistrationFragment : Fragment() {
         return binding.root
     }
 
-    fun choosePhotoFromGallary() {
+    private fun choosePhotoFromGallary() {
         ImagePicker.Builder(this)
             .galleryMimeTypes(
                 mimeTypes = arrayOf(

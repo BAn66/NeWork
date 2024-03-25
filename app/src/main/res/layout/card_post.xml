@@ -2,7 +2,6 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/postCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/card_margin"
@@ -180,16 +179,6 @@
                 android:src="@drawable/ic_play_48"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/audio_bar" />
-
-<!--            <ImageButton-->
-<!--                android:id="@+id/pause_button"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:clickable="true"-->
-<!--                android:contentDescription="@string/pause"-->
-<!--                android:src="@drawable/ic_pause_48"-->
-<!--                app:layout_constraintStart_toEndOf="@id/play_button"-->
-<!--                app:layout_constraintTop_toBottomOf="@id/audio_bar" />-->
 
             <ImageButton
                 android:id="@+id/stop_button"

@@ -1,6 +1,5 @@
 package ru.kostenko.nework.viewmodel
 
-import android.annotation.SuppressLint
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -46,7 +45,7 @@ private val empty = Post(
     attachment = null,
     users = mapOf(),
 
-)
+    )
 
 @HiltViewModel
 class PostViewModel @Inject constructor(
@@ -68,13 +67,12 @@ class PostViewModel @Inject constructor(
             }
         }.flowOn(Dispatchers.Default)
 
-    private val _media = MutableLiveData<MediaModel?>(null)  //Для картинок, видео, аудио
+    private val _media = MutableLiveData<MediaModel?>(null)
     val media: LiveData<MediaModel?>
         get() = _media
 
-    private val _dataState = MutableLiveData(FeedModelState()) //Состояние
-    val dataState: LiveData<FeedModelState>
-        get() = _dataState
+    private val _dataState = MutableLiveData(FeedModelState())
+
 
     val edited = MutableLiveData(empty)
 
@@ -91,15 +89,13 @@ class PostViewModel @Inject constructor(
     val coords: LiveData<Coords?>
         get() = _coords
 
-
-
     init {
         loadPosts()
     }
 
     val authorId = appAuth.authStateFlow.value.id.toInt()
 
-    fun loadPosts() = viewModelScope.launch { //Загружаем посты c помщью коротюнов и вьюмоделскоуп
+    private fun loadPosts() = viewModelScope.launch {
         try {
             _dataState.value = FeedModelState(loading = true)
             _dataState.value = FeedModelState()
@@ -108,10 +104,9 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    @SuppressLint("SuspiciousIndentation")
+
     fun changePostAndSave(content: String) {
         val text: String = content.trim()
-        //функция изменения и сохранения в репозитории
         edited.value?.let { editedPost ->
             viewModelScope.launch {
                 val postCopy = editedPost.copy(
@@ -121,7 +116,7 @@ class PostViewModel @Inject constructor(
                     users = mapOf()
                 )
                 try {
-                    val mediaModel = if(_media.value?.inputStream != null)_media.value else null
+                    val mediaModel = if (_media.value?.inputStream != null) _media.value else null
                     repository.savePost(postCopy, mediaModel)
                     _dataState.value = FeedModelState()
                 } catch (e: Exception) {
@@ -180,15 +175,15 @@ class PostViewModel @Inject constructor(
         _content.value = tmpContent
     }
 
-    fun clearContent() {
+    private fun clearContent() {
         _content.value = ""
     }
 
-    fun setCoords(latC: Double, LongC: Double) {
-        edited.value = edited.value?.copy(coords = Coords(latC, LongC))
+    fun setCoords(latC: Double, longC: Double) {
+        edited.value = edited.value?.copy(coords = Coords(latC, longC))
     }
 
-    fun clearCoords(){
+    private fun clearCoords() {
         _coords.value = null
     }
 
@@ -202,7 +197,7 @@ class PostViewModel @Inject constructor(
         }
     }
 
-fun setMentinoed(set: Set<Int>) {
+    fun setMentinoed(set: Set<Long>) {
         edited.value = edited.value?.copy(mentionIds = set)
     }
 

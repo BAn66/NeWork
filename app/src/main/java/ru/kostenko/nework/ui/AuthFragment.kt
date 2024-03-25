@@ -23,7 +23,7 @@ import ru.kostenko.nework.viewmodel.LoginViewModel
 
 @AndroidEntryPoint
 class AuthFragment : Fragment() {
-    private lateinit var toolbar_login: Toolbar
+    private lateinit var toolbar: Toolbar
 
     companion object {
         var Bundle.textLogin by StringArg
@@ -38,8 +38,8 @@ class AuthFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentAuthBinding.inflate(layoutInflater)
-        toolbar_login = binding.toolbar
-        toolbar_login.apply {
+        toolbar = binding.toolbar
+        toolbar.apply {
             setTitle(R.string.login)
             setNavigationIcon(R.drawable.arrow_back_24)
             setNavigationOnClickListener {
@@ -48,13 +48,13 @@ class AuthFragment : Fragment() {
         }
 
         val textLogin =
-            arguments?.textLogin//получение аргументов между фрагментами при создании нового поста из старого в choosere
+            arguments?.textLogin
         if (textLogin != null) {
             binding.editLogin.setText(textLogin)
         }
 
         val textPassword =
-            arguments?.textPassword//получение аргументов между фрагментами при создании нового поста из старого в choosere
+            arguments?.textPassword
         if (textLogin != null) {
             binding.editPassword.setText(textPassword)
         }
